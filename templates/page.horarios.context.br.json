@@ -1,0 +1,77 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "page.horarios.json",
+  "context": {
+    "market": "br"
+  },
+  "sections": {
+    "slideshow_3WbgjR": {
+      "custom_css": [
+        "@media (max-width: 600px) {h1 {font-size: 28px; } slideshow-slide {height: 540px; }}"
+      ],
+      "settings": {},
+      "blocks": {
+        "slide_Pjjj8z": {
+          "blocks": {
+            "group_CKd9hG": {
+              "blocks": {
+                "button_XatKk4": {
+                  "type": "button",
+                  "disabled": false,
+                  "settings": {
+                    "label": "Grade de Horários",
+                    "link": "https://www.spartarj.com.br/sparta/1/page/landing-page/agenda",
+                    "open_in_new_tab": false,
+                    "style_class": "button",
+                    "header-bc19ea4bbb482fff47e441fc6e69e9b9": null,
+                    "width": "fit-content",
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100,
+                    "header-c648fa8eb828384f99314da01579c1e2": null,
+                    "custom_button_style": true,
+                    "custom_bg_color": "#ffffff33",
+                    "custom_text_color": "#ffffff",
+                    "enable_custom_padding": true,
+                    "padding_top": 12,
+                    "padding_bottom": 12,
+                    "padding_left": 24,
+                    "padding_right": 24,
+                    "enable_auto_margin": false,
+                    "enable_glass_mode": true,
+                    "glass_blur_amount": 8,
+                    "text_alignment": "center",
+                    "enable_arrow_icon": true,
+                    "border_radius": 4,
+                    "enable_border": false,
+                    "border_width": 1,
+                    "border_color": "#000000",
+                    "border_style": "solid",
+                    "header-2bc374778ba362ff349f6b8c40408c02": null,
+                    "enable_custom_id": false,
+                    "custom_button_id": ""
+                  }
+                }
+              },
+              "block_order": [
+                "text_ddT6qd",
+                "text_AtGPmU",
+                "button_XatKk4"
+              ],
+              "settings": {}
+            }
+          },
+          "settings": {}
+        }
+      }
+    }
+  }
+}

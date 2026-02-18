@@ -1,0 +1,1053 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "divider_wC4Lbn": {
+      "type": "divider",
+      "disabled": true,
+      "name": "t:names.divider_section",
+      "settings": {
+        "color_scheme": "scheme-5",
+        "section_width": "full-width",
+        "thickness": 0.5,
+        "corner_radius": "square",
+        "width_percent": 100,
+        "alignment_horizontal": "center",
+        "padding-block-start": 16,
+        "padding-block-end": 16
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "group_xYCrWi": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "link": "",
+            "open_in_new_tab": false,
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 36,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_FR3Mr6": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 30,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_xfGbEA": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<h3><strong>Fique por dentro das nossas novidades</strong></h3>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "email_signup_iY9WUx": {
+                  "type": "email-signup",
+                  "name": "t:names.email_signup",
+                  "settings": {
+                    "width": "custom",
+                    "custom_width": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "border_style": "all",
+                    "border_width": 1,
+                    "border_radius": 39,
+                    "input_type_preset": "paragraph",
+                    "style_class": "button-unstyled",
+                    "display_type": "arrow",
+                    "label": "",
+                    "integrated_button": true,
+                    "button_type_preset": "paragraph",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_xfGbEA",
+                "email_signup_iY9WUx"
+              ]
+            },
+            "spacer_dD8Mqd": {
+              "type": "spacer",
+              "name": "t:names.spacer",
+              "settings": {
+                "size": "pixel",
+                "percent_size": 20,
+                "pixel_size": 0,
+                "custom_mobile_size": true,
+                "size_mobile": "pixel",
+                "percent_size_mobile": 100,
+                "pixel_size_mobile": 60
+              },
+              "blocks": {}
+            },
+            "group_7xWp93": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 20,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_4dmfhj": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<h3><strong>Institucional</strong></h3>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "menu_J44jjk": {
+                  "type": "menu",
+                  "name": "t:names.menu",
+                  "settings": {
+                    "menu": "top-menu",
+                    "heading": "",
+                    "menu_spacing": 14,
+                    "show_as_accordion": false,
+                    "accordion_icon": "caret",
+                    "accordion_dividers": false,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "heading_preset": "h3",
+                    "link_preset": "paragraph",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_4dmfhj",
+                "menu_J44jjk"
+              ]
+            },
+            "spacer_XdbCH3": {
+              "type": "spacer",
+              "name": "t:names.spacer",
+              "settings": {
+                "size": "pixel",
+                "percent_size": 20,
+                "pixel_size": 0,
+                "custom_mobile_size": true,
+                "size_mobile": "pixel",
+                "percent_size_mobile": 100,
+                "pixel_size_mobile": 60
+              },
+              "blocks": {}
+            },
+            "group_h6GKeb": {
+              "type": "group",
+              "name": "t:names.group",
+              "disabled": true,
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 20,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_T6XHGP": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<h3><strong>Políticas</strong></h3>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "menu_kT9p3Y": {
+                  "type": "menu",
+                  "name": "t:names.menu",
+                  "settings": {
+                    "menu": "top-menu",
+                    "heading": "",
+                    "menu_spacing": 14,
+                    "show_as_accordion": false,
+                    "accordion_icon": "caret",
+                    "accordion_dividers": false,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "heading_preset": "h3",
+                    "link_preset": "paragraph",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_T6XHGP",
+                "menu_kT9p3Y"
+              ]
+            },
+            "spacer_gAk94a": {
+              "type": "spacer",
+              "name": "t:names.spacer",
+              "settings": {
+                "size": "pixel",
+                "percent_size": 20,
+                "pixel_size": 0,
+                "custom_mobile_size": true,
+                "size_mobile": "pixel",
+                "percent_size_mobile": 100,
+                "pixel_size_mobile": 60
+              },
+              "blocks": {}
+            },
+            "group_r6ACnq": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 14,
+                "width": "custom",
+                "custom_width": 30,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_JFNDfP": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<h3><strong>Atendimento</strong></h3>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "group_qRRgDL": {
+                  "type": "group",
+                  "name": "t:names.group",
+                  "settings": {
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "flex-start",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 6,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "custom_liquid_VQ3UCP": {
+                      "type": "custom-liquid",
+                      "name": "t:names.custom_liquid",
+                      "settings": {
+                        "custom_liquid": "<svg data-name=\"Clock-icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"14px\" height=\"14px\" viewBox=\"0 0 15.12 14.77\" style=\"margin-top: 4px\">\n                              <path fill=\"currentColor\" d=\"M8.41,7.11v-3.74c0-.37-.3-.67-.67-.67s-.67.3-.67.67h0v4.02c0,.18.07.35.2.47l2.01,2.01c.26.26.68.26.95,0,.26-.26.26-.69,0-.95l-1.81-1.81Z\"></path>\n                              <path fill=\"currentColor\" d=\"M7.74.02C3.67.02.37,3.32.37,7.39s3.31,7.37,7.37,7.37,7.37-3.3,7.37-7.37S11.81.02,7.74.02ZM7.74,13.42c-3.33,0-6.03-2.7-6.03-6.03S4.41,1.36,7.74,1.36s6.03,2.7,6.03,6.03-2.71,6.03-6.03,6.03Z\"></path>\n                            </svg>"
+                      },
+                      "blocks": {}
+                    },
+                    "text_Rx3CHf": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>Atendemos de segunda a sexta, das 7h às 22h; e Sábados de 08h às 14h.</p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "custom_liquid_VQ3UCP",
+                    "text_Rx3CHf"
+                  ]
+                },
+                "group_AqymRH": {
+                  "type": "group",
+                  "name": "t:names.group",
+                  "settings": {
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 4,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "icon_hPqUzL": {
+                      "type": "icon",
+                      "name": "t:names.icon",
+                      "settings": {
+                        "icon": "stopwatch",
+                        "width": 14,
+                        "link": "",
+                        "open_in_new_tab": false
+                      },
+                      "blocks": {}
+                    },
+                    "text_zyYXRj": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>+55 (21) 3547-6217</p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "icon_hPqUzL",
+                    "text_zyYXRj"
+                  ]
+                },
+                "group_6QYJkg": {
+                  "type": "group",
+                  "name": "t:names.group",
+                  "settings": {
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 6,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "custom_liquid_gGwNmJ": {
+                      "type": "custom-liquid",
+                      "name": "t:names.custom_liquid",
+                      "settings": {
+                        "custom_liquid": "<svg data-name=\"E-mail-icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"14px\" height=\"14px\" viewBox=\"0 0 15.12 14.77\" style=\"margin-top: 1px\">\n                              <path fill=\"currentColor\" d=\"M13.17,1.51H2.09c-1.06,0-1.92.86-1.92,1.92v7.91c0,1.06.86,1.92,1.92,1.92h11.08c1.06,0,1.92-.86,1.92-1.92V3.43c0-1.06-.86-1.92-1.92-1.92ZM2.09,11.96c-.34,0-.61-.28-.61-.61V3.89l5.89,5.43c.12.11.28.17.44.17s.32-.06.44-.17l5.53-5.11v7.13c0,.34-.28.61-.61.61H2.09ZM13.39,2.66s.03,0,.05,0c-.01,0-.03,0-.05,0ZM7.81,7.95L2.25,2.82h10.92c.06,0,.11,0,.17.02l-5.53,5.1Z\"></path>\n                            </svg>"
+                      },
+                      "blocks": {}
+                    },
+                    "text_ArTkMF": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>contato@spartarj.com.br</p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "custom_liquid_gGwNmJ",
+                    "text_ArTkMF"
+                  ]
+                }
+              },
+              "block_order": [
+                "text_JFNDfP",
+                "group_qRRgDL",
+                "group_AqymRH",
+                "group_6QYJkg"
+              ]
+            }
+          },
+          "block_order": [
+            "group_FR3Mr6",
+            "spacer_dD8Mqd",
+            "group_7xWp93",
+            "spacer_XdbCH3",
+            "group_h6GKeb",
+            "spacer_gAk94a",
+            "group_r6ACnq"
+          ]
+        },
+        "group_9xFHeQ": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "link": "",
+            "open_in_new_tab": false,
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_MgPw87": {
+              "type": "group",
+              "name": "t:names.group",
+              "disabled": true,
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_DiwTH6": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<h5>Formas de Pagamento</h5>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "payment_icons_Vebez4": {
+                  "type": "payment-icons",
+                  "name": "t:names.payment_icons",
+                  "settings": {
+                    "horizontal_alignment": "flex-start",
+                    "gap": 2,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "custom_liquid_eQTG3T": {
+                  "type": "custom-liquid",
+                  "name": "t:names.custom_liquid",
+                  "settings": {
+                    "custom_liquid": "<div class=\"seals-gap footer-block__details-content rte\">\n<svg class=\"payment-icons\" data-name=\"Pix_Icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"36px\" height=\"36px\" viewBox=\"0 0 32 21.9\" alt=\"Pix Icon\">\n  <path fill=\"currentColor\" d=\"M30.03,21.88H1.97c-1.09,0-1.97-.88-1.97-1.97V1.97C0,.88.88,0,1.97,0h28.07c1.09,0,1.97.88,1.97,1.97v17.97c0,1.09-.88,1.97-1.97,1.97h0ZM1.97.57c-.77,0-1.4.63-1.4,1.4v17.97c0,.77.63,1.4,1.4,1.4h28.07c.77,0,1.41-.63,1.41-1.4V1.97c0-.77-.63-1.4-1.41-1.4H1.97Z\"></path>\n  <g>\n    <path fill=\"currentColor\" d=\"M20.87,15.57c-.34,0-.68-.06-.98-.19-.31-.13-.59-.31-.83-.55l-2.62-2.62c-.1-.08-.22-.13-.34-.13s-.25.05-.34.13l-2.63,2.63c-.24.24-.52.42-.83.55-.31.13-.64.19-.98.19h-.52l3.32,3.32c1.04,1.04,2.71,1.04,3.75,0l3.32-3.33h-.33ZM11.32,6.32c.69,0,1.33.27,1.81.75l2.63,2.63s.1.08.16.11.12.04.18.04.13-.01.18-.04c.06-.02.11-.06.16-.11l2.62-2.62c.24-.24.52-.42.83-.55s.64-.19.98-.19h.31l-3.32-3.32c-.49-.49-1.17-.77-1.87-.77s-1.37.28-1.87.77l-3.32,3.32h.52Z\"></path>\n    <path fill=\"currentColor\" d=\"M23.93,9.07l-2.01-2.01s-.1.02-.14.02h-.92c-.47,0-.93.19-1.27.53l-2.62,2.62c-.12.12-.25.2-.41.28-.16.06-.31.1-.48.1s-.33-.04-.48-.1c-.16-.06-.29-.16-.41-.28l-2.63-2.63c-.34-.34-.8-.52-1.27-.53h-1.12s-.1,0-.13-.02l-2.01,2.01c-1.04,1.04-1.04,2.71,0,3.75l2.01,2.01s.08-.02.13-.02h1.12c.47,0,.93-.19,1.27-.52l2.63-2.63c.24-.23.55-.35.89-.35s.65.13.89.35l2.62,2.62c.34.34.8.52,1.27.52h.92s.1.01.14.02l2.01-2.01c1.04-1.04,1.04-2.71,0-3.75v.02Z\"></path>\n  </g>\n</svg>\n<svg class=\"payment-icons\" data-name=\"Billet_Icon\" width=\"36px\" height=\"36px\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 21.9\" alt=\"Boleto Icon\">\n  <path fill=\"currentColor\" d=\"M29.93,21.8H2.07c-1.08,0-1.95-.87-1.95-1.95V2.02C.11.94.99.07,2.07.07h27.87c1.08,0,1.95.87,1.95,1.95v17.84c0,1.08-.87,1.95-1.95,1.95h0ZM2.07.63c-.77,0-1.39.62-1.39,1.39v17.84c0,.77.62,1.39,1.39,1.39h27.87c.77,0,1.4-.62,1.4-1.39V2.02c0-.77-.62-1.39-1.4-1.39H2.07Z\"></path>\n  <path fill=\"currentColor\" d=\"M6.06,3.13h-2.32v10.03h2.32V3.13Z\"></path>\n  <path fill=\"currentColor\" d=\"M8.39,3.13h-1.16v10.03h1.16V3.13Z\"></path>\n  <path fill=\"currentColor\" d=\"M9.55,3.13v10.03h2.32V3.13h-2.32Z\"></path>\n  <path fill=\"currentColor\" d=\"M13.04,3.13v10.03h2.32V3.13h-2.32Z\"></path>\n  <path fill=\"currentColor\" d=\"M17.69,3.13h-1.16v10.03h1.16V3.13Z\"></path>\n  <path fill=\"currentColor\" d=\"M18.86,3.13v10.03h3.48V3.13h-3.48Z\"></path>\n  <path fill=\"currentColor\" d=\"M23.51,3.13v10.03h2.36V3.13h-2.36Z\"></path>\n  <path fill=\"currentColor\" d=\"M28.26,3.13h-1.2v10.03h1.2V3.13Z\"></path>\n  <path fill=\"currentColor\" d=\"M3.74,18.69v-3.82h1.39c.26,0,.49.02.67.07.19.05.35.12.45.2.12.08.2.19.26.32.06.12.08.26.08.42,0,.08-.01.18-.04.26-.02.08-.07.16-.13.23-.06.07-.13.13-.23.19-.08.06-.19.11-.32.14.55.12.84.41.84.85,0,.17-.04.31-.1.44-.06.13-.16.25-.29.36-.12.1-.28.18-.45.23-.18.06-.4.08-.62.08h-1.52,0ZM4.48,17.02v1.11h.77c.14,0,.25-.01.35-.05s.17-.07.23-.13c.06-.05.1-.12.12-.18.02-.07.04-.14.04-.23s-.01-.16-.04-.23c-.02-.07-.07-.12-.13-.17s-.13-.08-.23-.11-.2-.04-.34-.04h-.77ZM4.48,16.53h.6c.25,0,.44-.05.59-.13.13-.08.2-.23.2-.42s-.06-.34-.18-.42c-.12-.08-.31-.13-.56-.13h-.65v1.1Z\"></path>\n  <path fill=\"currentColor\" d=\"M12.04,16.79c0,.28-.05.54-.14.78s-.24.44-.42.62c-.18.18-.4.31-.65.41s-.53.14-.84.14-.59-.05-.84-.14-.47-.24-.65-.41c-.18-.18-.32-.38-.42-.62-.1-.24-.14-.5-.14-.78s.05-.54.14-.78.24-.44.42-.62c.18-.18.4-.31.65-.41s.53-.14.84-.14.59.05.84.14.47.24.65.41.32.38.42.62c.1.24.14.49.14.78ZM11.26,16.79c0-.2-.02-.4-.08-.56-.06-.17-.14-.31-.25-.42-.11-.12-.24-.2-.41-.26-.16-.06-.34-.1-.53-.1s-.37.04-.54.1c-.16.06-.29.16-.41.26-.11.12-.19.26-.25.42-.06.17-.08.35-.08.56s.02.4.08.56.14.31.25.42c.11.12.25.2.41.26s.34.1.54.1.37-.04.53-.1c.16-.06.29-.14.41-.26.11-.12.19-.25.25-.42s.08-.36.08-.56Z\"></path>\n  <path fill=\"currentColor\" d=\"M14.16,18.11h1.62v.59h-2.37v-3.82h.75v3.23Z\"></path>\n  <path fill=\"currentColor\" d=\"M19.63,14.88v.56h-1.8v1.05h1.41v.55h-1.41v1.08h1.8v.56h-2.55v-3.82h2.55Z\"></path>\n  <path fill=\"currentColor\" d=\"M23.9,14.88v.59h-1.21v3.23h-.75v-3.23h-1.22v-.59h3.18Z\"></path>\n  <path fill=\"currentColor\" d=\"M28.82,16.79c0,.28-.05.54-.14.78s-.24.44-.42.62-.4.31-.65.41c-.25.1-.53.14-.84.14s-.59-.05-.84-.14c-.25-.1-.47-.24-.65-.41-.18-.18-.32-.38-.42-.62-.1-.24-.14-.5-.14-.78s.05-.54.14-.78.24-.44.42-.62c.18-.18.4-.31.65-.41.25-.1.53-.14.84-.14s.59.05.84.14c.25.1.47.24.65.41.18.17.32.38.42.62.1.24.14.49.14.78ZM28.04,16.79c0-.2-.02-.4-.08-.56s-.14-.31-.25-.42-.24-.2-.41-.26c-.16-.06-.34-.1-.53-.1s-.37.04-.54.1c-.16.06-.29.16-.41.26-.11.12-.19.26-.25.42-.06.17-.08.35-.08.56s.02.4.08.56.14.31.25.42c.11.12.25.2.41.26.16.06.34.1.54.1s.37-.04.53-.1c.16-.06.29-.14.41-.26.11-.12.19-.25.25-.42s.08-.36.08-.56Z\"></path>\n</svg>\n<svg class=\"payment-icons\" data-name=\"Visa_Icon\" width=\"36px\" height=\"36px\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 21.9\" alt=\"Visa Icon\">\n  <path fill=\"currentColor\" d=\"M29.35,21.76H2.65c-1.4,0-2.53-1.13-2.53-2.53V2.65C.11,1.25,1.25.11,2.65.11h26.71c1.4,0,2.53,1.13,2.53,2.53v16.58c0,1.4-1.13,2.53-2.53,2.53ZM2.65.68c-1.09,0-1.97.88-1.97,1.97v16.58c0,1.09.88,1.98,1.98,1.98h26.71c1.09,0,1.98-.88,1.98-1.98V2.65c0-1.09-.88-1.98-1.98-1.98H2.65Z\"></path>\n  <path fill=\"currentColor\" d=\"M9.67,14.86h-1.96l-1.47-5.59c-.07-.26-.21-.49-.43-.6-.54-.27-1.13-.48-1.79-.6v-.21h3.14c.43,0,.76.32.81.69l.76,4.04,1.95-4.73h1.9l-2.93,6.98h.01ZM13.69,14.86h-1.84l1.52-6.98h1.84l-1.52,6.98ZM17.59,9.81c.06-.37.38-.6.76-.6.6-.06,1.24.06,1.79.32l.32-1.5c-.54-.21-1.13-.32-1.68-.32-1.79,0-3.09.97-3.09,2.3,0,1.03.92,1.55,1.58,1.89.7.32.98.54.92.86,0,.48-.54.69-1.09.69-.66,0-1.3-.16-1.9-.43l-.32,1.5c.66.26,1.36.38,2.01.38,2.01.05,3.26-.92,3.26-2.36,0-1.83-2.56-1.93-2.56-2.73ZM26.6,14.86l-1.47-6.98h-1.58c-.32,0-.66.21-.76.54l-2.71,6.45h1.9l.38-1.01h2.33l.21,1.01h1.7ZM23.83,9.76l.54,2.63h-1.52l.98-2.63Z\"></path>\n</svg>\n<svg class=\"payment-icons\" data-name=\"Mastercard_Icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"36px\" height=\"36px\" viewBox=\"0 0 32 21.9\" alt=\"Mastercard Icon\">\n  <path fill=\"currentColor\" d=\"M29.93,21.8H2.07c-1.08,0-1.95-.87-1.95-1.95V2.02C.11.94.99.07,2.07.07h27.87c1.08,0,1.95.87,1.95,1.95v17.84c0,1.08-.87,1.95-1.95,1.95h0ZM2.07.63c-.77,0-1.39.62-1.39,1.39v17.84c0,.77.62,1.39,1.39,1.39h27.87c.77,0,1.4-.62,1.4-1.39V2.02c0-.77-.62-1.39-1.4-1.39H2.07Z\"></path>\n  <path fill=\"currentColor\" d=\"M11.56,17.01v1.65h-.36v-.2c-.12.14-.29.24-.53.24-.47,0-.83-.36-.83-.86s.36-.86.83-.86c.24,0,.41.1.53.24v-.2h.36ZM10.72,17.29c-.31,0-.5.24-.5.53s.19.53.5.53.5-.23.5-.53-.2-.53-.5-.53ZM23.76,17.82c0-.29.19-.53.5-.53s.5.23.5.53-.2.53-.5.53-.5-.24-.5-.53ZM25.1,16.35v2.31h-.36v-.2c-.12.14-.29.24-.53.24-.47,0-.83-.36-.83-.86s.36-.86.83-.86c.24,0,.41.1.53.24v-.86h.36ZM16.04,17.28c.23,0,.38.14.42.4h-.86c.04-.24.18-.4.44-.4ZM15.22,17.82c0-.51.34-.86.83-.86s.79.35.79.86v.13h-1.23c.05.3.26.41.49.41.17,0,.35-.06.48-.17l.18.26c-.2.17-.43.23-.68.23-.49,0-.85-.34-.85-.86ZM20.41,17.82c0-.29.19-.53.5-.53s.5.23.5.53-.2.53-.5.53-.5-.24-.5-.53ZM21.75,17.01v1.65h-.36v-.2c-.12.14-.29.24-.53.24-.47,0-.83-.36-.83-.86s.36-.86.83-.86c.24,0,.41.1.53.24v-.2h.36ZM18.37,17.82c0,.5.35.86.89.86.25,0,.42-.06.6-.19l-.17-.29c-.13.1-.28.14-.43.14-.29,0-.5-.22-.5-.53s.22-.53.5-.53c.16,0,.3.05.43.14l.17-.29c-.18-.14-.35-.19-.6-.19-.54,0-.89.36-.89.86ZM22.58,17.2c.1-.14.23-.24.44-.24.07,0,.18.01.25.05l-.11.34c-.07-.04-.16-.04-.23-.04-.24,0-.36.16-.36.42v.92h-.36v-1.65h.36v.2ZM13.34,17.14c-.17-.11-.41-.17-.68-.17-.42,0-.69.2-.69.53,0,.26.2.43.57.49l.17.02c.2.02.29.08.29.17,0,.13-.13.2-.38.2s-.43-.08-.55-.17l-.17.28c.2.14.44.22.72.22.48,0,.75-.23.75-.54,0-.29-.22-.44-.57-.49l-.17-.02c-.16-.02-.28-.05-.28-.16,0-.12.12-.19.31-.19.22,0,.42.08.51.14l.16-.29v-.02ZM17.57,17.2c.1-.14.23-.24.43-.24.07,0,.18.01.25.05l-.11.34c-.07-.04-.16-.04-.23-.04-.24,0-.36.16-.36.42v.92h-.36v-1.65h.36v.2h.01ZM14.92,17.01h-.59v-.5h-.36v.5h-.34v.32h.34v.75c0,.38.14.61.57.61.16,0,.34-.05.45-.13l-.11-.31c-.11.06-.23.1-.32.1-.18,0-.24-.11-.24-.28v-.74h.59v-.32ZM9.52,17.62v1.03h-.36v-.92c0-.28-.12-.43-.36-.43s-.41.16-.41.44v.91h-.36v-.92c0-.28-.12-.43-.36-.43s-.41.16-.41.44v.91h-.36v-1.65h.36v.2c.13-.19.31-.24.49-.24.25,0,.43.11.55.29.16-.23.37-.3.59-.29.41,0,.66.26.66.66h-.04Z\"></path>\n  <path fill=\"currentColor\" d=\"M15.45,14.25s.1.08.16.12c-.98.65-2.17,1.03-3.44,1.03-3.42,0-6.2-2.74-6.2-6.13s2.78-6.13,6.2-6.13c1.27,0,2.45.37,3.44,1.02-.05.05-.1.08-.14.13-1.46,1.26-2.31,3.08-2.31,4.98s.84,3.73,2.3,4.99h0ZM19.83,3.13c-1.27,0-2.45.37-3.44,1.02.05.05.1.08.14.13,1.46,1.26,2.31,3.08,2.31,4.98s-.84,3.72-2.3,4.99c-.05.04-.1.08-.16.12.98.65,2.17,1.03,3.44,1.03,3.42,0,6.2-2.74,6.2-6.13s-2.78-6.13-6.2-6.13h0ZM16,4.45c-.08.06-.16.12-.24.19-1.3,1.13-2.13,2.78-2.13,4.62s.83,3.5,2.13,4.62c.07.07.16.13.24.19.08-.06.16-.13.24-.19,1.3-1.13,2.13-2.78,2.13-4.62s-.83-3.5-2.13-4.62c-.07-.07-.16-.13-.24-.19Z\"></path>\n</svg>\n<svg class=\"payment-icons\" data-name=\"American Express Icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"36px\" height=\"36px\" viewBox=\"0 0 32 21.9\" alt=\"American Express Icon\">\n  <path fill=\"currentColor\" d=\"M29.76,21.52H2.23c-1.16,0-2.12-.95-2.12-2.12v-8.9h1.53l.34-.84h.76l.34.82h3v-.64l.27.64h1.55l.27-.65v.65h7.46v-1.36h.14c.11,0,.13.01.13.18v1.19h3.86v-.32c.4.2.86.32,1.35.32h1.71l.35-.84h.76l.34.84h3.13v-.79l.47.79h2.51v-5.21h-2.48v.61l-.34-.61h-2.54v.61l-.32-.61h-3.59c-.48,0-.95.12-1.36.32h.02v-.31h-2.38v.31c-.25-.19-.55-.31-.89-.31H7.73l-.58,1.34-.6-1.34h-2.73v.61l-.31-.61H1.2L.11,7.76V2.47C.11,1.3,1.07.35,2.23.35h27.52c1.16,0,2.12.95,2.12,2.12v9.25h-1.74c-.39,0-.74.12-1.04.31h0v-.31h-2.54c-.36,0-.71.12-.98.31h0v-.31h-4.36v.31c-.34-.19-.74-.31-1.18-.31h-2.92v.31c-.31-.2-.68-.32-1.08-.32h-3.41l-.74.8-.69-.8h-4.81v5.21h4.72l.76-.81.72.81h2.91v-1.22h.51c.36,0,.72-.07,1.04-.19h-.02v1.41h2.4v-1.35h.12c.14,0,.16,0,.16.15v1.2h7.39c.42,0,.81-.13,1.13-.34h0v.34h2.42c.44,0,.85-.09,1.22-.25h-.02v2.73c0,1.16-.95,2.12-2.12,2.12h.05ZM18.73,16.2h-.89v-3.74h2.26c.32,0,.62.07.89.19h-.01c.27.14.46.44.46.76v.06h0v.04c0,.42-.26.8-.62.95h0c.18.07.33.18.44.32h0c.09.16.15.35.15.56v.13h0v.73h-.89v-.47s.01-.12.01-.18c0-.2-.06-.4-.15-.56h0c-.14-.11-.33-.18-.53-.18h-1.09v1.36h0v.02ZM18.73,13.23v.84h1.16c.13,0,.26-.04.36-.08h0c.12-.07.19-.2.19-.34v-.05c0-.13-.07-.25-.19-.32h0c-.11-.05-.22-.07-.35-.07h-1.19v.02ZM10.77,16.2h-3.54v-3.74h3.59l1.09,1.22,1.14-1.22h2.85c1.01,0,1.51.4,1.51,1.24s-.51,1.25-1.55,1.25h-1.12v1.25h-1.74l-1.09-1.24-1.14,1.24h.01ZM13.87,12.86l-1.38,1.47,1.38,1.52v-3h0ZM8.12,14.67v.74h2.2l1.01-1.09-.98-1.09h-2.23v.68h1.96v.76h-1.96ZM14.75,13.23v.95h1.15c.35,0,.55-.18.55-.49s-.19-.46-.54-.46h-1.16ZM30.66,16.2h-1.73v-.8h1.79c.11,0,.21-.04.29-.09h0c.06-.06.11-.14.11-.24h0c0-.11-.05-.19-.11-.25-.07-.06-.16-.08-.27-.08h-.21c-.81-.02-1.72-.05-1.72-1.15,0-.54.34-1.12,1.28-1.12h1.78v.8h-1.69c-.11,0-.21.02-.29.07h0c-.08.05-.13.14-.13.24v.02h0c0,.13.08.24.2.27h0c.08.02.19.05.29.05h.68c.33,0,.64.12.88.31h0s.05.05.07.07h0v1.42c-.26.29-.64.48-1.06.48h-.16ZM27.18,16.2h-1.74v-.8h1.8c.12,0,.21-.04.31-.09h0c.06-.06.11-.14.11-.24h0c0-.11-.05-.19-.11-.25-.07-.06-.16-.08-.27-.08h-.21c-.8-.02-1.72-.05-1.72-1.15,0-.54.33-1.12,1.28-1.12h1.79v.8h-1.71c-.11,0-.21.02-.29.07h0c-.08.06-.13.15-.13.26,0,.13.08.25.19.29h0c.09.02.19.05.29.05h.67c.33,0,.65.12.88.31h0c.16.19.27.42.27.69v.09h0c0,.78-.47,1.18-1.4,1.18h-.01ZM24.91,16.2h-2.98v-3.74h2.98v.78h-2.09v.68h2.03v.76h-2.03v.74h2.09v.78h0ZM26.64,9.77h-1.82l-.35-.84h-1.86l-.34.84h-1.14c-.46,0-.87-.15-1.2-.42h0c-.31-.33-.48-.78-.48-1.26v-.18h0v-.15c0-.49.19-.95.49-1.29h0c.32-.27.73-.45,1.19-.45h1.05v.8h-.95c-.22,0-.42.08-.58.22h0c-.16.21-.26.47-.26.75v.09h0v.11c0,.28.09.55.26.76h0c.15.12.34.19.55.19h.47l1.26-2.94h1.34l1.51,3.53v-3.53h1.36l1.56,2.6v-2.6h.92v3.73h-1.27l-1.69-2.8v2.8h0v.04ZM23.56,6.67l-.61,1.49h1.24l-.61-1.49h-.01ZM14.91,9.76h-.89v-3.74h2.27c.32,0,.61.07.88.2h-.01c.27.15.46.44.46.76v.06h0v.02c0,.44-.26.8-.62.96h0c.18.07.33.18.44.32h0c.09.16.15.35.15.56v.13h0v.73h-.91v-.67c0-.19-.06-.38-.15-.53h0c-.14-.11-.33-.16-.52-.16h-1.09v1.35h0ZM14.91,6.81v.82h1.16c.13,0,.25-.04.36-.08h0c.12-.07.19-.19.19-.33v-.05c0-.13-.07-.25-.19-.31h0c-.11-.05-.22-.07-.35-.07h-1.18ZM5.45,9.76h-1.81l-.34-.84h-1.86l-.34.84H.11l1.6-3.74h1.33l1.52,3.54v-3.54h1.46l1.16,2.53,1.07-2.53h1.48v3.73h-.92v-2.92l-1.29,2.92h-.79l-1.29-2.93v2.93h.01ZM2.36,6.67l-.61,1.49h1.22l-.61-1.49ZM19.03,9.76h-.91v-3.73h.91v3.73h0ZM13.39,9.76h-2.98v-3.73h2.99v.78h-2.09v.67h2.03v.76h-2.03v.74h2.09v.78h-.01Z\"></path>\n</svg>\n<svg class=\"payment-icons\" data-name=\"Paypal Icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"36px\" height=\"36px\" viewBox=\"0 0 32 21.9\" alt=\"Paypal Icon\">\n  <path fill=\"currentColor\" d=\"M7.16,7.99c-.35-.24-.8-.36-1.35-.36h-2.15c-.17,0-.26.08-.29.25l-.87,5.49s0,.11.04.14c.04.05.08.07.13.07h1.03c.18,0,.28-.08.3-.25l.24-1.48c0-.07.04-.13.1-.18.05-.05.12-.07.2-.08.08-.01.16-.02.23-.02s.16,0,.25.01c.1,0,.16.01.19.01.78,0,1.38-.22,1.82-.66.44-.43.66-1.04.66-1.81,0-.53-.17-.91-.51-1.15h0ZM6.04,9.65c-.05.31-.17.53-.35.62-.19.1-.45.14-.81.14h-.44l.23-1.42c.01-.1.07-.14.18-.14h.25c.36,0,.62.05.78.16s.22.32.16.66h.01Z\"></path>\n  <path fill=\"currentColor\" d=\"M29.89,7.63h-.99c-.1,0-.16.05-.18.14l-.87,5.6v.02s0,.08.04.13c.04.04.08.06.13.06h.89c.17,0,.26-.08.29-.25l.87-5.5h0c0-.14-.06-.2-.18-.2h.01Z\"></path>\n  <path fill=\"currentColor\" d=\"M17.85,9.81s-.02-.08-.05-.13c-.04-.04-.07-.06-.12-.06h-1.04c-.1,0-.18.05-.24.13l-1.42,2.11-.6-2.02c-.05-.14-.14-.22-.3-.22h-1.01s-.08.02-.12.06c-.04.04-.05.08-.05.13,0,.02.08.29.26.79.18.51.36,1.07.56,1.65.2.6.31.91.31.95-.74,1.01-1.1,1.54-1.1,1.62,0,.12.06.18.18.18h1.04c.1,0,.18-.05.24-.13l3.43-4.95s.02-.05.02-.1h-.01Z\"></path>\n  <path fill=\"currentColor\" d=\"M27.51,9.62h-1.03c-.13,0-.2.14-.23.44-.24-.36-.66-.54-1.28-.54s-1.2.24-1.65.73-.68,1.05-.68,1.71c0,.53.16.96.47,1.27.31.31.73.47,1.24.47.26,0,.53-.06.79-.17.28-.11.48-.25.63-.43,0,0,0,.05-.02.12s-.02.13-.02.16c0,.14.06.22.18.22h.93c.17,0,.28-.08.3-.25l.55-3.52s0-.11-.04-.14c-.04-.05-.08-.07-.13-.07h-.01ZM25.75,12.27c-.23.23-.5.34-.83.34-.26,0-.47-.07-.63-.22-.17-.14-.24-.34-.24-.6,0-.34.11-.61.34-.84s.5-.35.84-.35c.25,0,.45.07.62.23.17.14.25.35.25.61,0,.32-.12.6-.35.83Z\"></path>\n  <path fill=\"currentColor\" d=\"M12.21,9.62h-1.03c-.13,0-.2.14-.23.44-.24-.36-.67-.54-1.28-.54-.65,0-1.2.24-1.65.73s-.68,1.05-.68,1.71c0,.53.16.96.47,1.27.31.31.73.47,1.24.47.25,0,.51-.06.78-.17.28-.11.49-.25.65-.43-.04.11-.06.2-.06.29,0,.14.06.22.18.22h.93c.17,0,.28-.08.3-.25l.55-3.52s0-.11-.04-.14c-.04-.05-.08-.07-.13-.07ZM10.45,12.28c-.23.22-.51.34-.84.34-.26,0-.47-.07-.62-.22s-.24-.34-.24-.6c0-.34.11-.61.34-.84s.5-.35.84-.35c.25,0,.45.07.62.23.17.14.25.35.25.61,0,.34-.12.61-.35.83Z\"></path>\n  <path fill=\"currentColor\" d=\"M22.45,7.99c-.35-.24-.8-.36-1.35-.36h-2.14c-.18,0-.28.08-.3.25l-.87,5.49s0,.11.04.14c.04.05.08.07.13.07h1.1c.11,0,.18-.06.22-.18l.24-1.57c0-.07.04-.13.1-.18s.12-.07.2-.08c.08-.01.16-.02.23-.02s.16,0,.25.01c.1,0,.17.01.19.01.78,0,1.38-.22,1.82-.66.44-.43.66-1.04.66-1.81,0-.53-.17-.91-.51-1.15v.02ZM21.07,10.21c-.19.13-.49.2-.89.2h-.43l.23-1.42c.01-.1.07-.14.18-.14h.24c.2,0,.36,0,.47.02.12.02.23.07.34.17s.17.23.17.41c0,.38-.1.63-.3.77Z\"></path>\n  <path fill=\"currentColor\" d=\"M29.93,21.8H2.07c-1.08,0-1.95-.87-1.95-1.95V2.02C.12.95.99.07,2.07.07h27.86c1.08,0,1.95.87,1.95,1.95v17.83c0,1.08-.87,1.95-1.95,1.95ZM2.07.63c-.77,0-1.39.62-1.39,1.39v17.83c0,.77.62,1.4,1.39,1.4h27.86c.77,0,1.39-.62,1.39-1.4V2.02c0-.77-.62-1.39-1.39-1.39H2.07Z\"></path>\n</svg>\n<svg class=\"payment-icons\" data-name=\"Amazon Pay Icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"36px\" height=\"36px\" viewBox=\"0 0 32 21.9\" alt=\"Amazon Pay Icon\">\n  <path fill=\"currentColor\" d=\"M29.93,21.79H2.07c-1.08,0-1.95-.87-1.95-1.95V2.02C.12.95.99.07,2.07.07h27.86c1.08,0,1.95.87,1.95,1.95v17.83c0,1.08-.87,1.95-1.95,1.95h0ZM2.07.63c-.77,0-1.39.62-1.39,1.39v17.83c0,.77.62,1.39,1.39,1.39h27.86c.77,0,1.39-.62,1.39-1.39V2.02c0-.77-.62-1.39-1.39-1.39H2.07Z\"></path>\n  <g>\n    <path fill=\"currentColor\" d=\"M20.31,14.68c-.06,0-.12.01-.18.05-.07.02-.13.06-.19.08l-.1.04-.12.05c-1.3.53-2.67.84-3.92.86h-.13c-1.99,0-3.6-.92-5.24-1.83-.06-.02-.11-.05-.17-.05-.07,0-.14.02-.2.08-.06.05-.1.13-.08.2,0,.1.05.19.13.25,1.53,1.34,3.22,2.57,5.48,2.57h.13c1.44-.04,3.06-.53,4.33-1.32h0c.17-.11.34-.22.49-.34.1-.07.17-.18.17-.3-.02-.2-.19-.35-.38-.35h-.01Z\"></path>\n    <path fill=\"currentColor\" d=\"M22.06,13.95c0-.13-.04-.23-.08-.3h0v-.02c-.05-.06-.11-.08-.16-.11-.17-.06-.41-.1-.69-.1-.2,0-.44.02-.67.07h0l-.23.06h0l-.13.05h0c-.16.07-.3.14-.43.24-.08.06-.14.14-.16.26,0,.07.04.14.1.19s.12.06.18.06h.06c.11-.02.28-.04.48-.07.17-.02.35-.04.5-.04.11,0,.2,0,.28.02.04,0,.06.01.07.02h0v.07c0,.13-.05.36-.13.6-.07.23-.16.47-.22.62-.01.04-.02.07-.02.12,0,.06.02.13.07.19.05.05.12.07.18.07h0c.08,0,.16-.04.23-.08.59-.53.79-1.38.8-1.85v-.07h-.02Z\"></path>\n    <path fill=\"currentColor\" d=\"M16.65,8.25c-.35.02-.74.05-1.15.11-.61.08-1.23.19-1.74.43-.99.41-1.65,1.26-1.65,2.51,0,1.58,1.02,2.38,2.3,2.38.43,0,.78-.05,1.09-.13.51-.16.93-.45,1.45-.99.3.41.37.59.89,1.02.13.05.28.05.37-.02.32-.28.89-.74,1.17-1.02.13-.11.11-.28.02-.41-.3-.37-.59-.69-.59-1.42v-2.41c0-1.02.08-1.95-.67-2.64-.61-.56-1.58-.78-2.33-.78h-.32c-1.36.08-2.81.67-3.12,2.36-.05.22.11.3.22.32l1.5.19c.16-.02.24-.16.26-.3.13-.59.61-.89,1.15-.93h.11c.32,0,.67.13.86.41.22.32.19.74.19,1.12v.22h0ZM16.35,11.43c-.19.37-.5.61-.86.69-.05,0-.13.02-.22.02-.59,0-.93-.45-.93-1.12,0-.86.5-1.26,1.15-1.45.35-.08.74-.11,1.15-.11v.32c0,.61.02,1.09-.3,1.63h.01Z\"></path>\n  </g>\n</svg>   \n\n\n\n  </div>\n\n<style>\n.seals-gap {\n    display: inline-flex;\n    gap: 8px;\n    flex-direction: row;\n    width: 100%;\n}\n</style>"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_DiwTH6",
+                "payment_icons_Vebez4",
+                "custom_liquid_eQTG3T"
+              ]
+            },
+            "group_7kyctn": {
+              "type": "group",
+              "name": "t:names.group",
+              "disabled": true,
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-end",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-end",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_PLb6HF": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "disabled": true,
+                  "settings": {
+                    "text": "<h5>Selos de Segurança</h5>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "custom_liquid_Gy3W6D": {
+                  "type": "custom-liquid",
+                  "name": "t:names.custom_liquid",
+                  "settings": {
+                    "custom_liquid": "<h5 class=\"seals_title\">Selos de Segurança</h5>       \n\n <div class=\"security_seals\">\n              <a target=\"_blank\" rel=\"noopener\" style=\"margin-right: 10px;\" aria-describedby=\"a11y-new-window-message\" href=\"https://www.sslshopper.com/ssl-checker.html#hostname={{ section.settings.selo1 }}\"><img src=\"https://cdn.shopify.com/s/files/1/0655/0696/7773/files/NORTON_78d3ff43-b4eb-484f-85e8-96b0867ac3b8.png?v=1664489038\" class=\"norton-logo\"></a>\n              <a href=\"{{ section.settings.selo2 }}\"><img src=\"https://cdn.shopify.com/s/files/1/0553/4197/3570/files/RECLAME_AQUI_LOGO_BRANCO.png?v=1666211226\" class=\"reclameaqui-logo\"></a>\n              <a target=\"_blank\" rel=\"noopener\" style=\"margin-left: 10px;\" aria-describedby=\"a11y-new-window-message\" href=\"https://transparencyreport.google.com/safe-browsing/search?url={{ section.settings.selo3 }}\"><img src=\"https://cdn.shopify.com/s/files/1/0655/0696/7773/files/GOOGLE_73b9a7c5-655e-40de-addf-bc03cb338c0a.png?v=1664489038\" class=\"google-logo\"></a>\n              </div>\n\n<style>\n.seals_title {\ntext-align: right;\nmargin-bottom: 8px;\n}\n.security_seals {\n    display: inline-flex;\n    align-items: center;\n    justify-content: flex-end;\n}\n\n            .reclameaqui-logo {\n              margin: 0 8px 0 8px;\n              height: 22px;\n              max-width: max-content;\n            }\n\n            .google-logo {\n              height: 32px;\n              max-width: max-content;\n            }\n\n            .norton-logo {\n              height: 32px;\n              max-width: max-content;\n            }\n\n\n           .selos-align {\n              display: flex;\n              flex-direction: row;\n              align-items: center;\n            }\n\n @media (max-width: 640px){\n.seals_title {\nmargin-bottom: 8px;\ntext-align: left;\n}\n             .selos-align {\n               display: flex;\n               flex-direction: row;\n               justify-content: space-between;\n               align-items: center;\n             }\n              \n             .reclameaqui-logo {\n               margin: 6px 15px 0 15px;\n               height: 18px;\n               max-width: max-content;\n             }\n\n             .google-logo {\n               height: 32px;\n               max-width: max-content;\n             }\n\n             .norton-logo {\n               height: 32px;\n               max-width: max-content;\n             }\n\n.security_seals {\n--horizontal-alignment: flex-start !important;\n    display: inline-flex;\n    align-items: left;\n    justify-content: left;\n}\n    div.group-block.group-block--height-fit.group-block--width-fill.border-style.spacing-style.size-style > div.group-block-content.layout-panel-flex.layout-panel-flex--row.mobile-column {\nmargin-top: 16px;\n      --horizontal-alignment: flex-start !important;\n    }\n            }\n</style>"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_PLb6HF",
+                "custom_liquid_Gy3W6D"
+              ]
+            }
+          },
+          "block_order": [
+            "group_MgPw87",
+            "group_7kyctn"
+          ]
+        },
+        "footer_utilities_m8NfFf": {
+          "type": "footer-utilities",
+          "name": "t:names.footer_utilities",
+          "settings": {
+            "divider_thickness": 0,
+            "padding-block-start": 12,
+            "padding-block-end": 0
+          },
+          "blocks": {
+            "copyright": {
+              "type": "_footer-copyright",
+              "static": true,
+              "settings": {
+                "font_size": "0.625rem",
+                "case": "none"
+              },
+              "blocks": {}
+            },
+            "policy_list": {
+              "type": "_footer-policy-list",
+              "disabled": true,
+              "static": true,
+              "settings": {
+                "font_size": "0.75rem",
+                "case": "none"
+              },
+              "blocks": {}
+            },
+            "social_icons": {
+              "type": "_footer-social-icons",
+              "static": true,
+              "settings": {},
+              "blocks": {
+                "social_link_6fJmNx": {
+                  "type": "_social-link",
+                  "name": "Facebook",
+                  "settings": {
+                    "link": "https://www.facebook.com/shopify"
+                  },
+                  "blocks": {}
+                },
+                "social_link_WHV3Dw": {
+                  "type": "_social-link",
+                  "name": "Instagram ",
+                  "settings": {
+                    "link": "https://www.instagram.com/shopify/#"
+                  },
+                  "blocks": {}
+                },
+                "social_link_kdnPa8": {
+                  "type": "_social-link",
+                  "name": "TikTok",
+                  "settings": {
+                    "link": "https://www.tiktok.com/@shopify"
+                  },
+                  "blocks": {}
+                },
+                "social_link_n4HzMz": {
+                  "type": "_social-link",
+                  "name": "X / Twitter",
+                  "settings": {
+                    "link": "https://x.com/shopify"
+                  },
+                  "blocks": {}
+                },
+                "social_link_C93YFA": {
+                  "type": "_social-link",
+                  "name": "YouTube",
+                  "settings": {
+                    "link": "https://www.youtube.com/shopify"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "social_link_6fJmNx",
+                "social_link_WHV3Dw",
+                "social_link_kdnPa8",
+                "social_link_n4HzMz",
+                "social_link_C93YFA"
+              ]
+            }
+          },
+          "block_order": []
+        }
+      },
+      "block_order": [
+        "group_xYCrWi",
+        "group_9xFHeQ",
+        "footer_utilities_m8NfFf"
+      ],
+      "name": "Footer",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 48,
+        "section_width": "page-width",
+        "section_height": "",
+        "color_scheme": "scheme-5",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    }
+  },
+  "order": [
+    "divider_wC4Lbn",
+    "footer"
+  ]
+}

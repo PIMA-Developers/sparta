@@ -1,0 +1,203 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header_announcements_8AxUkF": {
+      "type": "header-announcements",
+      "blocks": {
+        "announcement_rDKnyz": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Frete Grátis na região de Rio de Janeiro",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "announcement_VpzLLb": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Frete Grátis na região de Rio de Janeiro",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "announcement_rDKnyz",
+        "announcement_VpzLLb"
+      ],
+      "disabled": true,
+      "name": "t:names.announcement_bar",
+      "settings": {
+        "speed": 5,
+        "section_width": "page-width",
+        "color_scheme": "scheme-2",
+        "divider_width": 0,
+        "padding-block-start": 15,
+        "padding-block-end": 15
+      }
+    },
+    "1771293409ea6d6ac5": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_7f769e3_xXKkYY": {
+          "type": "ai_gen_block_7f769e3",
+          "settings": {
+            "logo_1": "shopify://shop_images/logo-horizontal-preto_c6a83430-0bac-427c-ba46-b7d7b09f216c.png",
+            "logo_link_1": "",
+            "logo_2": "shopify://shop_images/logo-horizontal-preto_c6a83430-0bac-427c-ba46-b7d7b09f216c.png",
+            "logo_link_2": "",
+            "logo_link_3": "",
+            "logo_height": 20,
+            "logos_gap": 15,
+            "placeholder_bg_color": "#f5f5f5",
+            "menu": "top-menu",
+            "menu_font_size": 14,
+            "menu_font_weight": "400",
+            "menu_text_transform": "none",
+            "menu_text_color": "#000000",
+            "menu_hover_color": "#666666",
+            "menu_gap": 15,
+            "show_separators": true,
+            "separator_height": 16,
+            "separator_color": "#cccccc",
+            "max_width": 1600,
+            "padding_vertical": 15,
+            "padding_horizontal": 10,
+            "background_color": "#f5f5f5"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_7f769e3_xXKkYY"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "header_section": {
+      "type": "header",
+      "blocks": {
+        "header-logo": {
+          "type": "_header-logo",
+          "static": true,
+          "settings": {
+            "hide_logo_on_home_page": false,
+            "custom_height": 32,
+            "custom_height_mobile": 26,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "header-menu": {
+          "type": "_header-menu",
+          "static": true,
+          "settings": {
+            "menu": "top-menu-lan-amento-24-10-25",
+            "menu_style": "text",
+            "featured_products_aspect_ratio": "4 / 5",
+            "featured_collections_aspect_ratio": "16 / 9",
+            "image_border_radius": 4,
+            "product_title_case": "default",
+            "collection_title_case": "default",
+            "color_scheme": "",
+            "menu_font_style": "regular",
+            "type_font_primary_link": "body",
+            "type_font_primary_size": "1rem",
+            "type_case_primary_link": "none",
+            "type_font_secondary_link": "body",
+            "type_case_secondary_link": "none",
+            "type_font_tertiary_link": "body",
+            "type_case_tertiary_link": "none",
+            "navigation_bar": false,
+            "color_scheme_navigation_bar": "",
+            "drawer_accordion": true,
+            "drawer_accordion_expand_first": false,
+            "drawer_dividers": true
+          },
+          "blocks": {}
+        }
+      },
+      "settings": {
+        "logo_position": "left",
+        "menu_position": "center",
+        "menu_row": "top",
+        "show_search": true,
+        "search_position": "right",
+        "search_row": "top",
+        "show_country": false,
+        "country_selector_style": false,
+        "show_language": false,
+        "localization_position": "right",
+        "localization_row": "top",
+        "section_width": "full-width",
+        "section_height": "standard",
+        "enable_sticky_header": "always",
+        "divider_width": 0,
+        "divider_size": "page-width",
+        "border_width": 0,
+        "color_scheme_top": "scheme-1",
+        "color_scheme_bottom": "",
+        "color_scheme_transparent": "scheme-6",
+        "enable_transparent_header_home": true,
+        "home_color_scheme": "inverse",
+        "enable_transparent_header_product": false,
+        "product_color_scheme": "default",
+        "enable_transparent_header_collection": false,
+        "collection_color_scheme": "inverse"
+      }
+    }
+  },
+  "order": [
+    "header_announcements_8AxUkF",
+    "1771293409ea6d6ac5",
+    "header_section"
+  ]
+}

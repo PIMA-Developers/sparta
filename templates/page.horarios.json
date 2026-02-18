@@ -1,0 +1,439 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "17591695531e25e58b": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4b631dd_dLVick": {
+          "type": "ai_gen_block_4b631dd",
+          "settings": {
+            "titulo": "Horários das Aulas",
+            "title_size": 32,
+            "mostrar_legenda": true,
+            "mostrar_filtros": true,
+            "background_color": "#ffffff",
+            "text_color": "#000000",
+            "accent_color": "#000000",
+            "border_radius": 8,
+            "aula_1_dia": "segunda",
+            "aula_1_horario": "07:00 - 08:00",
+            "aula_1_nome": "Nome da Aula",
+            "aula_1_nivel": "iniciante",
+            "aula_1_professor": "Nome do Professor",
+            "aula_2_dia": "segunda",
+            "aula_2_horario": "13:00 - 13:30",
+            "aula_2_nome": "Nome da Aula",
+            "aula_2_nivel": "intermediario",
+            "aula_2_professor": "",
+            "aula_3_dia": "terca",
+            "aula_3_horario": "",
+            "aula_3_nome": "",
+            "aula_3_nivel": "kids",
+            "aula_3_professor": "",
+            "aula_4_dia": "quarta",
+            "aula_4_horario": "",
+            "aula_4_nome": "",
+            "aula_4_nivel": "avancado",
+            "aula_4_professor": "",
+            "aula_5_dia": "quinta",
+            "aula_5_horario": "",
+            "aula_5_nome": "",
+            "aula_5_nivel": "intermediario",
+            "aula_5_professor": "",
+            "aula_6_dia": "sexta",
+            "aula_6_horario": "",
+            "aula_6_nome": "",
+            "aula_6_nivel": "avancado",
+            "aula_6_professor": "",
+            "aula_7_dia": "sabado",
+            "aula_7_horario": "",
+            "aula_7_nome": "",
+            "aula_7_nivel": "open-mat",
+            "aula_7_professor": "",
+            "aula_8_dia": "segunda",
+            "aula_8_horario": "",
+            "aula_8_nome": "",
+            "aula_8_nivel": "intermediario",
+            "aula_8_professor": "",
+            "aula_9_dia": "terca",
+            "aula_9_horario": "",
+            "aula_9_nome": "",
+            "aula_9_nivel": "iniciante",
+            "aula_9_professor": "",
+            "aula_10_dia": "sabado",
+            "aula_10_horario": "",
+            "aula_10_nome": "",
+            "aula_10_nivel": "iniciante",
+            "aula_10_professor": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4b631dd_dLVick"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "slideshow_3WbgjR": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_Pjjj8z": {
+          "type": "_slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/FELDSC03922.png",
+            "mobile_banner_alt": "",
+            "video_1": "shopify://files/videos/4932001_Taekwondo_Sport_3840x2160.mp4",
+            "custom_loading_settings": true,
+            "fetchpriority": "high",
+            "lazyloading": "lazy",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": true,
+            "overlay_color": "#00000070",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_CKd9hG": {
+              "type": "group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 100,
+                "width_mobile": "custom",
+                "custom_width_mobile": 100,
+                "height": "fill",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-6",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 48,
+                "padding-block-end": 48,
+                "padding-inline-start": 48,
+                "padding-inline-end": 48
+              },
+              "blocks": {
+                "text_ddT6qd": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>SPRT Escola de Artes Marciais</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_AtGPmU": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<h1></h1><h1>Treine na sua<br/>melhor rotina</h1><h5><br/><strong>Mais de 100 aulas semanais em um ambiente que inspira disciplina e pertencimento.</strong></h5>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "button_fhLD3U": {
+                  "type": "button",
+                  "settings": {
+                    "label": "Escolha seu melhor horário",
+                    "link": "https://evo-totem.w12app.com.br/sparta/1/page/landing-page/agenda",
+                    "open_in_new_tab": false,
+                    "style_class": "button-secondary",
+                    "width": "fit-content",
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100,
+                    "custom_button_style": true,
+                    "custom_bg_color": "#f5f5f538",
+                    "custom_text_color": "#ffffff",
+                    "enable_custom_padding": true,
+                    "padding_top": 12,
+                    "padding_bottom": 12,
+                    "padding_left": 24,
+                    "padding_right": 24,
+                    "enable_auto_margin": false,
+                    "enable_glass_mode": true,
+                    "glass_blur_amount": 10,
+                    "text_alignment": "center",
+                    "enable_arrow_icon": true,
+                    "border_radius": 4,
+                    "enable_border": false,
+                    "border_width": 1,
+                    "border_color": "#000000",
+                    "border_style": "solid",
+                    "enable_custom_id": true,
+                    "custom_button_id": "conheca-sparta"
+                  },
+                  "blocks": {}
+                },
+                "popup_link_wJfHGV": {
+                  "type": "popup-link",
+                  "name": "t:names.popup_link",
+                  "settings": {
+                    "behavior": "default",
+                    "enable_iframe_mode": true,
+                    "iframe_url": "https://www.spartarj.com.br/sparta/1/site/QhXXzoY7OMy%5BPLUS%5DFpULG15Wrw%5BEQUAL%5D%5BEQUAL%5D",
+                    "iframe_title": "Conteúdo incorporado",
+                    "mobile_behavior": "adaptive",
+                    "heading": "Ver planos",
+                    "type_preset": "",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_ddT6qd",
+                "text_AtGPmU",
+                "button_fhLD3U",
+                "popup_link_wJfHGV"
+              ]
+            }
+          },
+          "block_order": [
+            "group_CKd9hG"
+          ]
+        }
+      },
+      "block_order": [
+        "slide_Pjjj8z"
+      ],
+      "name": "t:names.slideshow",
+      "settings": {
+        "enable_mobile_banner": true,
+        "enable_custom_vh": false,
+        "custom_vh": 100,
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "color_scheme": "",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_width": "full-width",
+        "slide_height": "large",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "section_dNAQ8W": {
+      "type": "section",
+      "disabled": true,
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "section_Ktbifq": {
+      "type": "section",
+      "disabled": true,
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "17591695531e25e58b",
+    "main",
+    "slideshow_3WbgjR",
+    "section_dNAQ8W",
+    "section_Ktbifq"
+  ]
+}

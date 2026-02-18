@@ -1,0 +1,93 @@
+{% comment %}
+  Snippet de Parcelamento
+  Baseado no padrão do tema Virá Cosméticos
+
+  Parâmetros:
+  - price: preço do produto em centavos (obrigatório)
+  - context: contexto de exibição (pdp, plp, cart) - padrão: 'pdp'
+{% endcomment %}
+
+{% liquid
+  assign price = price | default: 0
+  assign context = context | default: 'pdp'
+
+  # Verificar se o parcelamento está habilitado nas configurações
+  assign show_installments = false
+  if settings.enable_installments and price > 0
+    assign show_installments = true
+  endif
+%}
+
+{% if show_installments %}
+  {% liquid
+    # Validação de preço mínimo já feita acima
+
+    # Obter configurações de parcelamento
+    assign max_installments = settings.max_installments | default: 6
+    assign min_installment_value_str = settings.min_installment_value | default: '50.00'
+    assign min_installment_value = min_installment_value_str | replace: ',', '.' | times: 100 | round
+
+    # Calcular valor da parcela com o máximo de parcelas
+    assign installment_value = price | divided_by: max_installments
+
+    # Verificar se a parcela atende ao valor mínimo
+    if installment_value >= min_installment_value
+      assign installments_count = max_installments
+      assign installment_amount = installment_value
+    else
+      # Calcular quantas parcelas são possíveis com o valor mínimo
+      assign possible_installments = price | divided_by: min_installment_value
+
+      if possible_installments >= 2
+        assign installments_count = possible_installments | floor
+        assign installment_amount = price | divided_by: installments_count
+      else
+        # Não exibir parcelamento se não atende aos critérios
+        assign show_installments = false
+      endif
+    endif
+  %}
+
+  {% if show_installments %}
+    {% comment %} Renderização HTML {% endcomment %}
+    <div class="installments installments--{{ context }}">
+      {% case context %}
+        {% when 'plp' %}
+          <span class="installments__text">
+            ou {{ installments_count }}x de {{ installment_amount | money }} sem juros
+          </span>
+        {% when 'cart' %}
+          <span class="installments__text">
+            ou {{ installments_count }}x de {{ installment_amount | money }} sem juros
+          </span>
+        {% else %}
+          <span class="installments__text">
+            ou {{ installments_count }}x de {{ installment_amount | money }} sem juros
+          </span>
+      {% endcase %}
+    </div>
+
+    {% comment %} CSS básico {% endcomment %}
+    <style>
+      .installments {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--color-foreground-75, rgba(var(--color-foreground), 0.75));
+      }
+
+      .installments__text {
+        font-weight: 400;
+      }
+
+      .installments--cart {
+        font-size: 0.8125rem;
+        text-align: right;
+        margin-top: -0.25rem;
+      }
+
+      .installments--plp {
+        font-size: 0.8125rem;
+      }
+    </style>
+  {% endif %}
+{% endif %}

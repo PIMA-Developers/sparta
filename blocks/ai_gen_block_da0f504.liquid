@@ -1,0 +1,675 @@
+{% doc %}
+  @prompt
+    Crie um novo arquivo de seção Liquid chamado champions-hover-grid.liquid com foco total em responsividade e personalização via editor de tema.
+    
+    O objetivo desta seção é exibir até 6 perfis de campeões em uma grade horizontal no desktop, que se transforma em uma pilha vertical no mobile.
+    
+    Requisitos de Estrutura da Seção:
+    Configuração de Seção: Inclua um campo de texto para o Título Principal da seção.
+    
+    Blocos (Blocks): A seção deve usar blocos repetíveis (máximo de 6), nomeados "Perfil do Campeão".
+    
+    Campos de Bloco: Cada bloco deve ser personalizável com:
+    
+    Imagem do Campeão (image_picker).
+    
+    Nome do Campeão (text).
+    
+    Descrição Curta/Biografia (textarea). Esta é a descrição que aparece na interação.
+    
+    Link Opcional (url) para o perfil completo.
+    
+    Requisitos de Layout e Interação (CSS e Liquid):
+    1. Desktop (Largura ≥ 750px):
+    Layout: Exibir os 6 blocos em uma única linha horizontal, ocupando larguras iguais (uma grade de 6 colunas).
+    
+    Efeito Inicial (Repouso): A imagem deve ter uma sobreposição escura forte (overlay) para criar um efeito dramático. Apenas o Nome do Campeão deve estar visível, posicionado na parte inferior. A Descrição Curta deve estar oculta.
+    
+    Efeito Hover (Mouse): Ao passar o mouse, a sobreposição escura deve diminuir drasticamente ou desaparecer, clareando a imagem. A Descrição Curta deve aparecer suavemente (transição) logo abaixo do nome.
+    
+    2. Mobile (Largura < 750px):
+    Layout: Os blocos devem ser reorganizados em uma pilha vertical, ocupando 100% da largura cada.
+    
+    Conteúdo Visível: O efeito hover é desativado. A Descrição Curta (biografia) deve estar sempre visível no fluxo de conteúdo, posicionada abaixo da imagem (fora da sobreposição, se houver).
+    
+    Imagem: A imagem deve aparecer mais clara, sem a sobreposição escura que é usada no estado de repouso do desktop.
+    
+    A implementação deve usar Media Queries (principalmente max-width: 749px) para gerenciar as mudanças de layout e visibilidade da descrição. Utilize CSS Transitions para garantir que os efeitos d, Quero que a section toda tenha full width.
+    Quero que tanto o nome do campeão quanto a descrição, estejam centralizadas.
+    Não quero efeito de sombra nos elementos., Quero que você tire a opção de links.
+    Na versão mobile, a imagem precisa ter o tamanho em formato portrait. 
+    Na versão mobile, o nome do campeão e a descrição do campeão precisa estar sempre visível.
+{% enddoc %}
+{% style %}
+  .champions-hover-grid {
+    width: 100%;
+    padding: 40px 0;
+  }
+
+  .champions-hover-grid__container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .champions-hover-grid__title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+  }
+
+  .champions-hover-grid__grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    width: 100%;
+  }
+
+  .champions-hover-grid__item {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .champions-hover-grid__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+  }
+
+  .champions-hover-grid__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .champions-hover-grid__name {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .champions-hover-grid__description {
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .champions-hover-grid__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  .champions-hover-grid__placeholder svg {
+    width: 60px;
+    height: 60px;
+    opacity: 0.3;
+  }
+
+  .champions-hover-grid__placeholder-text {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    width: 90%;
+  }
+
+  /* Desktop hover effects */
+  @media (min-width: 750px) {
+    .champions-hover-grid__item:hover .champions-hover-grid__overlay {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .champions-hover-grid__item:hover .champions-hover-grid__description {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .champions-hover-grid__mobile-content {
+      display: none;
+    }
+  }
+
+  /* Mobile styles */
+  @media (max-width: 749px) {
+    .champions-hover-grid__container {
+      padding: 0 20px;
+    }
+
+    .champions-hover-grid__grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .champions-hover-grid__item {
+      aspect-ratio: auto;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .champions-hover-grid__image-wrapper {
+      aspect-ratio: 3/4;
+      width: 100%;
+      max-width: 300px;
+      overflow: hidden;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .champions-hover-grid__overlay {
+      display: none;
+    }
+
+    .champions-hover-grid__mobile-content {
+      display: block;
+      text-align: center;
+      width: 100%;
+    }
+
+    .champions-hover-grid__mobile-name {
+      color: rgb(var(--color-foreground));
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .champions-hover-grid__mobile-description {
+      color: rgb(var(--color-foreground));
+      font-size: 1rem;
+      line-height: 1.5;
+      opacity: 0.8;
+      text-align: center;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .champions-hover-grid__placeholder {
+      aspect-ratio: 3/4;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+  }
+
+  /* Tablet adjustments */
+  @media (max-width: 1024px) and (min-width: 750px) {
+    .champions-hover-grid__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 900px) and (min-width: 750px) {
+    .champions-hover-grid__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+{% endstyle %}
+
+<div class="champions-hover-grid color-{{ block.settings.color_scheme }}" {{ block.shopify_attributes }}>
+  <div class="champions-hover-grid__container">
+    {% if block.settings.title != blank %}
+      <h2 class="champions-hover-grid__title">{{ block.settings.title }}</h2>
+    {% endif %}
+
+    <div class="champions-hover-grid__grid">
+      {% if block.settings.champion_1_image != blank or block.settings.champion_1_name != blank %}
+        <div class="champions-hover-grid__item">
+          <div class="champions-hover-grid__image-wrapper">
+            {% if block.settings.champion_1_image != blank %}
+              <img
+                src="{{ block.settings.champion_1_image | image_url: width: 400 }}"
+                alt="{{ block.settings.champion_1_image.alt | default: block.settings.champion_1_name | escape }}"
+                class="champions-hover-grid__image"
+                loading="lazy"
+                width="400"
+                height="533"
+              >
+            {% else %}
+              <div class="champions-hover-grid__placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+                <div class="champions-hover-grid__placeholder-text">
+                  Adicione uma imagem do campeão
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="champions-hover-grid__overlay">
+              {% if block.settings.champion_1_name != blank %}
+                <h3 class="champions-hover-grid__name">{{ block.settings.champion_1_name }}</h3>
+              {% endif %}
+              
+              {% if block.settings.champion_1_description != blank %}
+                <p class="champions-hover-grid__description">{{ block.settings.champion_1_description }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="champions-hover-grid__mobile-content">
+            {% if block.settings.champion_1_name != blank %}
+              <h3 class="champions-hover-grid__mobile-name">{{ block.settings.champion_1_name }}</h3>
+            {% endif %}
+            
+            {% if block.settings.champion_1_description != blank %}
+              <p class="champions-hover-grid__mobile-description">{{ block.settings.champion_1_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.champion_2_image != blank or block.settings.champion_2_name != blank %}
+        <div class="champions-hover-grid__item">
+          <div class="champions-hover-grid__image-wrapper">
+            {% if block.settings.champion_2_image != blank %}
+              <img
+                src="{{ block.settings.champion_2_image | image_url: width: 400 }}"
+                alt="{{ block.settings.champion_2_image.alt | default: block.settings.champion_2_name | escape }}"
+                class="champions-hover-grid__image"
+                loading="lazy"
+                width="400"
+                height="533"
+              >
+            {% else %}
+              <div class="champions-hover-grid__placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+                <div class="champions-hover-grid__placeholder-text">
+                  Adicione uma imagem do campeão
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="champions-hover-grid__overlay">
+              {% if block.settings.champion_2_name != blank %}
+                <h3 class="champions-hover-grid__name">{{ block.settings.champion_2_name }}</h3>
+              {% endif %}
+              
+              {% if block.settings.champion_2_description != blank %}
+                <p class="champions-hover-grid__description">{{ block.settings.champion_2_description }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="champions-hover-grid__mobile-content">
+            {% if block.settings.champion_2_name != blank %}
+              <h3 class="champions-hover-grid__mobile-name">{{ block.settings.champion_2_name }}</h3>
+            {% endif %}
+            
+            {% if block.settings.champion_2_description != blank %}
+              <p class="champions-hover-grid__mobile-description">{{ block.settings.champion_2_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.champion_3_image != blank or block.settings.champion_3_name != blank %}
+        <div class="champions-hover-grid__item">
+          <div class="champions-hover-grid__image-wrapper">
+            {% if block.settings.champion_3_image != blank %}
+              <img
+                src="{{ block.settings.champion_3_image | image_url: width: 400 }}"
+                alt="{{ block.settings.champion_3_image.alt | default: block.settings.champion_3_name | escape }}"
+                class="champions-hover-grid__image"
+                loading="lazy"
+                width="400"
+                height="533"
+              >
+            {% else %}
+              <div class="champions-hover-grid__placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+                <div class="champions-hover-grid__placeholder-text">
+                  Adicione uma imagem do campeão
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="champions-hover-grid__overlay">
+              {% if block.settings.champion_3_name != blank %}
+                <h3 class="champions-hover-grid__name">{{ block.settings.champion_3_name }}</h3>
+              {% endif %}
+              
+              {% if block.settings.champion_3_description != blank %}
+                <p class="champions-hover-grid__description">{{ block.settings.champion_3_description }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="champions-hover-grid__mobile-content">
+            {% if block.settings.champion_3_name != blank %}
+              <h3 class="champions-hover-grid__mobile-name">{{ block.settings.champion_3_name }}</h3>
+            {% endif %}
+            
+            {% if block.settings.champion_3_description != blank %}
+              <p class="champions-hover-grid__mobile-description">{{ block.settings.champion_3_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.champion_4_image != blank or block.settings.champion_4_name != blank %}
+        <div class="champions-hover-grid__item">
+          <div class="champions-hover-grid__image-wrapper">
+            {% if block.settings.champion_4_image != blank %}
+              <img
+                src="{{ block.settings.champion_4_image | image_url: width: 400 }}"
+                alt="{{ block.settings.champion_4_image.alt | default: block.settings.champion_4_name | escape }}"
+                class="champions-hover-grid__image"
+                loading="lazy"
+                width="400"
+                height="533"
+              >
+            {% else %}
+              <div class="champions-hover-grid__placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+                <div class="champions-hover-grid__placeholder-text">
+                  Adicione uma imagem do campeão
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="champions-hover-grid__overlay">
+              {% if block.settings.champion_4_name != blank %}
+                <h3 class="champions-hover-grid__name">{{ block.settings.champion_4_name }}</h3>
+              {% endif %}
+              
+              {% if block.settings.champion_4_description != blank %}
+                <p class="champions-hover-grid__description">{{ block.settings.champion_4_description }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="champions-hover-grid__mobile-content">
+            {% if block.settings.champion_4_name != blank %}
+              <h3 class="champions-hover-grid__mobile-name">{{ block.settings.champion_4_name }}</h3>
+            {% endif %}
+            
+            {% if block.settings.champion_4_description != blank %}
+              <p class="champions-hover-grid__mobile-description">{{ block.settings.champion_4_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.champion_5_image != blank or block.settings.champion_5_name != blank %}
+        <div class="champions-hover-grid__item">
+          <div class="champions-hover-grid__image-wrapper">
+            {% if block.settings.champion_5_image != blank %}
+              <img
+                src="{{ block.settings.champion_5_image | image_url: width: 400 }}"
+                alt="{{ block.settings.champion_5_image.alt | default: block.settings.champion_5_name | escape }}"
+                class="champions-hover-grid__image"
+                loading="lazy"
+                width="400"
+                height="533"
+              >
+            {% else %}
+              <div class="champions-hover-grid__placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+                <div class="champions-hover-grid__placeholder-text">
+                  Adicione uma imagem do campeão
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="champions-hover-grid__overlay">
+              {% if block.settings.champion_5_name != blank %}
+                <h3 class="champions-hover-grid__name">{{ block.settings.champion_5_name }}</h3>
+              {% endif %}
+              
+              {% if block.settings.champion_5_description != blank %}
+                <p class="champions-hover-grid__description">{{ block.settings.champion_5_description }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="champions-hover-grid__mobile-content">
+            {% if block.settings.champion_5_name != blank %}
+              <h3 class="champions-hover-grid__mobile-name">{{ block.settings.champion_5_name }}</h3>
+            {% endif %}
+            
+            {% if block.settings.champion_5_description != blank %}
+              <p class="champions-hover-grid__mobile-description">{{ block.settings.champion_5_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.champion_6_image != blank or block.settings.champion_6_name != blank %}
+        <div class="champions-hover-grid__item">
+          <div class="champions-hover-grid__image-wrapper">
+            {% if block.settings.champion_6_image != blank %}
+              <img
+                src="{{ block.settings.champion_6_image | image_url: width: 400 }}"
+                alt="{{ block.settings.champion_6_image.alt | default: block.settings.champion_6_name | escape }}"
+                class="champions-hover-grid__image"
+                loading="lazy"
+                width="400"
+                height="533"
+              >
+            {% else %}
+              <div class="champions-hover-grid__placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+                <div class="champions-hover-grid__placeholder-text">
+                  Adicione uma imagem do campeão
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="champions-hover-grid__overlay">
+              {% if block.settings.champion_6_name != blank %}
+                <h3 class="champions-hover-grid__name">{{ block.settings.champion_6_name }}</h3>
+              {% endif %}
+              
+              {% if block.settings.champion_6_description != blank %}
+                <p class="champions-hover-grid__description">{{ block.settings.champion_6_description }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="champions-hover-grid__mobile-content">
+            {% if block.settings.champion_6_name != blank %}
+              <h3 class="champions-hover-grid__mobile-name">{{ block.settings.champion_6_name }}</h3>
+            {% endif %}
+            
+            {% if block.settings.champion_6_description != blank %}
+              <p class="champions-hover-grid__mobile-description">{{ block.settings.champion_6_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Grade de Campeões",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Configurações gerais"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título da seção",
+      "default": "Nossos Campeões"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de cores",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Campeão 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "champion_1_image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "champion_1_name",
+      "label": "Nome",
+      "default": "Campeão 1"
+    },
+    {
+      "type": "textarea",
+      "id": "champion_1_description",
+      "label": "Descrição/Biografia",
+      "default": "Breve descrição sobre o campeão e suas conquistas."
+    },
+    {
+      "type": "header",
+      "content": "Campeão 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "champion_2_image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "champion_2_name",
+      "label": "Nome",
+      "default": "Campeão 2"
+    },
+    {
+      "type": "textarea",
+      "id": "champion_2_description",
+      "label": "Descrição/Biografia",
+      "default": "Breve descrição sobre o campeão e suas conquistas."
+    },
+    {
+      "type": "header",
+      "content": "Campeão 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "champion_3_image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "champion_3_name",
+      "label": "Nome",
+      "default": "Campeão 3"
+    },
+    {
+      "type": "textarea",
+      "id": "champion_3_description",
+      "label": "Descrição/Biografia",
+      "default": "Breve descrição sobre o campeão e suas conquistas."
+    },
+    {
+      "type": "header",
+      "content": "Campeão 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "champion_4_image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "champion_4_name",
+      "label": "Nome",
+      "default": "Campeão 4"
+    },
+    {
+      "type": "textarea",
+      "id": "champion_4_description",
+      "label": "Descrição/Biografia",
+      "default": "Breve descrição sobre o campeão e suas conquistas."
+    },
+    {
+      "type": "header",
+      "content": "Campeão 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "champion_5_image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "champion_5_name",
+      "label": "Nome",
+      "default": "Campeão 5"
+    },
+    {
+      "type": "textarea",
+      "id": "champion_5_description",
+      "label": "Descrição/Biografia",
+      "default": "Breve descrição sobre o campeão e suas conquistas."
+    },
+    {
+      "type": "header",
+      "content": "Campeão 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "champion_6_image",
+      "label": "Imagem"
+    },
+    {
+      "type": "text",
+      "id": "champion_6_name",
+      "label": "Nome",
+      "default": "Campeão 6"
+    },
+    {
+      "type": "textarea",
+      "id": "champion_6_description",
+      "label": "Descrição/Biografia",
+      "default": "Breve descrição sobre o campeão e suas conquistas."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grade de Campeões"
+    }
+  ]
+}
+{% endschema %}

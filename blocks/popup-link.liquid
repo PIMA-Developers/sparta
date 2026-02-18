@@ -1,0 +1,728 @@
+
+
+<script
+  src="{{ 'dialog.js' | asset_url }}"
+  type="module"
+></script>
+
+<dialog-component
+  class="popup-link"
+  {{ block.shopify_attributes }}
+>
+  <button
+    on:click="/showDialog"
+    class="button button-unstyled popup-link__button text-left spacing-style {{ block.settings.type_preset }}"
+    style="{% render 'spacing-style', settings: block.settings %}"
+  >
+    {{- block.settings.heading }}
+    {{- 'icon-external.svg' | inline_asset_content -}}
+  </button>
+
+  <dialog
+    ref="dialog"
+    class="popup-link__content dialog-modal color-{{ settings.popover_color_scheme }}{% if block.settings.behavior == 'drawer' %} popup-link__content--drawer dialog-drawer{% endif %}{% if block.settings.enable_iframe_mode %} popup-link__content--iframe popup-link__content--{{ block.settings.mobile_behavior | default: 'adaptive' }}{% endif %}"
+    scroll-lock
+  >
+    <div class="popup-link__inner{% if block.settings.enable_iframe_mode %} popup-link__inner--iframe{% endif %}">
+      {% if block.settings.enable_iframe_mode and block.settings.iframe_url != blank %}
+        <div class="popup-link__iframe-container">
+          <iframe 
+            src="{{ block.settings.iframe_url }}" 
+            width="100%" 
+            height="100%" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            loading="lazy"
+            title="{{ block.settings.iframe_title | default: 'Conteúdo incorporado' }}"
+          ></iframe>
+        </div>
+      {% else %}
+        {% content_for 'blocks' %}
+      {% endif %}
+    </div>
+    <button
+      ref="closeButton"
+      on:click="/closeDialog"
+      class="button popup-link__close"
+      aria-label="{{ 'accessibility.close_dialog' | t }}"
+    >
+      {{- 'icon-close.svg' | inline_asset_content -}}
+    </button>
+  </dialog>
+</dialog-component>
+
+{% stylesheet %}
+  .popup-link__button svg {
+    display: inline-block;
+    position: relative;
+    top: var(--margin-2xs);
+  }
+
+  .popup-link__content {
+    box-shadow: var(--shadow-popover);
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    padding: var(--padding-4xl) var(--padding-xl) var(--padding-xl);
+    max-width: var(--normal-content-width);
+    max-height: var(--modal-max-height);
+
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-5xl);
+    }
+  }
+
+  /* Configurações específicas para modo iframe */
+  .popup-link__content--iframe {
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    
+    /* Desktop */
+    @media screen and (min-width: 1025px) {
+      max-width: 1200px;
+      width: 90vw;
+      max-height: 90vh;
+      height: auto;
+    }
+    
+    /* Tablet landscape */
+    @media screen and (min-width: 750px) and (max-width: 1024px) and (orientation: landscape) {
+      max-width: 95vw;
+      width: 95vw;
+      max-height: 85vh;
+      height: auto;
+    }
+    
+    /* Tablet portrait */
+    @media screen and (min-width: 750px) and (max-width: 1024px) and (orientation: portrait) {
+      max-width: 90vw;
+      width: 90vw;
+      height: auto;
+      max-height: 85vh;
+    }
+  }
+
+  /* Comportamento Adaptativo (padrão) */
+  .popup-link__content--adaptive {
+    /* Mobile landscape - ocupar toda a tela */
+    @media screen and (max-width: 749px) and (orientation: landscape) {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      margin: 0;
+    }
+    
+    /* Mobile portrait - bottom sheet style */
+    @media screen and (max-width: 749px) and (orientation: portrait) {
+      max-width: 100vw;
+      max-height: 85vh;
+      width: 100vw;
+      height: auto;
+      border-radius: 16px 16px 0 0;
+      margin: 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      animation: slideUpFromBottom 0.3s ease-out;
+    }
+  }
+
+  /* Comportamento Tela Cheia */
+  .popup-link__content--fullscreen {
+    @media screen and (max-width: 749px) {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      margin: 0;
+    }
+  }
+
+  /* Comportamento Bottom Sheet */
+  .popup-link__content--bottom_sheet {
+    @media screen and (max-width: 749px) {
+      max-width: 100vw;
+      max-height: 80vh;
+      width: 100vw;
+      height: auto;
+      border-radius: 20px 20px 0 0;
+      margin: 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      animation: slideUpFromBottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+
+  /* Ajustes gerais para mobile */
+  .popup-link__content--iframe {
+    /* Reset inicial para evitar conflitos */
+    .popup-link__content--iframe {
+      aspect-ratio: unset !important;
+      padding-bottom: 0 !important;
+      height: auto !important;
+      position: relative !important;
+      width: 100% !important;
+      background-color: #000 !important;
+      border-radius: 8px !important;
+      overflow: hidden !important;
+      
+      /* Desktop - Padrão */
+      height: 80vh !important;
+      max-height: 600px !important;
+      min-height: 400px !important;
+    }
+  
+    /* Desktop - Telas grandes */
+    @media (min-width: 1200px) {
+      .popup-link__content--iframe {
+        height: 70vh !important;
+        max-height: 700px !important;
+        min-height: 500px !important;
+      }
+    }
+  
+    /* Tablet Landscape */
+    @media (max-width: 1199px) and (min-width: 768px) and (orientation: landscape) {
+      .popup-link__content--iframe {
+        height: 75vh !important;
+        max-height: 500px !important;
+        min-height: 350px !important;
+      }
+    }
+  
+    /* Tablet Portrait */
+    @media (max-width: 1199px) and (min-width: 768px) and (orientation: portrait) {
+      .popup-link__content--iframe {
+        height: 60vh !important;
+        max-height: 600px !important;
+        min-height: 400px !important;
+      }
+    }
+  
+    /* Mobile Landscape */
+    @media (max-width: 767px) and (orientation: landscape) {
+      .popup-link__content--iframe {
+        height: 85vh !important;
+        max-height: 400px !important;
+        min-height: 250px !important;
+      }
+    }
+  
+    /* Mobile Portrait */
+    @media (max-width: 767px) and (orientation: portrait) {
+      .popup-link__content--iframe {
+        height: 70vh !important;
+        max-height: 600px !important;
+        min-height: 400px !important;
+      }
+    }
+  
+    /* Telas muito pequenas */
+    @media (max-width: 480px) {
+      .popup-link__content--iframe {
+        height: 75vh !important;
+        max-height: 500px !important;
+        min-height: 350px !important;
+        border-radius: 4px !important;
+      }
+    }
+  
+    /* Telas com altura muito baixa */
+    @media (max-height: 600px) {
+      .popup-link__content--iframe {
+        height: 90vh !important;
+        max-height: none !important;
+        min-height: 300px !important;
+        border-radius: 0 !important;
+      }
+    }
+  
+    /* Telas com altura muito alta */
+    @media (min-height: 900px) {
+      .popup-link__content--iframe {
+        height: 60vh !important;
+        max-height: 800px !important;
+        min-height: 500px !important;
+      }
+    }
+  
+    /* Comportamentos específicos para mobile */
+    
+    /* Modo Tela Cheia */
+    .popup-link__content--fullscreen {
+      height: 95vh !important;
+      max-height: none !important;
+      min-height: none !important;
+      border-radius: 0 !important;
+    }
+  
+    @media (max-width: 767px) {
+      .popup-link__content--fullscreen {
+        height: 100vh !important;
+        width: 100vw !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+      }
+    }
+  
+    /* Modo Bottom Sheet */
+    .popup-link__content--bottom-sheet {
+      border-radius: 16px 16px 0 0 !important;
+      height: 80vh !important;
+      max-height: 600px !important;
+      min-height: 400px !important;
+    }
+  
+    @media (max-width: 767px) {
+      .popup-link__content--bottom-sheet {
+        height: 85vh !important;
+        max-height: none !important;
+        border-radius: 20px 20px 0 0 !important;
+        animation: slideUp 0.3s ease-out !important;
+      }
+    }
+  
+    /* Iframe dentro do container */
+    .popup-link__content--iframe iframe {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      border: none !important;
+      background-color: #000 !important;
+      object-fit: contain !important;
+    }
+  
+    /* Animação para bottom sheet */
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%) !important;
+        opacity: 0 !important;
+      }
+      to {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+      }
+    }
+
+  /* Telas muito pequenas */
+  @media (max-width: 360px) {
+    .popup-link__content--iframe {
+      border-radius: 0 !important;
+    }
+  }
+  
+  /* Telas com altura muito baixa */
+  @media (max-height: 500px) {
+    .popup-link__content--iframe {
+      height: 100vh !important;
+      max-height: 100vh !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+    }
+  }
+  
+  /* Telas muito altas - limitar altura */
+  @media screen and (min-height: 1000px) {
+    .popup-link__content--iframe {
+      max-height: 80vh !important;
+    }
+  }
+
+  .popup-link__inner--iframe {
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  /* Ajustes no botão de fechar para modo iframe */
+  .popup-link__content--iframe .popup-link__close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .popup-link__content--iframe .popup-link__close {
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  .popup-link__content--iframe .popup-link__close:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+  }
+  
+  /* Modo escuro */
+  @media (prefers-color-scheme: dark) {
+    .popup-link__content--iframe .popup-link__close {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    
+    .popup-link__content--iframe .popup-link__close:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  .popup-link__content--iframe .popup-link__close svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .popup-link__content--iframe .popup-link__close svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  }
+
+  .popup-link__content[open] {
+    animation: modalSlideInTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .popup-link__content.dialog-closing {
+    animation: modalSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  /* Animações específicas para iframe */
+  .popup-link__content--iframe[open] {
+    animation: iframeModalFadeIn 0.4s ease-out forwards;
+  }
+
+  .popup-link__content--iframe.dialog-closing {
+    animation: iframeModalFadeOut 0.3s ease-in forwards;
+  }
+
+  @keyframes iframeModalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes iframeModalFadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  }
+
+  .popup-link__content--drawer {
+    position: fixed;
+    border-radius: 0;
+    width: var(--sidebar-width);
+    max-width: 95vw;
+    height: 100%;
+    margin: 0 0 0 auto;
+  }
+
+  /* Needed to ensure the drawer is full height */
+  .popup-link__content--drawer:modal {
+    max-height: 100dvh;
+  }
+
+  .popup-link__close {
+    position: absolute;
+    top: var(--margin-2xs);
+    right: var(--margin-2xs);
+    width: var(--minimum-touch-target);
+    height: var(--minimum-touch-target);
+    color: var(--color-foreground);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .popup-link__close {
+    background-color: transparent;
+    opacity: 0.8;
+  }
+
+  .popup-link__close svg {
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+  }
+
+  /* Prevenção de scroll quando popup iframe está aberto */
+  body:has(.popup-link__content--iframe[open]) {
+    overflow: hidden;
+    
+    @media screen and (max-width: 749px) {
+      position: fixed;
+      width: 100%;
+    }
+  }
+
+  .popup-link__iframe-container {
+    height: 100%;
+  }
+
+  /* Suporte para modo escuro */
+  @media (prefers-color-scheme: dark) {
+    .popup-link__iframe-container {
+      background-color: #1a1a1a;
+    }
+  }
+
+  /* Otimizações de performance */
+  .popup-link__iframe-container iframe {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Acessibilidade - foco visível */
+  .popup-link__close:focus-visible {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.popup_link",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.popup"
+    },
+    {
+      "type": "select",
+      "id": "behavior",
+      "label": "t:settings.behavior",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:options.default"
+        },
+        {
+          "value": "drawer",
+          "label": "t:options.drawer"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "header",
+      "content": "Configurações de Iframe"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_iframe_mode",
+      "label": "Habilitar Modo Iframe",
+      "default": false,
+      "info": "Ativa o modo iframe responsivo com diferentes aspect ratios por dispositivo"
+    },
+    {
+      "type": "url",
+      "id": "iframe_url",
+      "label": "URL do Iframe",
+      "info": "Cole aqui a URL que será exibida no iframe",
+      "visible_if": "{{ block.settings.enable_iframe_mode }}"
+    },
+    {
+      "type": "text",
+      "id": "iframe_title",
+      "label": "Título do Iframe",
+      "default": "Conteúdo incorporado",
+      "info": "Título para acessibilidade",
+      "visible_if": "{{ block.settings.enable_iframe_mode }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_behavior",
+      "label": "Comportamento no Mobile",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "Adaptativo (Recomendado)"
+        },
+        {
+          "value": "fullscreen",
+          "label": "Tela Cheia"
+        },
+        {
+          "value": "bottom_sheet",
+          "label": "Bottom Sheet"
+        }
+      ],
+      "default": "adaptive",
+      "info": "Como o iframe se comporta em dispositivos móveis",
+      "visible_if": "{{ block.settings.enable_iframe_mode }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.link"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.text",
+      "default": "t:text_defaults.popup_link"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        }
+      ],
+      "default": "",
+      "info": "t:info.edit_presets_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "t:content.link_padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.popup_link",
+      "category": "t:categories.links",
+      "settings": {
+        "heading": "Learn more"
+      },
+      "blocks": {
+        "text_pexwUk": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>What is the return policy?</h2>",
+            "alignment": "left",
+            "padding-block-end": 16
+          }
+        },
+        "text_g7mEh7": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our goal is for every customer to be totally satisfied with their purchase. If this isn't the case, let us know and we'll do our best to work with you to make it right.</p>",
+            "alignment": "left"
+          }
+        }
+      },
+      "block_order": ["text_pexwUk", "text_g7mEh7"]
+    },
+    {
+      "name": "Popup Iframe Sparta",
+      "category": "t:categories.links",
+      "settings": {
+        "heading": "Ver Sparta",
+        "enable_iframe_mode": true,
+        "iframe_url": "https://www.spartarj.com.br/sparta/1/site/QhXXzoY7OMy%5BPLUS%5DFpULG15Wrw%5BEQUAL%5D%5BEQUAL%5D",
+        "iframe_title": "Sparta Escola de Artes Marciais"
+      }
+    }
+  ]
+}
+{% endschema %}

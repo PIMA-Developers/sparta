@@ -1,0 +1,536 @@
+{% doc %}
+  @prompt
+    Quero que seja possível adicionar um texto personalizável atrás do vídeo com opacidade personalizável também. O texto acompanhará o mouse, quando o usuário ver esta section, como se fosse um overlay. O texto também poderá receber efeito de blur quando o usuário descer a página saindo da section., Você pode acrescentar poder adicionar o vídeo da galeria do shopify de forma direta?, Adicione personalização de border radius ao vídeo, Adicione mais personalização no texto. Deixe como rich text.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-overlay-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.video_height }}vh;
+    overflow: hidden;
+    background-color: #000;
+    border-radius: {{ block.settings.video_border_radius }}px;
+  }
+
+  .ai-video-overlay-video-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 1;border-radius: {{ block.settings.video_border_radius }}px;
+  }
+
+  .ai-video-overlay-text-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+    font-size: {{ block.settings.text_size }}px;
+    font-weight: {{ block.settings.text_weight }};
+    color: {{ block.settings.text_color }};
+    opacity: {{ block.settings.text_opacity | divided_by: 100.0 }};
+    white-space: nowrap;
+    transition: filter0.3s ease;
+    transform: translate(-50%, -50%);
+    user-select: none;
+    text-align: {{ block.settings.text_alignment }};
+    text-transform: {{ block.settings.text_transform }};
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    line-height: {{ block.settings.line_height }};
+    text-shadow: {{ block.settings.text_shadow_x }}px {{ block.settings.text_shadow_y }}px {{ block.settings.text_shadow_blur }}px {{ block.settings.text_shadow_color }};
+    background-color: {{ block.settings.text_background_color }};
+    padding: {{ block.settings.text_padding_vertical }}px {{ block.settings.text_padding_horizontal }}px;
+    border-radius: {{ block.settings.text_border_radius }}px;
+    border: {{ block.settings.text_border_width }}px solid {{ block.settings.text_border_color }};
+    backdrop-filter: blur({{ block.settings.backdrop_blur }}px);
+    -webkit-backdrop-filter: blur({{ block.settings.backdrop_blur }}px);
+  }
+
+  .ai-video-overlay-text-{{ ai_gen_id }} * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-video-overlay-text-{{ ai_gen_id }} p {
+    margin-bottom: 0.5em;
+  }
+
+  .ai-video-overlay-text-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-video-overlay-text-{{ ai_gen_id }}.blurred {
+    filter: blur({{ block.settings.blur_amount }}px);
+  }
+
+  .ai-video-overlay-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border-radius: {{ block.settings.video_border_radius }}px;
+  }
+
+  .ai-video-overlay-placeholder-{{ ai_gen_id }} svg {
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
+  }
+
+  .ai-video-overlay-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-video-overlay-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.7 }}px;
+      padding: {{ block.settings.text_padding_vertical | times: 0.7 }}px {{ block.settings.text_padding_horizontal | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<video-mouse-overlay-{{ ai_gen_id }}
+  class="ai-video-overlay-container-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% liquid
+    assign has_video = false
+    if block.settings.video_file != blank
+      assign has_video = true
+      assign video_source = block.settings.video_file
+    elsif block.settings.video_url != blank
+      assign has_video = true
+      assign video_source = block.settings.video_url
+    endif
+  %}
+
+  {% if has_video %}
+    <video
+      class="ai-video-overlay-video-{{ ai_gen_id }}"
+      autoplay
+      muted
+      loop
+      playsinline
+      {% if block.settings.video_poster %}
+        poster="{{ block.settings.video_poster | image_url: width: 1920}}"
+      {% endif %}>
+      {% if block.settings.video_file != blank %}
+        <source src="{{ block.settings.video_file.sources[1].url }}" type="{{ block.settings.video_file.sources[1].mime_type }}"><source src="{{ block.settings.video_file.sources[0].url }}" type="{{ block.settings.video_file.sources[0].mime_type }}">
+      {% else %}
+        <source src="{{ block.settings.video_url }}" type="video/mp4">
+      {% endif %}
+      Seu navegador não suporta vídeos HTML5.
+    </video>
+  {% else %}
+    <div class="ai-video-overlay-placeholder-{{ ai_gen_id }}">
+      {{ 'hero-apparel-1' | placeholder_svg_tag }}<div class="ai-video-overlay-empty-state-{{ ai_gen_id }}">
+        Adicione um vídeo para começar
+      </div>
+    </div>
+  {% endif %}
+
+  {% if block.settings.overlay_text != blank %}
+    <div
+      class="ai-video-overlay-text-{{ ai_gen_id }}"
+      data-text="{{ block.settings.overlay_text | strip_html | escape }}"
+    >
+      {{ block.settings.overlay_text }}
+    </div>
+  {% endif %}
+</video-mouse-overlay-{{ ai_gen_id }}><script>
+  (function() {
+    class VideoMouseOverlay{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.textElement = null;
+        this.isInView = false;
+        this.observer = null;
+      }
+
+      connectedCallback() {
+        this.textElement = this.querySelector('.ai-video-overlay-text-{{ ai_gen_id }}');
+        
+        if (this.textElement) {
+          this.setupMouseTracking();
+          this.setupScrollObserver();
+        }
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();}
+        document.removeEventListener('mousemove', this.handleMouseMove);
+      }
+
+      setupMouseTracking() {
+        this.handleMouseMove = (event) => {
+          if (this.textElement && this.isInView) {
+            const rect = this.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            this.textElement.style.left = x + 'px';
+            this.textElement.style.top = y + 'px';
+          }
+        };
+
+        document.addEventListener('mousemove', this.handleMouseMove);
+      }
+
+      setupScrollObserver() {
+        this.observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              this.isInView = entry.isIntersecting;
+              
+              if (this.textElement) {
+                if (entry.isIntersecting) {
+                  this.textElement.classList.remove('blurred');
+                } else {
+                  this.textElement.classList.add('blurred');
+                }
+              }
+            });
+          },
+          {
+            threshold: 0.1,rootMargin: '0px'
+          }
+        );
+
+        this.observer.observe(this);
+      }
+    }
+
+    customElements.define('video-mouse-overlay-{{ ai_gen_id }}', VideoMouseOverlay{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vídeo com texto overlay",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Vídeo"
+    },
+    {
+      "type": "video",
+      "id": "video_file",
+      "label": "Vídeo da galeria"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "URL do vídeo externo",
+      "info": "Usado apenas se nenhum vídeo da galeria for selecionado"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Imagem de capa do vídeo"
+    },
+    {
+      "type": "range",
+      "id": "video_height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Altura do vídeo",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "video_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius do vídeo",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Texto overlay"
+    },
+    {
+      "type": "richtext",
+      "id": "overlay_text",
+      "label": "Texto do overlay",
+      "default": "<p>Texto que segue o mouse</p>"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 16,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamanho do texto",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Peso da fonte",
+      "options": [
+        {
+          "value": "300",
+          "label": "Leve"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Médio"
+        },
+        {
+          "value": "600",
+          "label": "Semi-negrito"
+        },
+        {
+          "value": "700",
+          "label": "Negrito"
+        },
+        {
+          "value": "800",
+          "label": "Extra negrito"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alinhamento do texto",
+      "options": [
+        {
+          "value": "left",
+          "label": "Esquerda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "right",
+          "label": "Direita"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Transformação do texto",
+      "options": [
+        {
+          "value": "none",
+          "label": "Normal"
+        },
+        {
+          "value": "uppercase",
+          "label": "Maiúsculo"
+        },
+        {
+          "value": "lowercase",
+          "label": "Minúsculo"
+        },
+        {
+          "value": "capitalize",
+          "label": "Primeira letra maiúscula"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": -2,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Espaçamento entre letras",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "min": 1,
+      "max": 3,
+      "step": 0.1,
+      "label": "Altura da linha",
+      "default": 1.2
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Cor do texto",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "text_opacity",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacidade do texto",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Fundo do texto"
+    },
+    {
+      "type": "color",
+      "id": "text_background_color",
+      "label": "Cor de fundo",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "text_padding_horizontal",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding horizontal",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_padding_vertical",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding vertical",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "text_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius do fundo",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "text_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Largura da borda",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "text_border_color",
+      "label": "Cor da borda",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "backdrop_blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Blur do fundo",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Sombra do texto"
+    },
+    {
+      "type": "range",
+      "id": "text_shadow_x",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Sombra horizontal",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "text_shadow_y",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Sombra vertical",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "text_shadow_blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Blur da sombra",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "text_shadow_color",
+      "label": "Cor da sombra",
+      "default": "rgba(0,0,0,0.5)"
+    },
+    {
+      "type": "header",
+      "content": "Efeito blur"
+    },
+    {
+      "type": "range",
+      "id": "blur_amount",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Intensidade do blur",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vídeo com texto overlay"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

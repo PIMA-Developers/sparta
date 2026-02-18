@@ -1,0 +1,1474 @@
+{% doc %}
+  @prompt
+    Quero uma section que contenha imagens espalhadas dentro da section. Cada uma contendo uma animação leve se movimentando constantemente. Quero que seja possível acrescentar até 12 imagens. Quero que seja possível aplicar ou não blur nas imagens, definir aspect radio e tamanho de cada imagem, border radius. Quando a imagem receber a propriedade hover, ela terá uma animação aumentando o tamanho da imagem e retirando o blur, caso tenha sido aplciado.
+    Na versão mobile, quero que seja apresentado como carrossel simples., Quero que seja possível definir o aspect radio de cada imagem. Também tenha uma opção que a imagem já esteja ou não com efeito blur nativo. Quero que acrescente uma sombra bem leve customizável quando a imagem receber a propriedade hover para dar uma sensação de profundidade.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-images-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    min-height: {{ block.settings.section_height }}px;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+
+  .ai-floating-images-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-floating-image-{{ ai_gen_id }} {
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-floating-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-floating-image-{{ ai_gen_id }}:hover {
+    transform: scale({{ block.settings.hover_scale }});
+    box-shadow: {{ block.settings.hover_shadow_x }}px {{ block.settings.hover_shadow_y }}px {{ block.settings.hover_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.hover_shadow_opacity }});
+    z-index: 10;
+  }
+
+  .ai-floating-image-{{ ai_gen_id }}:hover img {
+    filter: blur(0px) !important;
+  }
+
+  .ai-floating-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-floating-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-images-{{ ai_gen_id }} {
+      padding: 20px 0;
+    }
+
+    .ai-floating-images-container-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-floating-carousel-{{ ai_gen_id }} {
+      display: block;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .ai-floating-carousel-track-{{ ai_gen_id }} {
+      display: flex;
+      transition: transform 0.3s ease;
+      gap: 16px;
+      padding: 0 20px;
+    }
+
+    .ai-floating-carousel-slide-{{ ai_gen_id }} {
+      flex: 0 0 auto;
+      border-radius: {{ block.settings.border_radius }}px;
+      overflow: hidden;
+    }
+
+    .ai-floating-carousel-slide-{{ ai_gen_id }} img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: {{ block.settings.border_radius }}px;
+    }
+
+    .ai-floating-carousel-controls-{{ ai_gen_id }} {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .ai-floating-carousel-dot-{{ ai_gen_id }} {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .ai-floating-carousel-dot-{{ ai_gen_id }}.active {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-carousel-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<floating-images-{{ ai_gen_id }}
+  class="ai-floating-images-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-floating-images-container-{{ ai_gen_id }}">
+    {% for i in (1..12) %}
+      {% liquid
+        assign image_key = 'image_' | append: i
+        assign size_key = 'image_' | append: i | append: '_size'
+        assign aspect_key = 'image_' | append: i | append: '_aspect'
+        assign blur_key = 'image_' | append: i | append: '_blur'
+        assign x_key = 'image_' | append: i | append: '_x'
+        assign y_key = 'image_' | append: i | append: '_y'
+
+        assign image = block.settings[image_key]
+        assign size = block.settings[size_key]
+        assign aspect = block.settings[aspect_key]
+        assign blur = block.settings[blur_key]
+        assign x_pos = block.settings[x_key]
+        assign y_pos = block.settings[y_key]
+      %}
+
+      {% if image != blank %}
+        {% liquid
+          case aspect
+            when 'square'
+              assign width = size
+              assign height = size
+            when 'portrait'
+              assign width = size
+              assign height = size | times: 1.4 | round
+            when 'landscape'
+              assign width = size | times: 1.4 | round
+              assign height = size
+          endcase
+        %}
+
+        <div
+          class="ai-floating-image-{{ ai_gen_id }} ai-floating-image-{{ ai_gen_id }}-{{ i }}"
+          style="
+            width: {{ width }}px;
+            height: {{ height }}px;
+            left: {{ x_pos }}%;
+            top: {{ y_pos }}%;
+            transform: translate(-50%, -50%);
+          "
+          data-image-index="{{ i }}"
+        >
+          <img
+            src="{{ image | image_url: width: 400 }}"
+            alt="{{ image.alt | escape }}"
+            loading="lazy"
+            width="{{ width }}"
+            height="{{ height }}"
+            style="filter: blur({{ blur }}px);"
+          >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="ai-floating-carousel-{{ ai_gen_id }}">
+    <div class="ai-floating-carousel-track-{{ ai_gen_id }}">
+      {% for i in (1..12) %}
+        {% liquid
+          assign image_key = 'image_' | append: i
+          assign mobile_size_key = 'image_' | append: i | append: '_mobile_size'
+          assign mobile_aspect_key = 'image_' | append: i | append: '_mobile_aspect'
+          assign blur_key = 'image_' | append: i | append: '_blur'
+
+          assign image = block.settings[image_key]
+          assign mobile_size = block.settings[mobile_size_key]
+          assign mobile_aspect = block.settings[mobile_aspect_key]
+          assign blur = block.settings[blur_key]
+        %}
+
+        {% if image != blank %}
+          {% liquid
+            case mobile_aspect
+              when 'square'
+                assign mobile_width = mobile_size
+                assign mobile_height = mobile_size
+              when 'portrait'
+                assign mobile_width = mobile_size
+                assign mobile_height = mobile_size | times: 1.4 | round
+              when 'landscape'
+                assign mobile_width = mobile_size | times: 1.4 | round
+                assign mobile_height = mobile_size
+            endcase
+          %}
+
+          <div
+            class="ai-floating-carousel-slide-{{ ai_gen_id }}"
+            style="
+              width: {{ mobile_width }}px;
+              height: {{ mobile_height }}px;
+            "
+          >
+            {% if image %}
+              <img
+                src="{{ image | image_url: width: 300 }}"
+                alt="{{ image.alt | escape }}"
+                loading="lazy"
+                width="{{ mobile_width }}"
+                height="{{ mobile_height }}"
+                style="filter: blur({{ blur }}px);"
+              >
+            {% else %}
+              <div class="ai-floating-image-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-floating-carousel-controls-{{ ai_gen_id }}">
+      {% assign visible_images = 0 %}
+      {% for i in (1..12) %}
+        {% liquid
+          assign image_key = 'image_' | append: i
+          assign image = block.settings[image_key]
+        %}
+        {% if image != blank %}
+          {% assign visible_images = visible_images | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+
+      {% for i in (1..visible_images) %}
+        <div class="ai-floating-carousel-dot-{{ ai_gen_id }}" data-slide="{{ forloop.index0 }}"></div>
+      {% endfor %}
+    </div>
+  </div>
+</floating-images-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FloatingImages{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentSlide = 0;
+        this.totalSlides = 0;
+        this.autoplayInterval = null;
+      }
+
+      connectedCallback() {
+        this.initFloatingAnimation();
+        this.initCarousel();
+      }
+
+      initFloatingAnimation() {
+        const images = this.querySelectorAll('.ai-floating-image-{{ ai_gen_id }}');
+        
+        images.forEach((image, index) => {
+          const animationDelay = index * 0.5;
+          const animationDuration = 3 + (index % 3);
+          
+          image.style.animationDelay = `${animationDelay}s`;
+          image.style.animation = `ai-floating-move-${index % 3} ${animationDuration}s ease-in-out infinite alternate`;
+        });
+
+        this.createFloatingKeyframes();
+      }
+
+      createFloatingKeyframes() {
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes ai-floating-move-0 {
+            0% { transform: translate(-50%, -50%) translateY(0px) translateX(0px); }
+            100% { transform: translate(-50%, -50%) translateY(-10px) translateX(5px); }
+          }
+          @keyframes ai-floating-move-1 {
+            0% { transform: translate(-50%, -50%) translateY(0px) translateX(0px); }
+            100% { transform: translate(-50%, -50%) translateY(8px) translateX(-3px); }
+          }
+          @keyframes ai-floating-move-2 {
+            0% { transform: translate(-50%, -50%) translateY(0px) translateX(0px); }
+            100% { transform: translate(-50%, -50%) translateY(-6px) translateX(8px); }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      initCarousel() {
+        const track = this.querySelector('.ai-floating-carousel-track-{{ ai_gen_id }}');
+        const dots = this.querySelectorAll('.ai-floating-carousel-dot-{{ ai_gen_id }}');
+        const slides = this.querySelectorAll('.ai-floating-carousel-slide-{{ ai_gen_id }}');
+        
+        if (!track || dots.length === 0) return;
+
+        this.totalSlides = dots.length;
+        
+        if (this.totalSlides <= 1) return;
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => {
+            this.goToSlide(index);
+          });
+        });
+
+        this.updateCarousel();
+        this.startAutoplay();
+
+        track.addEventListener('touchstart', (e) => {
+          this.touchStartX = e.touches[0].clientX;
+        });
+
+        track.addEventListener('touchend', (e) => {
+          if (!this.touchStartX) return;
+          
+          const touchEndX = e.changedTouches[0].clientX;
+          const diff = this.touchStartX - touchEndX;
+          
+          if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+              this.nextSlide();
+            } else {
+              this.prevSlide();
+            }
+          }
+          
+          this.touchStartX = null;
+        });
+      }
+
+      goToSlide(index) {
+        this.currentSlide = index;
+        this.updateCarousel();
+        this.restartAutoplay();
+      }
+
+      nextSlide() {
+        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+        this.updateCarousel();
+      }
+
+      prevSlide() {
+        this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        this.updateCarousel();
+      }
+
+      updateCarousel() {
+        const track = this.querySelector('.ai-floating-carousel-track-{{ ai_gen_id }}');
+        const dots = this.querySelectorAll('.ai-floating-carousel-dot-{{ ai_gen_id }}');
+        const slides = this.querySelectorAll('.ai-floating-carousel-slide-{{ ai_gen_id }}');
+        
+        if (!track || !slides.length) return;
+
+        const slideWidth = slides[0].offsetWidth + 16;
+        const offset = -this.currentSlide * slideWidth;
+        
+        track.style.transform = `translateX(${offset}px)`;
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === this.currentSlide);
+        });
+      }
+
+      startAutoplay() {
+        if (this.totalSlides <= 1) return;
+        
+        this.autoplayInterval = setInterval(() => {
+          this.nextSlide();
+        }, 4000);
+      }
+
+      restartAutoplay() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+        }
+        this.startAutoplay();
+      }
+
+      disconnectedCallback() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+        }
+      }
+    }
+
+    customElements.define('floating-images-{{ ai_gen_id }}', FloatingImages{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Imagens flutuantes",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout geral"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Altura da seção",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Raio da borda",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Efeito hover"
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "min": 1,
+      "max": 1.5,
+      "step": 0.1,
+      "label": "Escala no hover",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_x",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Sombra X",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_y",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Sombra Y",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Desfoque da sombra",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Opacidade da sombra",
+      "default": 0.2
+    },
+    {
+      "type": "header",
+      "content": "Imagem 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_1_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 150
+    },
+    {
+      "type": "select",
+      "id": "image_1_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_1_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_1_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_1_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "image_1_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "image_1_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_2_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "image_2_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "image_2_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "image_2_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "image_2_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_2_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "image_2_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_3_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 180
+    },
+    {
+      "type": "select",
+      "id": "image_3_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "range",
+      "id": "image_3_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_3_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "image_3_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "image_3_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 140
+    },
+    {
+      "type": "select",
+      "id": "image_3_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_4_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 130
+    },
+    {
+      "type": "select",
+      "id": "image_4_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_4_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "image_4_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "image_4_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "image_4_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 110
+    },
+    {
+      "type": "select",
+      "id": "image_4_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_5_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 160
+    },
+    {
+      "type": "select",
+      "id": "image_5_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "image_5_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "image_5_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "image_5_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 75
+    },
+    {
+      "type": "range",
+      "id": "image_5_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 130
+    },
+    {
+      "type": "select",
+      "id": "image_5_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_6_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 140
+    },
+    {
+      "type": "select",
+      "id": "image_6_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "range",
+      "id": "image_6_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_6_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "image_6_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "image_6_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "image_6_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_7",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_7_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 110
+    },
+    {
+      "type": "select",
+      "id": "image_7_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_7_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "image_7_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "image_7_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "image_7_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "image_7_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_8",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_8_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 170
+    },
+    {
+      "type": "select",
+      "id": "image_8_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "image_8_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "image_8_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "image_8_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_8_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 130
+    },
+    {
+      "type": "select",
+      "id": "image_8_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 9"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_9",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_9_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "image_9_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "range",
+      "id": "image_9_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "image_9_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "image_9_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_9_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "image_9_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 10"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_10",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_10_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 140
+    },
+    {
+      "type": "select",
+      "id": "image_10_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_10_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_10_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 75
+    },
+    {
+      "type": "range",
+      "id": "image_10_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "image_10_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "image_10_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 11"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_11",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_11_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 130
+    },
+    {
+      "type": "select",
+      "id": "image_11_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "image_11_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "image_11_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_11_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "image_11_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 110
+    },
+    {
+      "type": "select",
+      "id": "image_11_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "header",
+      "content": "Imagem 12"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_12",
+      "label": "Imagem"
+    },
+    {
+      "type": "range",
+      "id": "image_12_size",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho",
+      "default": 150
+    },
+    {
+      "type": "select",
+      "id": "image_12_aspect",
+      "label": "Proporção",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "range",
+      "id": "image_12_blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Desfoque inicial",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "image_12_x",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_12_y",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "image_12_mobile_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho mobile",
+      "default": 120
+    },
+    {
+      "type": "select",
+      "id": "image_12_mobile_aspect",
+      "label": "Proporção mobile",
+      "options": [
+        { "value": "square", "label": "Quadrado" },
+        { "value": "portrait", "label": "Retrato" },
+        { "value": "landscape", "label": "Paisagem" }
+      ],
+      "default": "landscape"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Imagens flutuantes"
+    }
+  ]
+}
+{% endschema %}

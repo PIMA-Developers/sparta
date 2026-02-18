@@ -1,0 +1,192 @@
+{% comment %}
+  Product Tag Block - Virá Cosméticos Version
+  Displays custom tags with individual colors from richtext field.
+  Format: Text | Text Color | Background Color
+{% endcomment %}
+
+{%- liquid
+  assign lines = block.settings.tags_richtext | split: '</p>'
+-%}
+
+{% if block.settings.tags_richtext != blank or request.design_mode %}
+  <div class="product-tags-wrapper"
+       style="--tag-gap: {{ block.settings.tag_spacing }}px;
+              --tag-justify-content: {{ block.settings.tag_alignment }};
+              --tag-border-radius: {{ block.settings.tag_border_radius }}px;
+              --tag-padding-vertical: {{ block.settings.tag_padding_vertical }}px;
+              --tag-padding-horizontal: {{ block.settings.tag_padding_horizontal }}px;
+              {% render 'spacing-style', settings: block.settings %}">
+    
+    {% if block.settings.tags_richtext != blank %}
+      {%- for line in lines -%}
+        {%- assign cleaned_line = line | strip_html | strip -%}
+        {%- if cleaned_line != blank -%}
+          {%- assign parts = cleaned_line | split: '|' -%}
+          {%- assign text = parts[0] | strip -%}
+          {%- assign text_color = parts[1] | strip | default: block.settings.default_text_color -%}
+          {%- assign bg_color = parts[2] | strip | default: block.settings.default_bg_color -%}
+
+          <span class="product-tag"
+                style="color: {{ text_color }}; background-color: {{ bg_color }};">
+            {{ text }}
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    {% elsif request.design_mode %}
+      {% comment %} Preview mode placeholder {% endcomment %}
+      <span class="product-tag" style="color: {{ block.settings.default_text_color }}; background-color: {{ block.settings.default_bg_color }};">
+        Sample Tag
+      </span>
+      <span class="product-tag" style="color: #FFFFFF; background-color: #007ACC;">
+        Another Tag
+      </span>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .product-tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tag-gap);
+    justify-content: var(--tag-justify-content);
+  }
+
+  .product-tag {
+    padding: var(--tag-padding-vertical) var(--tag-padding-horizontal);
+    border-radius: var(--tag-border-radius);
+    font-size: 0.875rem;
+    line-height: 1;
+    display: inline-block;
+    font-weight: 500;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Tag",
+  "presets": [
+    {
+      "name": "Product Tag",
+      "category": "Product"
+    }
+  ],
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "tags_richtext",
+      "label": "Tags",
+      "info": "Each line is a tag. Format: Text | Text Color | Background Color"
+    },
+    {
+      "type": "range",
+      "id": "tag_spacing",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Spacing between tags",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "tag_alignment",
+      "label": "Tag alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" },
+        { "value": "space-between", "label": "Space between" },
+        { "value": "space-around", "label": "Space around" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "tag_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag border radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_vertical",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag vertical padding",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tag_padding_horizontal",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag horizontal padding",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "default_text_color",
+      "label": "Default text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "default_bg_color",
+      "label": "Default background color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,313 @@
+
+{% render 'button', link: block.settings.link %}
+
+{% schema %}
+{
+  "name": "t:names.button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:settings.label",
+      "default": "t:text_defaults.button_label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:settings.link"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "t:settings.open_new_tab",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "style_class",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "button",
+          "label": "t:options.primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "t:options.secondary"
+        },
+        {
+          "value": "link",
+          "label": "t:options.link"
+        }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "header",
+      "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width_desktop",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == \"custom\" }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:settings.width_mobile",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == \"custom\" }}"
+    },
+    {
+      "type": "header",
+      "content": "Personalização Avançada"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_button_style",
+      "label": "Custom Button Style",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_bg_color",
+      "label": "Cor de Fundo do Botão",
+      "alpha": true,
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_text_color",
+      "label": "Cor do Texto do Botão",
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_padding",
+      "label": "Habilitar Personalização de Paddings",
+      "default": false,
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 12,
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_custom_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 12,
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_custom_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding Left (px)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_custom_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding Right (px)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_custom_padding }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_auto_margin",
+      "label": "Auto margin top",
+      "info": "Apply automatic top margin to the button",
+      "default": false,
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_glass_mode",
+      "label": "Habilitar Glass Mode",
+      "default": false,
+      "info": "Este efeito só funciona se a cor de fundo do botão tiver algum nível de transparência.",
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "range",
+      "id": "glass_blur_amount",
+      "label": "Intensidade do Blur (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 10,
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_glass_mode }}"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Posicionamento do Texto",
+      "options": [
+        {
+          "value": "left",
+          "label": "Esquerda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "right",
+          "label": "Direita"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_arrow_icon",
+      "label": "Habilitar Ícone de Seta (→)",
+      "default": false,
+      "info": "Quando habilitado, força o texto a ficar alinhado à esquerda.",
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_border",
+      "label": "Enable border",
+      "default": false,
+      "visible_if": "{{ block.settings.custom_button_style }}"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_border }}"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "alpha": true,
+      "default": "#000000",
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_border }}"
+    },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Border style",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "dashed",
+          "label": "Dashed"
+        },
+        {
+          "value": "dotted",
+          "label": "Dotted"
+        }
+      ],
+      "default": "solid",
+      "visible_if": "{{ block.settings.custom_button_style and block.settings.enable_border }}"
+    },
+    {
+      "type": "header",
+      "content": "Configurações de ID"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_id",
+      "label": "Habilitar #id de botão",
+      "default": false,
+      "info": "Permite adicionar um ID personalizado ao botão para uso com CSS ou JavaScript"
+    },
+    {
+      "type": "text",
+      "id": "custom_button_id",
+      "label": "ID do botão",
+      "placeholder": "meu-botao-personalizado",
+      "info": "Digite apenas letras, números e hífens. Não use espaços ou caracteres especiais.",
+      "visible_if": "{{ block.settings.enable_custom_id }}"
+    }
+  ]
+}
+{% endschema %}

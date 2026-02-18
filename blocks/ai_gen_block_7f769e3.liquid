@@ -1,0 +1,412 @@
+{% doc %}
+  @prompt
+    Create a Announcement bar that allows me to add a logo at the left (i need to personalize that logo) and a menu at the right with the menu items separeted by a vertical bar. I need to personalize al the styles atribuits, Preciso poder adicionar até 3 logos lado a lado horizontalmente e atribuir um link personalizado a elas. O menu deve ser com menu picker
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-announcement-bar-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+  }
+
+  .ai-announcement-bar-container-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+
+  .ai-announcement-bar-logos-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.logos_gap }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-announcement-bar-logo-wrapper-{{ ai_gen_id }} {
+    display: block;
+  }
+
+  .ai-announcement-bar-logo-{{ ai_gen_id }} {
+    display: block;
+    height: {{ block.settings.logo_height }}px;
+    width: auto;
+  }
+
+  .ai-announcement-bar-logo-placeholder-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: {{ block.settings.logo_height }}px;
+    width: 100px;
+    background-color: {{ block.settings.placeholder_bg_color }};
+    border-radius: 4px;
+  }
+
+  .ai-announcement-bar-logo-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-announcement-bar-menu-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.menu_gap }}px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-announcement-bar-menu-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.menu_gap }}px;
+  }
+
+  .ai-announcement-bar-menu-link-{{ ai_gen_id }} {
+    color: {{ block.settings.menu_text_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.menu_font_size }}px;
+    font-weight: {{ block.settings.menu_font_weight }};
+    text-transform: {{ block.settings.menu_text_transform }};
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .ai-announcement-bar-menu-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.menu_hover_color }};
+  }
+
+  .ai-announcement-bar-separator-{{ ai_gen_id }} {
+    width: 1px;
+    height: {{ block.settings.separator_height }}px;
+    background-color: {{ block.settings.separator_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-announcement-bar-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ai-announcement-bar-menu-{{ ai_gen_id }} {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+{% endstyle %}
+
+<announcement-bar-{{ ai_gen_id }} class="ai-announcement-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-announcement-bar-container-{{ ai_gen_id }}">
+    <div class="ai-announcement-bar-logos-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        {% liquid
+          assign logo_key = 'logo_' | append: i
+          assign link_key = 'logo_link_' | append: i
+          assign logo = block.settings[logo_key]
+          assign link = block.settings[link_key]
+        %}
+
+        {% if logo %}
+          {% if link != blank %}
+            <a href="{{ link }}" class="ai-announcement-bar-logo-wrapper-{{ ai_gen_id }}">
+              <img
+                src="{{ logo | image_url: height: block.settings.logo_height }}"
+                alt="{{ logo.alt | escape }}"
+                loading="lazy"
+                height="{{ block.settings.logo_height }}"
+                class="ai-announcement-bar-logo-{{ ai_gen_id }}"
+              >
+            </a>
+          {% else %}
+            <div class="ai-announcement-bar-logo-wrapper-{{ ai_gen_id }}">
+              <img
+                src="{{ logo | image_url: height: block.settings.logo_height }}"
+                alt="{{ logo.alt | escape }}"
+                loading="lazy"
+                height="{{ block.settings.logo_height }}"
+                class="ai-announcement-bar-logo-{{ ai_gen_id }}"
+              >
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% if block.settings.logo_1 == blank and block.settings.logo_2 == blank and block.settings.logo_3 == blank %}
+        <div class="ai-announcement-bar-logo-placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if block.settings.menu != blank %}
+      <ul class="ai-announcement-bar-menu-{{ ai_gen_id }}">
+        {% for link in block.settings.menu.links %}
+          <li class="ai-announcement-bar-menu-item-{{ ai_gen_id }}">
+            <a href="{{ link.url }}" class="ai-announcement-bar-menu-link-{{ ai_gen_id }}">
+              {{ link.title }}
+            </a>
+
+            {% if forloop.last == false and block.settings.show_separators %}
+              <div class="ai-announcement-bar-separator-{{ ai_gen_id }}"></div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</announcement-bar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AnnouncementBar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('announcement-bar-{{ ai_gen_id }}', AnnouncementBar{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logos"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_1",
+      "label": "Logo 1"
+    },
+    {
+      "type": "url",
+      "id": "logo_link_1",
+      "label": "Logo 1 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_2",
+      "label": "Logo 2"
+    },
+    {
+      "type": "url",
+      "id": "logo_link_2",
+      "label": "Logo 2 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_3",
+      "label": "Logo 3"
+    },
+    {
+      "type": "url",
+      "id": "logo_link_3",
+      "label": "Logo 3 link"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "logos_gap",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between logos",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "placeholder_bg_color",
+      "label": "Placeholder background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Menu style"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "menu_font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "menu_text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "menu_text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "menu_hover_color",
+      "label": "Hover color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "menu_gap",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between items",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Separator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separators",
+      "label": "Show separators",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "separator_height",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Separator height",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "Separator color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar"
+    }
+  ]
+}
+{% endschema %}

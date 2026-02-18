@@ -1,0 +1,411 @@
+{% doc %}
+  @prompt
+    Quero que seja possível adicionar um vídeo pela própria galeria da shopify, podendo editar a altura, widht, tanto no desktop quanto no mobile. Também quero que seja possível centralizar o vídeo ou orientá-lo para esquerda ou direita.
+    Além de que eu consiga personalizar o css do vídeo, podendo adicionar uma borda, sombra, border-radius, etc...
+    
+    Quando o usuário passar o mouse sobre o vídeo (hover), quero que apareça um texto acompanhando o cursor. O texto deverá receber rich text e deverá ser personalizável. Também quero que possa ativar o efeito negativo do texto.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-block-{{ ai_gen_id }} {
+    width: 100%;
+    display: flex;
+    justify-content: {{ block.settings.alignment }};
+    padding: 20px 0;
+  }
+
+  .ai-video-container-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.width_desktop }}%;
+    max-width: 100%;
+    cursor: {% if block.settings.hover_text != blank %}pointer{% else %}default{% endif %};
+  }
+
+  .ai-video-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.height_desktop }}px;
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    {% if block.settings.border_width > 0 %}
+      border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    {% endif %}
+    {% if block.settings.shadow_enabled %}
+      box-shadow: {{ block.settings.shadow_x }}px {{ block.settings.shadow_y }}px {{ block.settings.shadow_blur }}px {{ block.settings.shadow_color }};
+    {% endif %}
+  }
+
+  .ai-video-element-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-video-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-video-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-video-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .ai-hover-text-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    padding: 8px 12px;
+    background-color: {{ block.settings.hover_text_bg }};
+    color: {{ block.settings.hover_text_color }};
+    border-radius: 4px;
+    font-size: {{ block.settings.hover_text_size }}px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: translate(-50%, -100%);
+    margin-top: -10px;
+    white-space: nowrap;
+    max-width: 300px;
+    {% if block.settings.hover_text_negative %}
+      filter: invert(1);
+    {% endif %}
+  }
+
+  .ai-hover-text-{{ ai_gen_id }}.active {
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-container-{{ ai_gen_id }} {
+      width: {{ block.settings.width_mobile }}%;
+    }
+
+    .ai-video-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.height_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<video-hover-block-{{ ai_gen_id }}
+  class="ai-video-block-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-video-container-{{ ai_gen_id }}">
+    <div class="ai-video-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.video %}
+        <video
+          class="ai-video-element-{{ ai_gen_id }}"
+          {% if block.settings.autoplay %}autoplay{% endif %}
+          {% if block.settings.loop %}loop{% endif %}
+          {% if block.settings.muted %}muted{% endif %}
+          {% if block.settings.controls %}controls{% endif %}
+          playsinline
+        >
+          <source src="{{ block.settings.video }}" type="video/mp4">
+          Seu navegador não suporta vídeos HTML5.
+        </video>
+      {% else %}
+        <div class="ai-video-placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+          <div class="ai-video-empty-state-{{ ai_gen_id }}">
+            Adicione um vídeo
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if block.settings.hover_text != blank %}
+    <div class="ai-hover-text-{{ ai_gen_id }}">
+      {{ block.settings.hover_text }}
+    </div>
+  {% endif %}
+</video-hover-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class VideoHoverBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.videoContainer = this.querySelector('.ai-video-container-{{ ai_gen_id }}');
+        this.hoverText = this.querySelector('.ai-hover-text-{{ ai_gen_id }}');
+        
+        if (this.hoverText && this.videoContainer) {
+          this.setupHoverEvents();
+        }
+      }
+
+      setupHoverEvents() {
+        this.videoContainer.addEventListener('mouseenter', () => {
+          this.hoverText.classList.add('active');
+        });
+
+        this.videoContainer.addEventListener('mouseleave', () => {
+          this.hoverText.classList.remove('active');
+        });
+
+        this.videoContainer.addEventListener('mousemove', (e) => {
+          this.hoverText.style.left = e.clientX + 'px';
+          this.hoverText.style.top = e.clientY + 'px';
+        });
+      }
+    }
+
+    customElements.define('video-hover-block-{{ ai_gen_id }}', VideoHoverBlock{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vídeo personalizado",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Vídeo"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vídeo"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Reprodução automática",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Sem som",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "controls",
+      "label": "Mostrar controles",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alinhamento",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Esquerda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "flex-end",
+          "label": "Direita"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Dimensões desktop"
+    },
+    {
+      "type": "range",
+      "id": "width_desktop",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Largura",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Altura",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Dimensões mobile"
+    },
+    {
+      "type": "range",
+      "id": "width_mobile",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Largura",
+      "default": 95
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Altura",
+      "default": 250
+    },
+    {
+      "type": "header",
+      "content": "Estilo do vídeo"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Espessura da borda",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Cor da borda",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "shadow_enabled",
+      "label": "Ativar sombra",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Sombra horizontal",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "shadow_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Sombra vertical",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Desfoque da sombra",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "shadow_color",
+      "label": "Cor da sombra",
+      "default": "#00000033"
+    },
+    {
+      "type": "header",
+      "content": "Texto no hover"
+    },
+    {
+      "type": "richtext",
+      "id": "hover_text",
+      "label": "Texto do hover"
+    },
+    {
+      "type": "range",
+      "id": "hover_text_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tamanho do texto",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "hover_text_color",
+      "label": "Cor do texto",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "hover_text_bg",
+      "label": "Cor de fundo do texto",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_text_negative",
+      "label": "Efeito negativo",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vídeo personalizado"
+    }
+  ]
+}
+{% endschema %}

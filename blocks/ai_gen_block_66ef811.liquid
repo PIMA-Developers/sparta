@@ -1,0 +1,1112 @@
+{% doc %}
+  @prompt
+    Quero uma section que contenha imagens espalhadas dentro da section. Cada uma contendo uma animação leve se movimentando constantemente. As imagens de trás terão efeitos de blur, mas quando receber a propriedade hover, o blur vai sumir e ela terá um z-index maior, aumentando também o tamanho da imagem.
+    Quero que dê para colocar até 8 imagens.
+    Na versão mobile, quero que seja apresentado como carrossel simples., Quero que seja possível definir o aspect radio de cada imagem. Também tenha uma opção que a imagem já esteja ou não com efeito blur nativo. Quero que acrescente uma sombra bem leve customizável quando a imagem receber a propriedade hover para dar uma sensação de profundidade.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-images-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.section_height }}px;
+    overflow: hidden;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-floating-images-desktop-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-floating-image-{{ ai_gen_id }} {
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  .ai-floating-image-{{ ai_gen_id }}:not(:hover) {
+    filter: blur({{ block.settings.blur_amount }}px);
+  }
+
+  .ai-floating-image-{{ ai_gen_id }}.ai-native-blur-{{ ai_gen_id }}:not(:hover) {
+    filter: blur({{ block.settings.native_blur_amount }}px);
+  }
+
+  .ai-floating-image-{{ ai_gen_id }}:hover {
+    filter: blur(0px);
+    z-index: 10;
+    transform: scale({{ block.settings.hover_scale }});
+    box-shadow: {{ block.settings.hover_shadow_x }}px {{ block.settings.hover_shadow_y }}px {{ block.settings.hover_shadow_blur }}px {{ block.settings.hover_shadow_spread }}px {{ block.settings.hover_shadow_color }};
+  }
+
+  .ai-floating-image-{{ ai_gen_id }} img {
+    width: {{ block.settings.image_size }}px;
+    height: {{ block.settings.image_size }}px;
+    object-fit: cover;
+    border-radius: {{ block.settings.border_radius }}px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-floating-image-placeholder-{{ ai_gen_id }} {
+    width: {{ block.settings.image_size }}px;
+    height: {{ block.settings.image_size }}px;
+    background-color: #f4f4f4;
+    border-radius: {{ block.settings.border_radius }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-floating-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.5;
+  }
+
+  {% for i in (1..8) %}
+    {% liquid
+      assign aspect_key = 'image_' | append: i | append: '_aspect'
+      assign native_blur_key = 'image_' | append: i | append: '_native_blur'
+      assign aspect_ratio = block.settings[aspect_key]
+      assign native_blur = block.settings[native_blur_key]
+    %}
+
+    .ai-floating-image-{{ ai_gen_id }}-{{ i }} img {
+      {% case aspect_ratio %}
+        {% when 'square' %}
+          aspect-ratio: 1 / 1;
+        {% when 'portrait' %}
+          aspect-ratio: 3 / 4;
+        {% when 'landscape' %}
+          aspect-ratio: 4 / 3;
+        {% when 'wide' %}
+          aspect-ratio: 16 / 9;
+        {% else %}
+          aspect-ratio: 1 / 1;
+      {% endcase %}
+    }
+
+    .ai-carousel-slide-{{ ai_gen_id }}-{{ i }} img {
+      {% case aspect_ratio %}
+        {% when 'square' %}
+          aspect-ratio: 1 / 1;
+        {% when 'portrait' %}
+          aspect-ratio: 3 / 4;
+        {% when 'landscape' %}
+          aspect-ratio: 4 / 3;
+        {% when 'wide' %}
+          aspect-ratio: 16 / 9;
+        {% else %}
+          aspect-ratio: 1 / 1;
+      {% endcase %}
+    }
+
+    {% if native_blur %}
+      .ai-floating-image-{{ ai_gen_id }}-{{ i }} {
+        filter: blur({{ block.settings.native_blur_amount }}px);
+      }
+
+      .ai-floating-image-{{ ai_gen_id }}-{{ i }}:hover {
+        filter: blur(0px);
+      }
+    {% endif %}
+  {% endfor %}
+
+  .ai-floating-images-mobile-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-carousel-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ai-carousel-track-{{ ai_gen_id }} {
+    display: flex;
+    transition: transform 0.3s ease;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .ai-carousel-slide-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    width: {{ block.settings.mobile_image_size }}px;
+  }
+
+  .ai-carousel-slide-{{ ai_gen_id }} img {
+    width: {{ block.settings.mobile_image_size }}px;
+    height: {{ block.settings.mobile_image_size }}px;
+    object-fit: cover;
+    border-radius: {{ block.settings.border_radius }}px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-carousel-slide-placeholder-{{ ai_gen_id }} {
+    width: {{ block.settings.mobile_image_size }}px;
+    height: {{ block.settings.mobile_image_size }}px;
+    background-color: #f4f4f4;
+    border-radius: {{ block.settings.border_radius }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-carousel-slide-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.5;
+  }
+
+  .ai-carousel-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-carousel-nav-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .ai-carousel-nav-prev-{{ ai_gen_id }} {
+    left: 10px;
+  }
+
+  .ai-carousel-nav-next-{{ ai_gen_id }} {
+    right: 10px;
+  }
+
+  @keyframes ai-float-{{ ai_gen_id }} {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .ai-floating-image-{{ ai_gen_id }}.ai-animate-{{ ai_gen_id }} {
+    animation: ai-float-{{ ai_gen_id }} {{ block.settings.animation_duration }}s ease-in-out infinite;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-images-desktop-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-floating-images-mobile-{{ ai_gen_id }} {
+      display: block;
+    }
+
+    .ai-floating-images-{{ ai_gen_id }} {
+      height: auto;
+      min-height: {{ block.settings.mobile_section_height }}px;
+    }
+  }
+{% endstyle %}
+
+<floating-images-{{ ai_gen_id }}
+  class="ai-floating-images-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-floating-images-desktop-{{ ai_gen_id }}">
+    {% for i in (1..8) %}
+      {% liquid
+        assign image_key = 'image_' | append: i
+        assign x_key = 'image_' | append: i | append: '_x'
+        assign y_key = 'image_' | append: i | append: '_y'
+        assign delay_key = 'image_' | append: i | append: '_delay'
+        assign native_blur_key = 'image_' | append: i | append: '_native_blur'
+        
+        assign image = block.settings[image_key]
+        assign x_pos = block.settings[x_key]
+        assign y_pos = block.settings[y_key]
+        assign delay = block.settings[delay_key]
+        assign native_blur = block.settings[native_blur_key]
+      %}
+
+      {% if image != blank %}
+        <div
+          class="ai-floating-image-{{ ai_gen_id }} ai-floating-image-{{ ai_gen_id }}-{{ i }} ai-animate-{{ ai_gen_id }}{% if native_blur %} ai-native-blur-{{ ai_gen_id }}{% endif %}"
+          style="
+            left: {{ x_pos }}%;
+            top: {{ y_pos }}%;
+            animation-delay: {{ delay }}s;
+          "
+          data-image-index="{{ i }}"
+        >
+          <img
+            src="{{ image | image_url: width: 400 }}"
+            alt="{{ image.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_size }}"
+            height="{{ block.settings.image_size }}"
+          >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="ai-floating-images-mobile-{{ ai_gen_id }}">
+    <div class="ai-carousel-container-{{ ai_gen_id }}">
+      <div class="ai-carousel-track-{{ ai_gen_id }}" data-track>
+        {% for i in (1..8) %}
+          {% liquid
+            assign image_key = 'image_' | append: i
+            assign image = block.settings[image_key]
+          %}
+
+          {% if image != blank %}
+            <div class="ai-carousel-slide-{{ ai_gen_id }} ai-carousel-slide-{{ ai_gen_id }}-{{ i }}">
+              <img
+                src="{{ image | image_url: width: 300 }}"
+                alt="{{ image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.mobile_image_size }}"
+                height="{{ block.settings.mobile_image_size }}"
+              >
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <button
+        class="ai-carousel-nav-{{ ai_gen_id }} ai-carousel-nav-prev-{{ ai_gen_id }}"
+        data-prev
+        aria-label="Imagem anterior"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        class="ai-carousel-nav-{{ ai_gen_id }} ai-carousel-nav-next-{{ ai_gen_id }}"
+        data-next
+        aria-label="Próxima imagem"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9,18 15,12 9,6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+</floating-images-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FloatingImages{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentSlide = 0;
+        this.totalSlides = 0;
+      }
+
+      connectedCallback() {
+        this.initCarousel();
+        this.startFloatingAnimation();
+      }
+
+      initCarousel() {
+        const track = this.querySelector('[data-track]');
+        const prevBtn = this.querySelector('[data-prev]');
+        const nextBtn = this.querySelector('[data-next]');
+        
+        if (!track) return;
+
+        const slides = track.querySelectorAll('.ai-carousel-slide-{{ ai_gen_id }}');
+        this.totalSlides = slides.length;
+
+        if (this.totalSlides <= 1) {
+          if (prevBtn) prevBtn.style.display = 'none';
+          if (nextBtn) nextBtn.style.display = 'none';
+          return;
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => this.prevSlide());
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => this.nextSlide());
+        }
+
+        this.updateCarousel();
+      }
+
+      prevSlide() {
+        this.currentSlide = this.currentSlide > 0 ? this.currentSlide - 1 : this.totalSlides - 1;
+        this.updateCarousel();
+      }
+
+      nextSlide() {
+        this.currentSlide = this.currentSlide < this.totalSlides - 1 ? this.currentSlide + 1 : 0;
+        this.updateCarousel();
+      }
+
+      updateCarousel() {
+        const track = this.querySelector('[data-track]');
+        if (!track) return;
+
+        const slideWidth = {{ block.settings.mobile_image_size }} + 16;
+        const offset = -this.currentSlide * slideWidth;
+        track.style.transform = `translateX(${offset}px)`;
+      }
+
+      startFloatingAnimation() {
+        const images = this.querySelectorAll('.ai-floating-image-{{ ai_gen_id }}');
+        
+        images.forEach((image, index) => {
+          const randomDelay = Math.random() * {{ block.settings.animation_duration }};
+          image.style.animationDelay = `${randomDelay}s`;
+        });
+      }
+    }
+
+    customElements.define('floating-images-{{ ai_gen_id }}', FloatingImages{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Imagens flutuantes",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Cor de fundo",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Altura da seção (desktop)",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "mobile_section_height",
+      "min": 200,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "label": "Altura mínima (mobile)",
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Imagens desktop"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho das imagens",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "blur_amount",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Intensidade do blur (padrão)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "native_blur_amount",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Intensidade do blur nativo",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "min": 1.0,
+      "max": 1.5,
+      "step": 0.1,
+      "label": "Escala no hover",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Raio da borda",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Sombra no hover"
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Deslocamento horizontal",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Deslocamento vertical",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_blur",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Desfoque da sombra",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_spread",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Expansão da sombra",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "hover_shadow_color",
+      "label": "Cor da sombra",
+      "default": "rgba(0, 0, 0, 0.15)"
+    },
+    {
+      "type": "header",
+      "content": "Animação"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "s",
+      "label": "Duração da animação",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Mobile carousel"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_size",
+      "min": 100,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Tamanho das imagens (mobile)",
+      "default": 150
+    },
+    {
+      "type": "header",
+      "content": "Imagem 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_1_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_1_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_1_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "image_1_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_1_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Imagem 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_2_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_2_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_2_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "image_2_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "image_2_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Imagem 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_3_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_3_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_3_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_3_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "image_3_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Imagem 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_4_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_4_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_4_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "image_4_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "image_4_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Imagem 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_5_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_5_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_5_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_5_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "image_5_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 1.5
+    },
+    {
+      "type": "header",
+      "content": "Imagem 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_6_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_6_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_6_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "image_6_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "image_6_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Imagem 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_7",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_7_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_7_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_7_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "image_7_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_7_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 2.5
+    },
+    {
+      "type": "header",
+      "content": "Imagem 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_8",
+      "label": "Imagem"
+    },
+    {
+      "type": "select",
+      "id": "image_8_aspect",
+      "label": "Proporção",
+      "options": [
+        {
+          "value": "square",
+          "label": "Quadrado (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Retrato (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Paisagem (4:3)"
+        },
+        {
+          "value": "wide",
+          "label": "Panorâmico (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_8_native_blur",
+      "label": "Blur nativo ativo",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_8_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição horizontal",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_8_y",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Posição vertical",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_8_delay",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Atraso da animação",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Imagens flutuantes"
+    }
+  ]
+}
+{% endschema %}

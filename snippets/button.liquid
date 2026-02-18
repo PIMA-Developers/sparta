@@ -1,0 +1,95 @@
+{%- doc -%}
+  Intended for use in a block similar to the button block.
+
+  @param {string} link - link to render
+  @param {object} [block] - The block
+
+  @example
+  {% render 'button', link: '/collections/all' %}
+{%- enddoc -%}
+
+<a
+  {% if link == blank %}
+    role="link"
+    aria-disabled="true"
+  {% else %}
+    href="{{ link }}"
+  {% endif %}
+  {% if block.settings.enable_custom_id and block.settings.custom_button_id != blank %}
+    id="{{ block.settings.custom_button_id }}"
+  {% endif %}
+  class="
+    size-style
+    {{ block.settings.style_class }}
+    {{ block.settings.style_class }}--{{ block.id }}
+    {%- if block.settings.custom_button_style %} custom-button-style{%- endif -%}
+  "
+  style="{% render 'size-style', settings: block.settings %}{% render 'custom-button-style', settings: block.settings %}"
+  {%- if block.settings.open_in_new_tab -%}
+    target="_blank"
+    rel="noopener noreferrer"
+  {%- endif -%}
+  {{ block.shopify_attributes }}
+>
+  <span class="button-text">{{ block.settings.label }}</span>
+  {%- if block.settings.custom_button_style and block.settings.enable_arrow_icon -%}
+    <span class="button-arrow">→</span>
+  {%- endif -%}
+</a>
+
+{% stylesheet %}
+  .link {
+    text-decoration: none;
+    text-decoration-color: currentcolor;
+
+    &:hover {
+      color: var(--color-primary-hover);
+      text-decoration-color: transparent;
+    }
+  }
+
+  .custom-button-style {
+    background-color: var(--custom-button-bg, inherit) !important;
+    color: var(--custom-button-text, inherit) !important;
+    padding-top: var(--custom-button-padding-top, inherit) !important;
+    padding-bottom: var(--custom-button-padding-bottom, inherit) !important;
+    padding-left: var(--custom-button-padding-left, inherit) !important;
+    padding-right: var(--custom-button-padding-right, inherit) !important;
+    margin-top: var(--custom-button-margin-top, inherit) !important;
+    backdrop-filter: var(--custom-button-backdrop-filter, none) !important;
+    text-align: var(--custom-button-text-align, inherit) !important;
+    border-radius: var(--custom-button-border-radius, inherit) !important;
+    border: var(--custom-button-border, inherit) !important;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    &[style*="--custom-button-text-align: left"] {
+      justify-content: flex-start;
+    }
+    &[style*="--custom-button-text-align: center"] {
+      justify-content: center;
+    }
+    &[style*="--custom-button-text-align: right"] {
+      justify-content: flex-end;
+    }
+
+    .button-text {
+      flex: 1;
+      text-align: var(--custom-button-text-align, inherit);
+    }
+
+    .button-arrow {
+      display: var(--custom-button-show-arrow, none);
+      margin-left: auto;
+      font-weight: bold;
+      font-size: 1.2em;
+      padding-left: 8px;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      transition: all 0.2s ease;
+    }
+  }
+{% endstylesheet %}

@@ -1,0 +1,423 @@
+{%- comment -%}
+  Bloco de Popup Iframe Personalizado
+  
+  Funcionalidades:
+  - Diferentes tipos de trigger (página, botão ID, tempo)
+  - HTML/Liquid personalizado
+  - Estilos personalizáveis
+{%- endcomment -%}
+
+{%- liquid
+  assign popup_id = 'popup-' | append: block.id
+  assign trigger_type = block.settings.trigger_type
+  assign target_button_id = block.settings.target_button_id
+  assign delay_time = block.settings.delay_time
+  assign target_page = block.settings.target_page
+  assign custom_html = block.settings.custom_html
+  assign enable_custom_styles = block.settings.enable_custom_styles
+-%}
+
+<div 
+  id="{{ popup_id }}" 
+  class="popup-iframe-container"
+  data-trigger-type="{{ trigger_type }}"
+  data-target-button="{{ target_button_id }}"
+  data-delay-time="{{ delay_time }}"
+  data-target-page="{{ target_page }}"
+  style="display: none;"
+>
+  <div class="popup-iframe-overlay" onclick="closePopup('{{ popup_id }}')"></div>
+  <div class="popup-iframe-content">
+    <button class="popup-iframe-close" onclick="closePopup('{{ popup_id }}')" aria-label="Fechar popup">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    
+    <div class="popup-iframe-body">
+      {% if custom_html != blank %}
+        {{ custom_html }}
+      {% else %}
+        <div class="popup-iframe-default-content">
+          <h3>Popup Personalizado</h3>
+          <p>Configure o conteúdo HTML/Liquid nas configurações do bloco.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.getElementById('{{ popup_id }}');
+    const triggerType = popup.dataset.triggerType;
+    const targetButton = popup.dataset.targetButton;
+    const delayTime = parseInt(popup.dataset.delayTime) * 1000; // Convert to milliseconds
+    const targetPage = popup.dataset.targetPage;
+    
+    function showPopup(popupId) {
+      const popupElement = document.getElementById(popupId);
+      if (popupElement) {
+        popupElement.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Trigger custom event
+        window.dispatchEvent(new CustomEvent('popupShown', { 
+          detail: { popupId: popupId } 
+        }));
+      }
+    }
+    
+    function shouldShowOnPage() {
+      if (!targetPage || targetPage === '') return true;
+      
+      const currentPath = window.location.pathname;
+      const currentUrl = window.location.href;
+      
+      // Check if target page matches current page
+      return currentPath.includes(targetPage) || currentUrl.includes(targetPage);
+    }
+    
+    // Initialize popup based on trigger type
+    switch(triggerType) {
+      case 'page_load':
+        if (shouldShowOnPage()) {
+          setTimeout(() => showPopup('{{ popup_id }}'), 500);
+        }
+        break;
+        
+      case 'button_click':
+        if (targetButton && targetButton !== '') {
+          const button = document.getElementById(targetButton);
+          if (button) {
+            button.addEventListener('click', function(e) {
+              e.preventDefault();
+              showPopup('{{ popup_id }}');
+            });
+          }
+        }
+        break;
+        
+      case 'time_delay':
+        if (shouldShowOnPage() && delayTime > 0) {
+          setTimeout(() => showPopup('{{ popup_id }}'), delayTime);
+        }
+        break;
+    }
+  });
+  
+  function closePopup(popupId) {
+    const popup = document.getElementById(popupId);
+    if (popup) {
+      popup.style.display = 'none';
+      document.body.style.overflow = '';
+      
+      // Trigger custom event
+      window.dispatchEvent(new CustomEvent('popupClosed', { 
+        detail: { popupId: popupId } 
+      }));
+    }
+  }
+  
+  // Close popup with ESC key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closePopup('{{ popup_id }}');
+    }
+  });
+</script>
+
+{% stylesheet %}
+  .popup-iframe-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .popup-iframe-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+  
+  .popup-iframe-content {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    animation: slideIn 0.3s ease-out;
+    
+    {% if enable_custom_styles %}
+      background-color: {{ block.settings.popup_bg_color | default: '#ffffff' }};
+      border-radius: {{ block.settings.border_radius | default: 8 }}px;
+      padding: {{ block.settings.popup_padding | default: 24 }}px;
+      max-width: {{ block.settings.popup_width | default: 600 }}px;
+      {% if block.settings.popup_border_color != blank %}
+        border: {{ block.settings.border_width | default: 1 }}px solid {{ block.settings.popup_border_color }};
+      {% endif %}
+    {% else %}
+      padding: 24px;
+      width: 100%;
+      max-width: 600px;
+    {% endif %}
+  }
+  
+  .popup-iframe-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  
+  .popup-iframe-close:hover {
+    background-color: #f3f4f6;
+    color: #333;
+  }
+  
+  .popup-iframe-body {
+    {% if enable_custom_styles %}
+      color: {{ block.settings.text_color | default: '#333333' }};
+      font-size: {{ block.settings.font_size | default: 16 }}px;
+      line-height: {{ block.settings.line_height | default: 1.5 }};
+    {% else %}
+      color: #333;
+      font-size: 16px;
+      line-height: 1.5;
+    {% endif %}
+  }
+  
+  .popup-iframe-default-content {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .popup-iframe-default-content h3 {
+    margin: 0 0 16px 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .popup-iframe-default-content p {
+    margin: 0;
+    color: #666;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from { 
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .popup-iframe-content {
+      margin: 20px;
+      max-width: calc(100vw - 40px);
+      max-height: calc(100vh - 40px);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Popup Iframe",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Configurações de Trigger"
+    },
+    {
+      "type": "select",
+      "id": "trigger_type",
+      "label": "Tipo de Trigger",
+      "options": [
+        {
+          "value": "page_load",
+          "label": "Carregamento da Página"
+        },
+        {
+          "value": "button_click",
+          "label": "Clique em Botão (ID específico)"
+        },
+        {
+          "value": "time_delay",
+          "label": "Tempo de Permanência"
+        }
+      ],
+      "default": "page_load",
+      "info": "Escolha quando o popup deve aparecer"
+    },
+    {
+      "type": "text",
+      "id": "target_page",
+      "label": "Página Específica (opcional)",
+      "placeholder": "/collections/all",
+      "info": "Deixe vazio para mostrar em todas as páginas. Use o caminho da URL (ex: /collections/all, /pages/about)"
+    },
+    {
+      "type": "text",
+      "id": "target_button_id",
+      "label": "ID do Botão",
+      "placeholder": "meu-botao-trigger",
+      "info": "ID do botão que irá abrir o popup",
+      "visible_if": "{{ block.settings.trigger_type == 'button_click' }}"
+    },
+    {
+      "type": "range",
+      "id": "delay_time",
+      "label": "Tempo de Delay (segundos)",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "default": 5,
+      "info": "Tempo que o usuário deve permanecer na página antes do popup aparecer",
+      "visible_if": "{{ block.settings.trigger_type == 'time_delay' }}"
+    },
+    {
+      "type": "header",
+      "content": "Conteúdo do Popup"
+    },
+    {
+      "type": "html",
+      "id": "custom_html",
+      "label": "HTML/Liquid Personalizado",
+      "info": "Adicione seu conteúdo HTML ou código Liquid aqui. Pode incluir iframes, formulários, etc."
+    },
+    {
+      "type": "header",
+      "content": "Estilos Personalizados"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_styles",
+      "label": "Habilitar Estilos Personalizados",
+      "default": false,
+      "info": "Ative para personalizar a aparência do popup"
+    },
+    {
+      "type": "range",
+      "id": "popup_width",
+      "label": "Largura do Popup (px)",
+      "min": 300,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 600,
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "popup_bg_color",
+      "label": "Cor de Fundo",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Cor do Texto",
+      "default": "#333333",
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "popup_padding",
+      "label": "Padding Interno (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8,
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Tamanho da Fonte (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Altura da Linha",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.5,
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "popup_border_color",
+      "label": "Cor da Borda (opcional)",
+      "info": "Deixe vazio para não ter borda",
+      "visible_if": "{{ block.settings.enable_custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Largura da Borda (px)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.enable_custom_styles and block.settings.popup_border_color != blank }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popup Iframe",
+      "category": "Avançado"
+    }
+  ]
+}
+{% endschema %}

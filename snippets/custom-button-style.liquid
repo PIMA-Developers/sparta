@@ -1,0 +1,55 @@
+{%- comment -%}
+  Custom button styling snippet for advanced button customization
+  Accepts:
+     settings: {block.settings}
+{%- endcomment -%}
+
+{%- if settings.custom_button_style -%}
+  {%- if settings.custom_bg_color != blank -%}
+    --custom-button-bg: {{ settings.custom_bg_color }};
+  {%- endif -%}
+  
+  {%- if settings.custom_text_color != blank -%}
+    --custom-button-text: {{ settings.custom_text_color }};
+  {%- endif -%}
+  
+  {%- if settings.enable_custom_padding -%}
+    {%- if settings.padding_top != blank -%}
+      --custom-button-padding-top: {{ settings.padding_top }}px;
+    {%- endif -%}
+    {%- if settings.padding_bottom != blank -%}
+      --custom-button-padding-bottom: {{ settings.padding_bottom }}px;
+    {%- endif -%}
+    {%- if settings.padding_left != blank -%}
+      --custom-button-padding-left: {{ settings.padding_left }}px;
+    {%- endif -%}
+    {%- if settings.padding_right != blank -%}
+      --custom-button-padding-right: {{ settings.padding_right }}px;
+    {%- endif -%}
+  {%- endif -%}
+  
+  {%- if settings.enable_auto_margin -%}
+    --custom-button-margin-top: auto;
+  {%- endif -%}
+  
+  {%- if settings.enable_glass_mode and settings.glass_blur_amount != blank -%}
+    --custom-button-backdrop-filter: blur({{ settings.glass_blur_amount }}px);
+  {%- endif -%}
+  
+  {%- if settings.enable_arrow_icon -%}
+    --custom-button-show-arrow: block;
+    --custom-button-text-align: left;
+    --custom-button-arrow-display: inline-block;
+  {%- else -%}
+    --custom-button-show-arrow: none;
+    {%- if settings.text_alignment != blank -%}
+      --custom-button-text-align: {{ settings.text_alignment }};
+    {%- endif -%}
+  {%- endif -%}
+  {%- if settings.border_radius -%}
+    --custom-button-border-radius: {{ settings.border_radius }}px;
+  {%- endif -%}
+  {%- if settings.enable_border -%}
+    --custom-button-border: {{ settings.border_width | default: 1 }}px {{ settings.border_style | default: 'solid' }} {{ settings.border_color | default: '#000000' }};
+  {%- endif -%}
+{%- endif -%}

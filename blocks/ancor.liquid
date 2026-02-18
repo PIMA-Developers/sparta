@@ -1,0 +1,39 @@
+{% assign anchor_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .anchor-{{ anchor_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+{% endstyle %}
+
+<div
+  id="{{ block.settings.anchor_id }}"
+  class="ai-anchor-{{ anchor_id }}"
+  {{ block.shopify_attributes }}
+></div>
+
+{% schema %}
+{
+  "name": "Âncora",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "ID this section",
+      "placeholder": "my-id"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anchor"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

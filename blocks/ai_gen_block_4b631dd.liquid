@@ -1,0 +1,1502 @@
+{% doc %}
+  @prompt
+    Prompt para IA do Shopify: Seção de Grade de Horários Dinâmica e Responsiva
+    Crie uma nova seção de tema (Liquid e Schema) chamada horarios-academia. O objetivo é exibir a grade de horários da academia de forma clara, responsiva e altamente configurável.
+    
+    1. Estrutura e Responsividade (Obrigatório)
+    Layout: Crie uma tabela completa que exiba os dias da semana (Segunda a Sábado) como colunas e os horários como linhas.
+    
+    Responsividade: A tabela deve ser totalmente responsiva. Em telas menores (móveis), a tabela deve se transformar de um grid para um formato de lista empilhada ou acordeão, onde o usuário pode expandir o dia da semana para ver a lista de aulas e horários.
+    
+    Título da Seção: O título principal deve ser um campo configurável (settings.titulo).
+    
+    2. Configuração de Conteúdo (Schema de Blocos)
+    A grade de horários deve ser gerada por Blocos (Blocks), permitindo que o usuário adicione quantas aulas quiser.
+    
+    Para cada BLOCO DE AULA, o Schema deve incluir os seguintes campos:
+    
+    Tipo de Campo	Nome do Campo (Etiqueta)	Função / Uso
+    select	Dia da Semana	Opções: Segunda, Terça, Quarta, Quinta, Sexta, Sábado.
+    text	Horário	Ex: "07:00 – 08:00" ou "19:30 – 21:00".
+    text	Nome da Aula	Ex: "Jiu-Jitsu (Fundamentos)" ou "Muay Thai (Avançado)".
+    select	Nível da Aula	Opções: Iniciante (Fundamentos), Intermediário, Avançado (Competição), Kids, Open Mat.
+    text	Nome do Professor	Ex: "Mestre Daniel Silva" (Opcional).
+    
+    Exportar para as Planilhas
+    3. Opções de Estilo e Filtros (Settings)
+    Inclua as seguintes opções de estilo no Schema da Seção:
+    
+    Campo de Cor (color): Cor de destaque principal (para cabeçalhos de tabela ou botão CTA).
+    
+    Campo Booleano (checkbox): Opção para "Mostrar Legenda de Níveis".
+    
+    Filtros (Avançado - Opcional): Se possível, adicione uma funcionalidade simples de filtro interativo (via JavaScript/CSS) que permita ao usuário da loja clicar em um dos "Níveis da Aula" (do campo select acima) e ocultar as demais aulas na visualização. Se for muito complexo, priorize a responsi
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+
+  .ai-schedule-grid-{{ ai_gen_id }} {
+    padding: 40px 20px;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    max-width: 100%;
+    widht: 100%;
+    overflow: hidden;
+  }
+
+  .ai-schedule-title-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 600;
+  }
+
+  .ai-schedule-filters-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .ai-schedule-filter-btn-{{ ai_gen_id }} {
+    padding: 8px 16px;
+    border: 1px solid {{ block.settings.accent_color }};
+    background-color: transparent;
+    color: {{ block.settings.accent_color }};
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .ai-schedule-filter-btn-{{ ai_gen_id }}:hover,
+  .ai-schedule-filter-btn-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+  }
+
+  .ai-schedule-table-container-{{ ai_gen_id }} {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-schedule-table-{{ ai_gen_id }} {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    min-width: 700px;
+  }
+
+  .ai-schedule-table-{{ ai_gen_id }} th {
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px solid {{ block.settings.accent_color }};
+  }
+
+  .ai-schedule-table-{{ ai_gen_id }} td {
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid #e6e6e6;
+    vertical-align: top;
+    min-height: 60px;
+  }
+
+  .ai-schedule-table-{{ ai_gen_id }} tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .ai-schedule-time-{{ ai_gen_id }} {
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    background-color: #f5f5f5;
+    width: 120px;
+    min-width: 120px;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }} {
+    background-color: {{ block.settings.accent_color }}15;
+    border-left: 3px solid {{ block.settings.accent_color }};
+    padding: 8px;
+    margin: 2px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .ai-schedule-class-name-{{ ai_gen_id }} {
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin-bottom: 2px;
+  }
+
+  .ai-schedule-class-level-{{ ai_gen_id }} {
+    font-size: 10px;
+    color: {{ block.settings.accent_color }};
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .ai-schedule-class-instructor-{{ ai_gen_id }} {
+    font-size: 10px;
+    color: #666;
+    font-style: italic;
+  }
+
+  .ai-schedule-mobile-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-schedule-day-card-{{ ai_gen_id }} {
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .ai-schedule-day-header-{{ ai_gen_id }} {
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    padding: 15px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ai-schedule-day-content-{{ ai_gen_id }} {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-schedule-day-content-{{ ai_gen_id }}.expanded {
+    max-height: 1000px;
+    padding: 20px;
+  }
+
+  .ai-schedule-mobile-class-{{ ai_gen_id }} {
+    padding: 15px;
+    border-bottom: 1px solid #e6e6e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ai-schedule-mobile-class-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-schedule-mobile-time-{{ ai_gen_id }} {
+    font-weight: 600;
+    color: {{ block.settings.accent_color }};
+    min-width: 80px;
+  }
+
+  .ai-schedule-mobile-details-{{ ai_gen_id }} {
+    flex-grow: 1;
+    margin-left: 15px;
+  }
+
+  .ai-schedule-legend-{{ ai_gen_id }} {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+
+  .ai-schedule-legend-title-{{ ai_gen_id }} {
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-schedule-legend-items-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .ai-schedule-legend-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .ai-schedule-legend-color-{{ ai_gen_id }} {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+  }
+
+  .ai-schedule-legend-color-{{ ai_gen_id }}.iniciante {
+    background-color: #4CAF50;
+  }
+
+  .ai-schedule-legend-color-{{ ai_gen_id }}.intermediario {
+    background-color: #FF9800;
+  }
+
+  .ai-schedule-legend-color-{{ ai_gen_id }}.avancado {
+    background-color: #F44336;
+  }
+
+  .ai-schedule-legend-color-{{ ai_gen_id }}.kids {
+    background-color: #9C27B0;
+  }
+
+  .ai-schedule-legend-color-{{ ai_gen_id }}.open-mat {
+    background-color: #607D8B;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }}.iniciante {
+    border-left-color: #4CAF50;
+    background-color: #4CAF5015;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }}.intermediario {
+    border-left-color: #FF9800;
+    background-color: #FF980015;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }}.avancado {
+    border-left-color: #F44336;
+    background-color: #F4433615;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }}.kids {
+    border-left-color: #9C27B0;
+    background-color: #9C27B015;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }}.open-mat {
+    border-left-color: #607D8B;
+    background-color: #607D8B15;
+  }
+
+  .ai-schedule-class-{{ ai_gen_id }}.hidden {
+    display: none;
+  }
+
+  .ai-schedule-empty-state-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-style: italic;
+  }
+
+  .ai-schedule-empty-state-{{ ai_gen_id }} h3 {
+    margin-bottom: 10px;
+    color: {{ block.settings.text_color }};
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-schedule-table-container-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-schedule-mobile-{{ ai_gen_id }} {
+      display: block;
+    }
+
+    .ai-schedule-grid-{{ ai_gen_id }} {
+      padding: 20px 15px;
+    }
+
+    .ai-schedule-filters-{{ ai_gen_id }} {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .ai-schedule-filter-btn-{{ ai_gen_id }} {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+  }
+{% endstyle %}
+
+<schedule-grid-{{ ai_gen_id }}
+  class="ai-schedule-grid-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.titulo != blank %}
+    <h2 class="ai-schedule-title-{{ ai_gen_id }}">{{ block.settings.titulo }}</h2>
+  {% endif %}
+
+  {% assign has_classes = false %}
+  {% if block.settings.aula_1_nome != blank or block.settings.aula_2_nome != blank or block.settings.aula_3_nome != blank or block.settings.aula_4_nome != blank or block.settings.aula_5_nome != blank or block.settings.aula_6_nome != blank or block.settings.aula_7_nome != blank or block.settings.aula_8_nome != blank or block.settings.aula_9_nome != blank or block.settings.aula_10_nome != blank %}
+    {% assign has_classes = true %}
+  {% endif %}
+
+  {% unless has_classes %}
+    <div class="ai-schedule-empty-state-{{ ai_gen_id }}">
+      <h3>Configure suas aulas</h3>
+      <p>Adicione as informações das aulas nas configurações do bloco para exibir a grade de horários.</p>
+    </div>
+  {% else %}
+
+    {% if block.settings.mostrar_filtros %}
+      <div class="ai-schedule-filters-{{ ai_gen_id }}">
+        <button class="ai-schedule-filter-btn-{{ ai_gen_id }} active" data-filter="todos">
+          Todos
+        </button>
+        <button class="ai-schedule-filter-btn-{{ ai_gen_id }}" data-filter="iniciante">
+          Iniciante
+        </button>
+        <button class="ai-schedule-filter-btn-{{ ai_gen_id }}" data-filter="intermediario">
+          Intermediário
+        </button>
+        <button class="ai-schedule-filter-btn-{{ ai_gen_id }}" data-filter="avancado">
+          Avançado
+        </button>
+        <button class="ai-schedule-filter-btn-{{ ai_gen_id }}" data-filter="kids">
+          Kids
+        </button>
+        <button class="ai-schedule-filter-btn-{{ ai_gen_id }}" data-filter="open-mat">
+          Open Mat
+        </button>
+      </div>
+    {% endif %}
+
+    <div class="ai-schedule-table-container-{{ ai_gen_id }}">
+      <table class="ai-schedule-table-{{ ai_gen_id }}">
+        <thead>
+          <tr>
+            <th>Horário</th>
+            <th>Segunda</th>
+            <th>Terça</th>
+            <th>Quarta</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
+            <th>Sábado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% assign time_slots = "06:00,07:00,08:00,09:00,10:00,11:00,12:00,13:00,14:00,15:00,16:00,17:00,18:00,19:00,20:00,21:00,22:00" | split: ',' %}
+          {% assign days = "segunda,terca,quarta,quinta,sexta,sabado" | split: ',' %}
+          
+          {% for time_slot in time_slots %}
+            <tr>
+              <td class="ai-schedule-time-{{ ai_gen_id }}">{{ time_slot }}</td>
+              {% for day in days %}
+                <td>
+                  {% for i in (1..10) %}
+                    {% assign aula_dia_key = 'aula_' | append: i | append: '_dia' %}
+                    {% assign aula_horario_key = 'aula_' | append: i | append: '_horario' %}
+                    {% assign aula_nome_key = 'aula_' | append: i | append: '_nome' %}
+                    {% assign aula_nivel_key = 'aula_' | append: i | append: '_nivel' %}
+                    {% assign aula_professor_key = 'aula_' | append: i | append: '_professor' %}
+                    
+                    {% assign aula_dia = block.settings[aula_dia_key] %}
+                    {% assign aula_horario = block.settings[aula_horario_key] | split: ' ' | first %}
+                    {% assign aula_nome = block.settings[aula_nome_key] %}
+                    {% assign aula_nivel = block.settings[aula_nivel_key] %}
+                    {% assign aula_professor = block.settings[aula_professor_key] %}
+                    
+                    {% if aula_dia == day and aula_horario == time_slot and aula_nome != blank %}
+                      <div class="ai-schedule-class-{{ ai_gen_id }} {{ aula_nivel }}" data-level="{{ aula_nivel }}">
+                        <div class="ai-schedule-class-name-{{ ai_gen_id }}">
+                          {{ aula_nome }}
+                        </div>
+                        <div class="ai-schedule-class-level-{{ ai_gen_id }}">
+                          {% case aula_nivel %}
+                            {% when 'iniciante' %}
+                              Iniciante
+                            {% when 'intermediario' %}
+                              Intermediário
+                            {% when 'avancado' %}
+                              Avançado
+                            {% when 'kids' %}
+                              Kids
+                            {% when 'open-mat' %}
+                              Open Mat
+                          {% endcase %}
+                        </div>
+                        {% if aula_professor != blank %}
+                          <div class="ai-schedule-class-instructor-{{ ai_gen_id }}">
+                            {{ aula_professor }}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ai-schedule-mobile-{{ ai_gen_id }}">
+      {% assign day_names = "segunda,terça,quarta,quinta,sexta,sábado" | split: ',' %}
+      {% assign day_keys = "segunda,terca,quarta,quinta,sexta,sabado" | split: ',' %}
+      
+      {% for day_name in day_names %}
+        {% assign day_key = day_keys[forloop.index0] %}
+        {% assign day_has_classes = false %}
+        
+        {% for i in (1..10) %}
+          {% assign aula_dia_key = 'aula_' | append: i | append: '_dia' %}
+          {% assign aula_nome_key = 'aula_' | append: i | append: '_nome' %}
+          {% if block.settings[aula_dia_key] == day_key and block.settings[aula_nome_key] != blank %}
+            {% assign day_has_classes = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        
+        {% if day_has_classes %}
+          <div class="ai-schedule-day-card-{{ ai_gen_id }}">
+            <div class="ai-schedule-day-header-{{ ai_gen_id }}" onclick="toggleDay{{ ai_gen_id }}('{{ day_key }}')">
+              <span>{{ day_name | capitalize }}</span>
+              <span class="ai-schedule-arrow-{{ ai_gen_id }}">▼</span>
+            </div>
+            <div class="ai-schedule-day-content-{{ ai_gen_id }}" id="day-{{ day_key }}-{{ ai_gen_id }}">
+              {% for i in (1..10) %}
+                {% assign aula_dia_key = 'aula_' | append: i | append: '_dia' %}
+                {% assign aula_horario_key = 'aula_' | append: i | append: '_horario' %}
+                {% assign aula_nome_key = 'aula_' | append: i | append: '_nome' %}
+                {% assign aula_nivel_key = 'aula_' | append: i | append: '_nivel' %}
+                {% assign aula_professor_key = 'aula_' | append: i | append: '_professor' %}
+                
+                {% assign aula_dia = block.settings[aula_dia_key] %}
+                {% assign aula_horario = block.settings[aula_horario_key] %}
+                {% assign aula_nome = block.settings[aula_nome_key] %}
+                {% assign aula_nivel = block.settings[aula_nivel_key] %}
+                {% assign aula_professor = block.settings[aula_professor_key] %}
+                
+                {% if aula_dia == day_key and aula_nome != blank %}
+                  <div class="ai-schedule-mobile-class-{{ ai_gen_id }} {{ aula_nivel }}" data-level="{{ aula_nivel }}">
+                    <div class="ai-schedule-mobile-time-{{ ai_gen_id }}">
+                      {{ aula_horario }}
+                    </div>
+                    <div class="ai-schedule-mobile-details-{{ ai_gen_id }}">
+                      <div class="ai-schedule-class-name-{{ ai_gen_id }}">
+                        {{ aula_nome }}
+                      </div>
+                      <div class="ai-schedule-class-level-{{ ai_gen_id }}">
+                        {% case aula_nivel %}
+                          {% when 'iniciante' %}
+                            Iniciante
+                          {% when 'intermediario' %}
+                            Intermediário
+                          {% when 'avancado' %}
+                            Avançado
+                          {% when 'kids' %}
+                            Kids
+                          {% when 'open-mat' %}
+                            Open Mat
+                        {% endcase %}
+                      </div>
+                      {% if aula_professor != blank %}
+                        <div class="ai-schedule-class-instructor-{{ ai_gen_id }}">
+                          {{ aula_professor }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if block.settings.mostrar_legenda %}
+      <div class="ai-schedule-legend-{{ ai_gen_id }}">
+        <div class="ai-schedule-legend-title-{{ ai_gen_id }}">Legenda de Níveis</div>
+        <div class="ai-schedule-legend-items-{{ ai_gen_id }}">
+          <div class="ai-schedule-legend-item-{{ ai_gen_id }}">
+            <div class="ai-schedule-legend-color-{{ ai_gen_id }} iniciante"></div>
+            <span>Iniciante (Fundamentos)</span>
+          </div>
+          <div class="ai-schedule-legend-item-{{ ai_gen_id }}">
+            <div class="ai-schedule-legend-color-{{ ai_gen_id }} intermediario"></div>
+            <span>Intermediário</span>
+          </div>
+          <div class="ai-schedule-legend-item-{{ ai_gen_id }}">
+            <div class="ai-schedule-legend-color-{{ ai_gen_id }} avancado"></div>
+            <span>Avançado (Competição)</span>
+          </div>
+          <div class="ai-schedule-legend-item-{{ ai_gen_id }}">
+            <div class="ai-schedule-legend-color-{{ ai_gen_id }} kids"></div>
+            <span>Kids</span>
+          </div>
+          <div class="ai-schedule-legend-item-{{ ai_gen_id }}">
+            <div class="ai-schedule-legend-color-{{ ai_gen_id }} open-mat"></div>
+            <span>Open Mat</span>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  {% endunless %}
+</schedule-grid-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ScheduleGrid{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.setupFilters();
+      }
+
+      setupFilters() {
+        const filterButtons = this.querySelectorAll('.ai-schedule-filter-btn-{{ ai_gen_id }}');
+        const classes = this.querySelectorAll('.ai-schedule-class-{{ ai_gen_id }}, .ai-schedule-mobile-class-{{ ai_gen_id }}');
+
+        filterButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const filter = button.dataset.filter;
+            
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            classes.forEach(classElement => {
+              if (filter === 'todos') {
+                classElement.classList.remove('hidden');
+              } else {
+                if (classElement.dataset.level === filter) {
+                  classElement.classList.remove('hidden');
+                } else {
+                  classElement.classList.add('hidden');
+                }
+              }
+            });
+          });
+        });
+      }
+    }
+
+    window.toggleDay{{ ai_gen_id }} = function(dayKey) {
+      const content = document.getElementById(`day-${dayKey}-{{ ai_gen_id }}`);
+      const arrow = content.previousElementSibling.querySelector('.ai-schedule-arrow-{{ ai_gen_id }}');
+      
+      if (content.classList.contains('expanded')) {
+        content.classList.remove('expanded');
+        arrow.textContent = '▼';
+      } else {
+        content.classList.add('expanded');
+        arrow.textContent = '▲';
+      }
+    };
+
+    customElements.define('schedule-grid-{{ ai_gen_id }}', ScheduleGrid{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Grade de horários",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Configurações gerais"
+    },
+    {
+      "type": "text",
+      "id": "titulo",
+      "label": "Título da seção",
+      "default": "Horários das Aulas"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Tamanho do título",
+      "default": 32
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_legenda",
+      "label": "Mostrar legenda de níveis",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_filtros",
+      "label": "Mostrar filtros por nível",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Cores e estilo"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Cor de fundo",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Cor do texto",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Cor de destaque",
+      "default": "#acc100"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Raio da borda",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Aula 1"
+    },
+    {
+      "type": "select",
+      "id": "aula_1_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "segunda"
+    },
+    {
+      "type": "text",
+      "id": "aula_1_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 07:00 - 08:00",
+      "default": "07:00 - 08:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_1_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Jiu-Jitsu Fundamentos"
+    },
+    {
+      "type": "select",
+      "id": "aula_1_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "iniciante"
+    },
+    {
+      "type": "text",
+      "id": "aula_1_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professor João"
+    },
+    {
+      "type": "header",
+      "content": "Aula 2"
+    },
+    {
+      "type": "select",
+      "id": "aula_2_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "segunda"
+    },
+    {
+      "type": "text",
+      "id": "aula_2_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 19:00 - 20:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_2_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Muay Thai"
+    },
+    {
+      "type": "select",
+      "id": "aula_2_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "intermediario"
+    },
+    {
+      "type": "text",
+      "id": "aula_2_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professor Carlos"
+    },
+    {
+      "type": "header",
+      "content": "Aula 3"
+    },
+    {
+      "type": "select",
+      "id": "aula_3_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "terca"
+    },
+    {
+      "type": "text",
+      "id": "aula_3_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 18:00 - 19:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_3_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Jiu-Jitsu Kids"
+    },
+    {
+      "type": "select",
+      "id": "aula_3_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "kids"
+    },
+    {
+      "type": "text",
+      "id": "aula_3_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professora Ana"
+    },
+    {
+      "type": "header",
+      "content": "Aula 4"
+    },
+    {
+      "type": "select",
+      "id": "aula_4_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "quarta"
+    },
+    {
+      "type": "text",
+      "id": "aula_4_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 20:00 - 21:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_4_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Jiu-Jitsu Avançado"
+    },
+    {
+      "type": "select",
+      "id": "aula_4_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "avancado"
+    },
+    {
+      "type": "text",
+      "id": "aula_4_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Mestre Silva"
+    },
+    {
+      "type": "header",
+      "content": "Aula 5"
+    },
+    {
+      "type": "select",
+      "id": "aula_5_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "quinta"
+    },
+    {
+      "type": "text",
+      "id": "aula_5_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 07:30 - 08:30"
+    },
+    {
+      "type": "text",
+      "id": "aula_5_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Boxe"
+    },
+    {
+      "type": "select",
+      "id": "aula_5_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "intermediario"
+    },
+    {
+      "type": "text",
+      "id": "aula_5_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professor Roberto"
+    },
+    {
+      "type": "header",
+      "content": "Aula 6"
+    },
+    {
+      "type": "select",
+      "id": "aula_6_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "sexta"
+    },
+    {
+      "type": "text",
+      "id": "aula_6_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 19:30 - 20:30"
+    },
+    {
+      "type": "text",
+      "id": "aula_6_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: MMA"
+    },
+    {
+      "type": "select",
+      "id": "aula_6_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "avancado"
+    },
+    {
+      "type": "text",
+      "id": "aula_6_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professor Diego"
+    },
+    {
+      "type": "header",
+      "content": "Aula 7"
+    },
+    {
+      "type": "select",
+      "id": "aula_7_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "sabado"
+    },
+    {
+      "type": "text",
+      "id": "aula_7_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 09:00 - 11:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_7_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Open Mat"
+    },
+    {
+      "type": "select",
+      "id": "aula_7_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "open-mat"
+    },
+    {
+      "type": "text",
+      "id": "aula_7_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Treino livre"
+    },
+    {
+      "type": "header",
+      "content": "Aula 8"
+    },
+    {
+      "type": "select",
+      "id": "aula_8_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "segunda"
+    },
+    {
+      "type": "text",
+      "id": "aula_8_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 21:00 - 22:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_8_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Jiu-Jitsu NoGi"
+    },
+    {
+      "type": "select",
+      "id": "aula_8_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "intermediario"
+    },
+    {
+      "type": "text",
+      "id": "aula_8_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professor Marcos"
+    },
+    {
+      "type": "header",
+      "content": "Aula 9"
+    },
+    {
+      "type": "select",
+      "id": "aula_9_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "terca"
+    },
+    {
+      "type": "text",
+      "id": "aula_9_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 20:30 - 21:30"
+    },
+    {
+      "type": "text",
+      "id": "aula_9_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Kickboxing"
+    },
+    {
+      "type": "select",
+      "id": "aula_9_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "iniciante"
+    },
+    {
+      "type": "text",
+      "id": "aula_9_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professor Felipe"
+    },
+    {
+      "type": "header",
+      "content": "Aula 10"
+    },
+    {
+      "type": "select",
+      "id": "aula_10_dia",
+      "label": "Dia da semana",
+      "options": [
+        {
+          "value": "segunda",
+          "label": "Segunda-feira"
+        },
+        {
+          "value": "terca",
+          "label": "Terça-feira"
+        },
+        {
+          "value": "quarta",
+          "label": "Quarta-feira"
+        },
+        {
+          "value": "quinta",
+          "label": "Quinta-feira"
+        },
+        {
+          "value": "sexta",
+          "label": "Sexta-feira"
+        },
+        {
+          "value": "sabado",
+          "label": "Sábado"
+        }
+      ],
+      "default": "sabado"
+    },
+    {
+      "type": "text",
+      "id": "aula_10_horario",
+      "label": "Horário",
+      "placeholder": "Ex: 15:00 - 16:00"
+    },
+    {
+      "type": "text",
+      "id": "aula_10_nome",
+      "label": "Nome da aula",
+      "placeholder": "Ex: Defesa Pessoal"
+    },
+    {
+      "type": "select",
+      "id": "aula_10_nivel",
+      "label": "Nível da aula",
+      "options": [
+        {
+          "value": "iniciante",
+          "label": "Iniciante (Fundamentos)"
+        },
+        {
+          "value": "intermediario",
+          "label": "Intermediário"
+        },
+        {
+          "value": "avancado",
+          "label": "Avançado (Competição)"
+        },
+        {
+          "value": "kids",
+          "label": "Kids"
+        },
+        {
+          "value": "open-mat",
+          "label": "Open Mat"
+        }
+      ],
+      "default": "iniciante"
+    },
+    {
+      "type": "text",
+      "id": "aula_10_professor",
+      "label": "Nome do professor",
+      "placeholder": "Ex: Professora Maria"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grade de horários"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,227 @@
+{%- doc -%}
+  Inline product form within the guided purchase flow.
+  Renders media gallery (static block) + product details + addons + property fields.
+  Uses closest.product to propagate product context to child blocks.
+  Custom add-to-cart button collects all items via DOM contract (see plan sec. 5.1).
+
+  @param {product} product - The product for this form
+  @see blocks/_flow-addon.liquid
+  @see blocks/_flow-property-field.liquid
+  @see assets/flow-engine.js
+{%- enddoc -%}
+
+{%- liquid
+  assign product = block.settings.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+
+  assign variant = product.selected_or_first_available_variant
+  assign can_add = true
+  assign add_text = 'Adicionar ao carrinho'
+
+  if variant == blank
+    assign can_add = false
+    assign add_text = 'Indisponível'
+  elsif variant.inventory_management == 'shopify' and variant.inventory_quantity <= 0 and variant.inventory_policy == 'deny'
+    assign can_add = false
+    assign add_text = 'Esgotado'
+  endif
+-%}
+
+<div
+  class="flow-product-form"
+  {{ block.shopify_attributes }}
+  data-flow-product-form
+  data-product-id="{{ product.id }}"
+  data-default-variant-id="{{ variant.id }}"
+  data-price="{{ variant.price }}"
+>
+  {%- if product != blank -%}
+    <div class="flow-product-form__layout">
+      {%- if block.settings.show_gallery -%}
+        <div class="flow-product-form__media">
+          {% content_for 'block', type: '_product-media-gallery', id: 'flow-media-gallery', closest.product: product %}
+        </div>
+      {%- endif -%}
+
+      <div class="flow-product-form__details">
+        {% capture children %}
+          {% content_for 'blocks', closest.product: product %}
+        {% endcapture %}
+
+        {{ children }}
+
+        {%- if block.settings.show_price_summary -%}
+          <div class="flow-product-form__price-summary">
+            <span class="flow-product-form__price-summary-label">{{ block.settings.price_summary_label }}</span>
+            <span class="flow-product-form__price-summary-value" data-flow-price-summary>
+              {{ variant.price | money }}
+            </span>
+          </div>
+        {%- endif -%}
+
+        <div class="flow-product-form__actions">
+          <button
+            class="button flow-product-form__add-to-cart"
+            type="button"
+            data-flow-add-to-cart
+            {% unless can_add %}disabled{% endunless %}
+          >
+            {{ block.settings.add_to_cart_label | default: add_text }}
+          </button>
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="flow-product-form__empty">
+      <p>Selecione um produto nas configurações deste bloco.</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .flow-product-form {
+    width: 100%;
+  }
+
+  .flow-product-form__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--gap-lg, 24px);
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .flow-product-form__layout {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .flow-product-form__media {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .flow-product-form__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md, 16px);
+    width: 100%;
+  }
+
+  .flow-product-form__price-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding-md) 0;
+    border-top: 1px solid var(--color-border);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size--2xl, 1.25rem);
+  }
+
+  .flow-product-form__actions {
+    width: 100%;
+  }
+
+  .flow-product-form__add-to-cart {
+    width: 100%;
+    padding-inline: var(--padding-4xl);
+    padding-block: var(--padding-lg);
+    text-transform: var(--button-text-case-primary);
+  }
+
+  .flow-product-form__add-to-cart[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .flow-product-form__add-to-cart.flow-button--loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .flow-product-form__empty {
+    padding: var(--padding-xl);
+    text-align: center;
+    color: rgb(from var(--color-foreground) r g b / 0.5);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Form produto (fluxo)",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "_flow-addon"
+    },
+    {
+      "type": "_flow-property-field"
+    },
+    {
+      "type": "_divider"
+    }
+  ],
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produto"
+    },
+    {
+      "type": "header",
+      "content": "Galeria"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gallery",
+      "label": "Mostrar galeria de mídia",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Resumo de preço"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_summary",
+      "label": "Mostrar resumo de preço total",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "price_summary_label",
+      "label": "Rótulo do resumo",
+      "default": "Total estimado:"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Texto do botão de compra",
+      "default": "Adicionar ao carrinho"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Form produto (fluxo)",
+      "category": "Fluxo TAP",
+      "settings": {
+        "product": "{{ closest.product }}"
+      },
+      "blocks": {
+        "flow-media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "product": "{{ closest.product }}"
+          }
+        }
+      }
+    }
+  ]
+}
+{% endschema %}

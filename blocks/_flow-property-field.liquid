@@ -1,0 +1,210 @@
+{%- doc -%}
+  Input field for line item properties in the guided purchase flow.
+  Data goes as line item properties on the main product.
+  Exposes data-flow-property + data-property-name in DOM for JS collection.
+
+  @param {text} label - Display label for the field
+  @param {text} property_name - Property key sent to Shopify (e.g. nome_completo)
+  @param {select} input_type - text | textarea | select | number | email | tel
+  @param {checkbox} required - Whether the field is required
+  @param {text} placeholder - Placeholder text
+  @param {text} options - Comma-separated options (for select type)
+  @param {number} max_length - Maximum character length
+{%- enddoc -%}
+
+<div
+  class="flow-property-field"
+  {{ block.shopify_attributes }}
+  data-flow-property
+  data-property-name="{{ block.settings.property_name }}"
+  data-property-label="{{ block.settings.label | escape }}"
+  {% if block.settings.required %}data-required="true"{% endif %}
+>
+  {%- if block.settings.label != blank -%}
+    <label
+      class="flow-property-field__label"
+      for="flow-prop-{{ block.id }}"
+    >
+      {{- block.settings.label -}}
+      {%- if block.settings.required -%}
+        <span class="flow-property-field__required" aria-hidden="true">*</span>
+      {%- endif -%}
+    </label>
+  {%- endif -%}
+
+  {%- case block.settings.input_type -%}
+    {%- when 'textarea' -%}
+      <textarea
+        id="flow-prop-{{ block.id }}"
+        class="flow-property-field__input flow-property-field__textarea"
+        name="properties[{{ block.settings.property_name }}]"
+        placeholder="{{ block.settings.placeholder }}"
+        {% if block.settings.required %}required aria-required="true"{% endif %}
+        {% if block.settings.max_length > 0 %}maxlength="{{ block.settings.max_length }}"{% endif %}
+      ></textarea>
+
+    {%- when 'select' -%}
+      <select
+        id="flow-prop-{{ block.id }}"
+        class="flow-property-field__input flow-property-field__select"
+        name="properties[{{ block.settings.property_name }}]"
+        {% if block.settings.required %}required aria-required="true"{% endif %}
+      >
+        <option value="">{{ block.settings.placeholder | default: 'Selecione...' }}</option>
+        {%- assign options_list = block.settings.options | split: ',' -%}
+        {%- for option in options_list -%}
+          {%- assign trimmed = option | strip -%}
+          <option value="{{ trimmed }}">{{ trimmed }}</option>
+        {%- endfor -%}
+      </select>
+
+    {%- else -%}
+      <input
+        id="flow-prop-{{ block.id }}"
+        class="flow-property-field__input"
+        type="{{ block.settings.input_type | default: 'text' }}"
+        name="properties[{{ block.settings.property_name }}]"
+        placeholder="{{ block.settings.placeholder }}"
+        {% if block.settings.required %}required aria-required="true"{% endif %}
+        {% if block.settings.max_length > 0 %}maxlength="{{ block.settings.max_length }}"{% endif %}
+      >
+  {%- endcase -%}
+</div>
+
+{% stylesheet %}
+  .flow-property-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs, 4px);
+  }
+
+  .flow-property-field__label {
+    font-size: var(--font-size--sm);
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  .flow-property-field__required {
+    color: var(--color-error, #c00);
+    margin-inline-start: 2px;
+  }
+
+  .flow-property-field__input {
+    width: 100%;
+    padding: var(--padding-sm) var(--padding-md);
+    font-size: var(--font-size--sm);
+    color: var(--color-input-text);
+    background-color: var(--color-input-background);
+    border: var(--style-border-width-inputs, 1px) solid var(--color-input-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    transition: box-shadow var(--animation-speed) ease;
+  }
+
+  .flow-property-field__input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary);
+  }
+
+  .flow-property-field__input:invalid:not(:placeholder-shown) {
+    border-color: var(--color-error, #c00);
+  }
+
+  .flow-property-field__textarea {
+    min-height: 5rem;
+    resize: vertical;
+  }
+
+  .flow-property-field__select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--padding-md) center;
+    padding-right: calc(var(--padding-md) * 2 + 12px);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Campo de personalização",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Rótulo",
+      "default": "Nome completo"
+    },
+    {
+      "type": "text",
+      "id": "property_name",
+      "label": "Nome da propriedade",
+      "info": "Chave enviada ao pedido (ex: nome_completo, frase, cor_bordado). Sem espaços.",
+      "default": "nome_completo"
+    },
+    {
+      "type": "select",
+      "id": "input_type",
+      "label": "Tipo de campo",
+      "options": [
+        {
+          "value": "text",
+          "label": "Texto"
+        },
+        {
+          "value": "textarea",
+          "label": "Área de texto"
+        },
+        {
+          "value": "select",
+          "label": "Lista de opções"
+        },
+        {
+          "value": "number",
+          "label": "Número"
+        },
+        {
+          "value": "email",
+          "label": "E-mail"
+        },
+        {
+          "value": "tel",
+          "label": "Telefone"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "required",
+      "label": "Obrigatório",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "options",
+      "label": "Opções (separadas por vírgula)",
+      "info": "Apenas para tipo 'Lista de opções'. Ex: Vermelho, Azul, Preto",
+      "visible_if": "{{ block.settings.input_type == 'select' }}"
+    },
+    {
+      "type": "number",
+      "id": "max_length",
+      "label": "Máximo de caracteres",
+      "info": "0 = sem limite",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Campo de personalização",
+      "category": "Fluxo TAP"
+    }
+  ]
+}
+{% endschema %}

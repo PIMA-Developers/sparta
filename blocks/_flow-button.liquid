@@ -1,0 +1,213 @@
+{%- doc -%}
+  Navigation button within the guided purchase flow.
+  Navigates between _flow-step blocks. Does NOT add to cart.
+
+  @param {string} navigation_action - next | previous | restart | skip | go_to_step
+  @param {number} offset - Steps to skip (for 'skip' action)
+  @param {text} target_step_id - Target step ID (for 'go_to_step' action)
+  @param {text} attribute_key - Cart attribute key to set on click
+  @param {text} attribute_value - Cart attribute value to set on click
+  @param {text} label - Button text
+  @param {select} style - Button style: primary | secondary | tertiary
+{%- enddoc -%}
+
+<button
+  class="
+    flow-button
+    button
+    {% if block.settings.style == 'secondary' %}button-secondary
+    {% elsif block.settings.style == 'tertiary' %}button--tertiary
+    {% endif %}
+    {% if block.settings.full_width %}flow-button--full-width{% endif %}
+  "
+  {{ block.shopify_attributes }}
+  type="button"
+  data-flow-button
+  data-navigation-action="{{ block.settings.navigation_action }}"
+  {% if block.settings.navigation_action == 'skip' %}
+    data-navigation-offset="{{ block.settings.offset }}"
+  {% endif %}
+  {% if block.settings.navigation_action == 'go_to_step' %}
+    data-target-step-id="{{ block.settings.target_step_id }}"
+  {% endif %}
+  {% if block.settings.attribute_key != blank %}
+    data-attribute-key="{{ block.settings.attribute_key }}"
+    data-attribute-value="{{ block.settings.attribute_value | escape }}"
+  {% endif %}
+>
+  {%- if block.settings.icon_position == 'left' and block.settings.show_arrow -%}
+    <span class="flow-button__icon flow-button__icon--left" aria-hidden="true">
+      {{- 'icon-arrow.svg' | inline_asset_content -}}
+    </span>
+  {%- endif -%}
+
+  <span class="flow-button__label">{{ block.settings.label }}</span>
+
+  {%- if block.settings.icon_position == 'right' and block.settings.show_arrow -%}
+    <span class="flow-button__icon flow-button__icon--right" aria-hidden="true">
+      {{- 'icon-arrow.svg' | inline_asset_content -}}
+    </span>
+  {%- endif -%}
+</button>
+
+{% stylesheet %}
+  .flow-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-xs);
+    cursor: pointer;
+    padding-inline: var(--padding-4xl);
+    padding-block: var(--padding-lg);
+  }
+
+  .flow-button--full-width {
+    width: 100%;
+  }
+
+  .flow-button__icon--left {
+    transform: rotate(180deg);
+  }
+
+  .flow-button__icon svg {
+    width: 1em;
+    height: 1em;
+  }
+
+  .flow-button[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Botão de navegação",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texto do botão",
+      "default": "Próximo"
+    },
+    {
+      "type": "select",
+      "id": "navigation_action",
+      "label": "Ação de navegação",
+      "options": [
+        {
+          "value": "next",
+          "label": "Próxima etapa"
+        },
+        {
+          "value": "previous",
+          "label": "Etapa anterior"
+        },
+        {
+          "value": "restart",
+          "label": "Recomeçar"
+        },
+        {
+          "value": "skip",
+          "label": "Pular etapas"
+        },
+        {
+          "value": "go_to_step",
+          "label": "Ir para etapa"
+        }
+      ],
+      "default": "next"
+    },
+    {
+      "type": "number",
+      "id": "offset",
+      "label": "Número de etapas para pular",
+      "default": 2,
+      "visible_if": "{{ block.settings.navigation_action == 'skip' }}"
+    },
+    {
+      "type": "text",
+      "id": "target_step_id",
+      "label": "ID da etapa destino",
+      "info": "Deve corresponder ao ID configurado na etapa destino.",
+      "visible_if": "{{ block.settings.navigation_action == 'go_to_step' }}"
+    },
+    {
+      "type": "header",
+      "content": "Atributos do carrinho"
+    },
+    {
+      "type": "text",
+      "id": "attribute_key",
+      "label": "Chave do atributo",
+      "info": "Ex: fluxo_intencao, fluxo_tipo_kimono"
+    },
+    {
+      "type": "text",
+      "id": "attribute_value",
+      "label": "Valor do atributo",
+      "info": "Ex: comprar, comprar_personalizar, apenas_personalizar"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Estilo do botão",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primário"
+        },
+        {
+          "value": "secondary",
+          "label": "Secundário"
+        },
+        {
+          "value": "tertiary",
+          "label": "Terciário"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Largura total",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Mostrar seta",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Posição da seta",
+      "options": [
+        {
+          "value": "left",
+          "label": "Esquerda"
+        },
+        {
+          "value": "right",
+          "label": "Direita"
+        }
+      ],
+      "default": "right",
+      "visible_if": "{{ block.settings.show_arrow }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Botão de navegação",
+      "category": "Fluxo TAP"
+    }
+  ]
+}
+{% endschema %}

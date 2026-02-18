@@ -43,12 +43,36 @@
   {% endif %}
 
   {%- liquid
+    assign flow_service_items = ''
+    for item in cart.items
+      if item.properties._service_type
+        assign flow_service_items = flow_service_items | append: item.key | append: ','
+      endif
+    endfor
+
     if settings.currency_code_enabled_cart_total
       assign total_price = cart.total_price | money_with_currency
     else
       assign total_price = cart.total_price | money
     endif
   -%}
+
+  {%- if flow_service_items != '' -%}
+    <div class="flow-service-fees">
+      {%- for item in cart.items -%}
+        {%- if item.properties._service_type -%}
+          <div class="flow-service-fee cart-primary-typography">
+            <span class="flow-service-fee__label">
+              {{- item.properties._display_name | default: item.title -}}
+            </span>
+            <span class="flow-service-fee__price cart-secondary-typography">
+              {{- item.final_line_price | money -}}
+            </span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 
   <div class="cart__total-container">
     <span
@@ -113,5 +137,20 @@
 
   .cart__installments {
     color: var(--color-foreground);
+  }
+
+  .flow-service-fees {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs, 4px);
+    padding-block: var(--padding-xs);
+  }
+
+  .flow-service-fee {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--cart-font-size--sm);
+    color: rgb(from var(--color-foreground) r g b / 0.7);
   }
 {% endstylesheet %}

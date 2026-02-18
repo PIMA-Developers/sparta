@@ -1,0 +1,599 @@
+{%- doc -%}
+  Guided purchase flow section. All steps live on the same page (show/hide).
+  Accepts _flow-step blocks as children. Includes a static success step.
+
+  @see blocks/_flow-step.liquid
+  @see assets/flow-engine.js
+{%- enddoc -%}
+
+<script
+  src="{{ 'flow-engine.js' | asset_url }}"
+  type="module"
+></script>
+
+<flow-engine
+  class="flow-main section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-transition="{{ section.settings.transition_animation }}"
+  data-transition-speed="{{ section.settings.transition_speed }}"
+  data-transition-easing="{{ section.settings.transition_easing }}"
+  data-error-message="{{ section.settings.error_message_cart_update | escape }}"
+  style="
+    {% if section.settings.section_height == 'custom' %}
+      --section-min-height: {{ section.settings.section_height_custom }}svh;
+    {% elsif section.settings.section_height == 'full-screen' %}
+      --section-min-height: 100svh;
+    {% elsif section.settings.section_height != '' %}
+      --section-min-height: var(--section-height-{{ section.settings.section_height }});
+    {% endif %}
+    {% render 'spacing-style', settings: section.settings %}
+  "
+>
+  <div class="custom-section-background">
+    {% render 'background-media',
+      background_media: section.settings.background_media,
+      background_video: section.settings.video,
+      background_video_position: section.settings.video_position,
+      background_image: section.settings.background_image,
+      background_image_position: section.settings.background_image_position
+    %}
+  </div>
+
+  <div
+    class="border-style flow-main__content"
+    style="{% render 'border-override', settings: section.settings %}"
+  >
+    {% if section.settings.toggle_overlay %}
+      {% render 'overlay', settings: section.settings, layer: '0' %}
+    {% endif %}
+
+    {%- if section.settings.show_progress_indicator -%}
+      <div
+        class="flow-progress"
+        data-flow-progress
+        aria-hidden="true"
+      >
+        {%- if section.settings.progress_style == 'bar' -%}
+          <div class="flow-progress__bar">
+            <div class="flow-progress__bar-fill" data-flow-progress-fill style="width: 0%;"></div>
+          </div>
+        {%- else -%}
+          <div class="flow-progress__steps" data-flow-progress-steps></div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div
+      class="flow-main__steps spacing-style"
+      style="{% render 'spacing-style', settings: section.settings %}"
+      data-flow-steps-container
+    >
+      {% content_for 'blocks' %}
+    </div>
+
+    <div
+      class="flow-main__success"
+      data-flow-success
+      aria-hidden="true"
+      hidden
+    >
+      {% content_for 'block', type: '_flow-step', id: 'success' %}
+    </div>
+  </div>
+
+  <div
+    class="flow-main__error"
+    data-flow-error
+    role="alert"
+    aria-live="assertive"
+    hidden
+  >
+    <span class="flow-main__error-text" data-flow-error-text></span>
+  </div>
+</flow-engine>
+
+{% stylesheet %}
+  flow-engine {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+
+  .flow-main__content {
+    position: relative;
+    z-index: var(--layer-flat, 1);
+  }
+
+  .flow-main__steps {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Progress bar */
+  .flow-progress {
+    width: 100%;
+    padding-inline: var(--padding-md);
+    margin-block-end: var(--margin-md);
+  }
+
+  .flow-progress__bar {
+    width: 100%;
+    height: 4px;
+    background: rgb(from var(--color-foreground) r g b / 0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .flow-progress__bar-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 2px;
+    transition: width var(--animation-speed) var(--animation-easing);
+  }
+
+  .flow-progress__steps {
+    display: flex;
+    gap: var(--gap-xs);
+    justify-content: center;
+  }
+
+  .flow-progress__step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgb(from var(--color-foreground) r g b / 0.2);
+    transition: background var(--animation-speed) var(--animation-easing);
+  }
+
+  .flow-progress__step-dot--active {
+    background: var(--color-primary);
+  }
+
+  .flow-progress__step-dot--visited {
+    background: rgb(from var(--color-primary) r g b / 0.5);
+  }
+
+  /* Error message */
+  .flow-main__error {
+    position: fixed;
+    bottom: var(--padding-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-error, #c00);
+    color: #fff;
+    padding: var(--padding-sm) var(--padding-lg);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    font-size: var(--font-size--sm);
+    z-index: 999;
+    max-width: 90vw;
+    text-align: center;
+  }
+
+  .flow-main__error[hidden] {
+    display: none;
+  }
+
+  /* Transition: fade */
+  .flow-step--transition-fade {
+    opacity: 0;
+    transition: opacity var(--flow-transition-speed, 300ms) var(--flow-transition-easing, ease);
+  }
+
+  .flow-step--transition-fade.flow-step--active {
+    opacity: 1;
+  }
+
+  /* Transition: slide */
+  .flow-step--transition-slide {
+    opacity: 0;
+    transform: translateX(30px);
+    transition:
+      opacity var(--flow-transition-speed, 300ms) var(--flow-transition-easing, ease),
+      transform var(--flow-transition-speed, 300ms) var(--flow-transition-easing, ease);
+  }
+
+  .flow-step--transition-slide.flow-step--active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .flow-step--transition-slide.flow-step--exit-back {
+    transform: translateX(30px);
+  }
+
+  .flow-step--transition-slide.flow-step--exit-forward {
+    transform: translateX(-30px);
+  }
+
+  /* Success step */
+  .flow-main__success[hidden] {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fluxo de compra TAP",
+  "class": "section-wrapper",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "_flow-step"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Fluxo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_indicator",
+      "label": "Barra de progresso",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "progress_style",
+      "label": "Estilo da barra",
+      "options": [
+        {
+          "value": "steps",
+          "label": "Passos"
+        },
+        {
+          "value": "bar",
+          "label": "Barra"
+        }
+      ],
+      "default": "bar",
+      "visible_if": "{{ section.settings.show_progress_indicator }}"
+    },
+    {
+      "type": "select",
+      "id": "transition_animation",
+      "label": "Tipo de animação",
+      "options": [
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "none",
+          "label": "Nenhuma"
+        }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Velocidade da animação",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "unit": "ms",
+      "default": 300,
+      "visible_if": "{{ section.settings.transition_animation != 'none' }}"
+    },
+    {
+      "type": "select",
+      "id": "transition_easing",
+      "label": "Suavidade (easing)",
+      "options": [
+        {
+          "value": "ease",
+          "label": "Ease"
+        },
+        {
+          "value": "ease-in",
+          "label": "Ease In"
+        },
+        {
+          "value": "ease-out",
+          "label": "Ease Out"
+        },
+        {
+          "value": "ease-in-out",
+          "label": "Ease In Out"
+        },
+        {
+          "value": "linear",
+          "label": "Linear"
+        }
+      ],
+      "default": "ease",
+      "visible_if": "{{ section.settings.transition_animation != 'none' }}"
+    },
+    {
+      "type": "text",
+      "id": "error_message_cart_update",
+      "label": "Mensagem de erro (cart)",
+      "default": "Não foi possível salvar. Tente de novo."
+    },
+    {
+      "type": "header",
+      "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "section_height",
+      "label": "t:settings.height",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.auto"
+        },
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        },
+        {
+          "value": "full-screen",
+          "label": "t:options.full_screen"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "section_height_custom",
+      "label": "t:settings.custom_height",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%",
+      "visible_if": "{{ section.settings.section_height == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "background_media",
+      "label": "t:settings.background_media",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "image",
+          "label": "t:options.image"
+        },
+        {
+          "value": "video",
+          "label": "t:options.video"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "t:settings.video",
+      "visible_if": "{{ section.settings.background_media == 'video' }}"
+    },
+    {
+      "type": "select",
+      "id": "video_position",
+      "label": "t:settings.video_position",
+      "options": [
+        {
+          "value": "cover",
+          "label": "t:options.cover"
+        },
+        {
+          "value": "contain",
+          "label": "t:options.contain"
+        }
+      ],
+      "default": "cover",
+      "visible_if": "{{ section.settings.background_media == 'video' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:settings.image",
+      "visible_if": "{{ section.settings.background_media == 'image' }}"
+    },
+    {
+      "type": "select",
+      "id": "background_image_position",
+      "label": "t:settings.image_position",
+      "options": [
+        {
+          "value": "cover",
+          "label": "t:options.cover"
+        },
+        {
+          "value": "fit",
+          "label": "t:options.fit"
+        }
+      ],
+      "default": "cover",
+      "visible_if": "{{ section.settings.background_media == 'image' }}"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:settings.borders",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "t:settings.border_width",
+      "default": 1,
+      "visible_if": "{{ section.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:settings.border_opacity",
+      "default": 100,
+      "visible_if": "{{ section.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle_overlay",
+      "label": "t:settings.background_overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:settings.overlay_color",
+      "alpha": true,
+      "default": "#00000026",
+      "visible_if": "{{ section.settings.toggle_overlay }}"
+    },
+    {
+      "type": "select",
+      "id": "overlay_style",
+      "label": "t:settings.overlay_style",
+      "options": [
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        },
+        {
+          "value": "gradient",
+          "label": "t:options.gradient"
+        }
+      ],
+      "default": "solid",
+      "visible_if": "{{ section.settings.toggle_overlay }}"
+    },
+    {
+      "type": "select",
+      "id": "gradient_direction",
+      "label": "t:settings.gradient_direction",
+      "options": [
+        {
+          "value": "to top",
+          "label": "t:options.up"
+        },
+        {
+          "value": "to bottom",
+          "label": "t:options.down"
+        }
+      ],
+      "default": "to top",
+      "visible_if": "{{ section.settings.toggle_overlay and section.settings.overlay_style == 'gradient' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fluxo de compra TAP",
+      "settings": {
+        "section_width": "page-width",
+        "show_progress_indicator": true,
+        "progress_style": "bar",
+        "transition_animation": "fade",
+        "transition_speed": 300
+      },
+      "blocks": {
+        "success": {
+          "type": "_flow-step",
+          "static": true,
+          "settings": {
+            "step_id": "success"
+          }
+        }
+      }
+    }
+  ]
+}
+{% endschema %}

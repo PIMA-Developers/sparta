@@ -94,6 +94,9 @@
 
           <tbody role="rowgroup">
             {% for item in cart.items %}
+              {%- if item.properties._service_type -%}
+                {%- continue -%}
+              {%- endif -%}
               <tr
                 role="row"
                 class="cart-items__table-row"

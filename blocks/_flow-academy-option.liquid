@@ -1,0 +1,163 @@
+{%- doc -%}
+  Academy selection card within the guided purchase flow.
+  Each instance represents one academy. Navigation is always 'next'.
+  Clicking sets fluxo_academia cart attribute and advances to next step.
+
+  @param {text} label - Academy display name
+  @param {product} product - Academy product (for context)
+  @param {image_picker} image - Academy logo/image
+  @param {text} description - Short description
+  @param {text} attribute_value - Value saved to fluxo_academia attribute
+{%- enddoc -%}
+
+{%- liquid
+  assign product = block.settings.product
+  assign img = block.settings.image | default: product.featured_image
+-%}
+
+<button
+  class="flow-academy-option"
+  {{ block.shopify_attributes }}
+  type="button"
+  data-flow-academy-option
+  data-attribute-value="{{ block.settings.attribute_value | escape }}"
+>
+  {%- if img -%}
+    <div class="flow-academy-option__image">
+      {{ img | image_url: width: 300 | image_tag: class: 'flow-academy-option__img', loading: 'lazy' }}
+    </div>
+  {%- endif -%}
+
+  <div class="flow-academy-option__content">
+    <span class="flow-academy-option__label">
+      {{ block.settings.label | default: product.title | default: 'Academia' }}
+    </span>
+
+    {%- if block.settings.description != blank -%}
+      <span class="flow-academy-option__desc">{{ block.settings.description }}</span>
+    {%- endif -%}
+  </div>
+
+  <span class="flow-academy-option__arrow" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</button>
+
+{% stylesheet %}
+  .flow-academy-option {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md, 16px);
+    width: 100%;
+    padding: var(--padding-md) var(--padding-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color var(--animation-speed) ease,
+      background var(--animation-speed) ease,
+      box-shadow var(--animation-speed) ease;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  .flow-academy-option:hover,
+  .flow-academy-option:focus-visible {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+
+  .flow-academy-option:active {
+    background: rgb(from var(--color-primary) r g b / 0.05);
+  }
+
+  .flow-academy-option__image {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--style-border-radius-inputs, 4px);
+    overflow: hidden;
+  }
+
+  .flow-academy-option__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .flow-academy-option__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .flow-academy-option__label {
+    font-size: var(--font-size--md, 1rem);
+    font-weight: 600;
+  }
+
+  .flow-academy-option__desc {
+    font-size: var(--font-size--sm);
+    color: rgb(from var(--color-foreground) r g b / 0.6);
+  }
+
+  .flow-academy-option__arrow {
+    flex-shrink: 0;
+    opacity: 0.4;
+    transition: opacity var(--animation-speed) ease, transform var(--animation-speed) ease;
+  }
+
+  .flow-academy-option:hover .flow-academy-option__arrow {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Opção de academia",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Nome da academia",
+      "default": "Academia"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produto da academia"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagem/Logo"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Descrição curta"
+    },
+    {
+      "type": "text",
+      "id": "attribute_value",
+      "label": "Valor do atributo fluxo_academia",
+      "info": "Identificador salvo no pedido. Ex: academia_1, academia_alliance"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Opção de academia",
+      "category": "Fluxo TAP"
+    }
+  ]
+}
+{% endschema %}

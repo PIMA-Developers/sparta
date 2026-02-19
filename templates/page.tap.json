@@ -815,6 +815,7 @@
         "flow_step_8qQrRF": {
           "type": "_flow-step",
           "name": "Etapa do fluxo",
+          "disabled": true,
           "settings": {
             "step_id": "",
             "content_direction": "column",

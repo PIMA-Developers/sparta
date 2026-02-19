@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: {{ block.settings.max_width }}px;
+    max-width: 100%;
     margin: 0 auto;
     gap: 20px;
   }
@@ -365,16 +365,6 @@
     {
       "type": "header",
       "content": "Layout"
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "min": 800,
-      "max": 1600,
-      "step": 100,
-      "unit": "px",
-      "label": "Max width",
-      "default": 1200
     },
     {
       "type": "range",

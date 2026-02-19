@@ -58,14 +58,6 @@
 <legend class="variant-option__legend-wrapper">
   {{ product_option.name | escape -}}
   {%- if product_option.name == 'Tamanho' -%}
-<button
-  type="button"
-  class="variant-option__size-chart"
-  data-popup-trigger
->
-  Tabela de Medidas
-</button>
-
   {%- endif -%}
   {%- if variant_style == 'swatch' -%}
     <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>

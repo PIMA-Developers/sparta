@@ -1006,6 +1006,7 @@
         "success": {
           "type": "_flow-step",
           "name": "Sucesso",
+          "disabled": true,
           "static": true,
           "settings": {
             "step_id": "success",

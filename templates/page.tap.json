@@ -718,7 +718,7 @@
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 16,
-            "color_scheme": "",
+            "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
@@ -750,14 +750,14 @@
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
                 "gap": 12,
-                "width": "fill",
-                "custom_width": 100,
+                "width": "custom",
+                "custom_width": 80,
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
                 "height": "fit",
                 "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997",
                 "background_media": "none",
                 "video_position": "cover",
                 "background_image_position": "cover",
@@ -774,47 +774,38 @@
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {}
-            },
-            "flow_academy_option_XqwAjR": {
-              "type": "_flow-academy-option",
-              "name": "Opção de academia",
-              "settings": {
-                "label": "Academia",
-                "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                "description": "",
-                "attribute_value": ""
+              "blocks": {
+                "flow_academy_option_HrwxeJ": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "Academia",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "description": "Academia",
+                    "attribute_value": ""
+                  },
+                  "blocks": {}
+                },
+                "flow_academy_option_TdBgye": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "Academia",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "description": "Academia",
+                    "attribute_value": ""
+                  },
+                  "blocks": {}
+                }
               },
-              "blocks": {}
-            },
-            "flow_academy_option_8zfWnA": {
-              "type": "_flow-academy-option",
-              "name": "Opção de academia",
-              "settings": {
-                "label": "Academia",
-                "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                "description": "",
-                "attribute_value": ""
-              },
-              "blocks": {}
-            },
-            "flow_academy_option_iAFWmF": {
-              "type": "_flow-academy-option",
-              "name": "Opção de academia",
-              "settings": {
-                "label": "Academia",
-                "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                "description": "",
-                "attribute_value": ""
-              },
-              "blocks": {}
+              "block_order": [
+                "flow_academy_option_HrwxeJ",
+                "flow_academy_option_TdBgye"
+              ]
             }
           },
           "block_order": [
-            "group_8me9RF",
-            "flow_academy_option_XqwAjR",
-            "flow_academy_option_8zfWnA",
-            "flow_academy_option_iAFWmF"
+            "group_8me9RF"
           ]
         },
         "success": {

@@ -1,6 +1,495 @@
+{% doc %}
+  @prompt
+    crie uma seção de header
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-header-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    border-bottom: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    position: {{ block.settings.position }};
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+  .ai-header-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .ai-header-logo-{{ ai_gen_id }} {
+    flex-shrink: 0;
+  }
+
+  .ai-header-logo-{{ ai_gen_id }} img {
+    height: {{ block.settings.logo_height }}px;
+    width: auto;
+    display: block;
+  }
+
+  .ai-header-nav-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.nav_spacing }}px;
+    flex-grow: 1;
+    justify-content: center;
+  }
+
+  .ai-header-nav-{{ ai_gen_id }} a {
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.nav_font_size }}px;
+    font-weight: {{ block.settings.nav_font_weight }};
+    transition: color 0.3s ease;
+  }
+
+  .ai-header-nav-{{ ai_gen_id }} a:hover {
+    color: {{ block.settings.text_hover_color }};
+  }
+
+  .ai-header-actions-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.actions_spacing }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-header-action-btn-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: {{ block.settings.text_color }};
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-header-action-btn-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.text_hover_color }};
+  }
+
+  .ai-header-action-btn-{{ ai_gen_id }} svg {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    stroke: currentColor;
+    fill: none;
+  }
+
+  .ai-header-mobile-toggle-{{ ai_gen_id }} {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-header-mobile-toggle-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    fill: none;
+  }
+
+  @media screen and (max-width: 990px) {
+    .ai-header-nav-{{ ai_gen_id }} {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: {{ block.settings.background_color }};
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      border-bottom: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    }
+
+    .ai-header-nav-{{ ai_gen_id }}.active {
+      display: flex;
+    }
+
+    .ai-header-mobile-toggle-{{ ai_gen_id }} {
+      display: block;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-header-container-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_vertical | times: 0.7 }}px {{ block.settings.padding_horizontal | times: 0.7 }}px;
+    }
+
+    .ai-header-logo-{{ ai_gen_id }} img {
+      height: {{ block.settings.logo_height | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<header-component-{{ ai_gen_id }} class="ai-header-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-header-container-{{ ai_gen_id }}">
+    <div class="ai-header-logo-{{ ai_gen_id }}">
+      {% if block.settings.logo != blank %}
+        <a href="/">
+          <img
+            src="{{ block.settings.logo | image_url: width: 400 }}"
+            alt="{{ shop.name }}"
+            loading="lazy"
+            width="{{ block.settings.logo.width }}"
+            height="{{ block.settings.logo.height }}"
+          >
+        </a>
+      {% else %}
+        <a href="/" style="color: {{ block.settings.text_color }}; font-size: {{ block.settings.nav_font_size | plus: 4 }}px; font-weight: 700; text-decoration: none;">
+          {{ shop.name }}
+        </a>
+      {% endif %}
+    </div>
+
+    <button class="ai-header-mobile-toggle-{{ ai_gen_id }}" aria-label="Abrir menu" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <nav class="ai-header-nav-{{ ai_gen_id }}">
+      {% if block.settings.nav_link_1_text != blank %}
+        <a href="{{ block.settings.nav_link_1_url }}">{{ block.settings.nav_link_1_text }}</a>
+      {% endif %}
+      {% if block.settings.nav_link_2_text != blank %}
+        <a href="{{ block.settings.nav_link_2_url }}">{{ block.settings.nav_link_2_text }}</a>
+      {% endif %}
+      {% if block.settings.nav_link_3_text != blank %}
+        <a href="{{ block.settings.nav_link_3_url }}">{{ block.settings.nav_link_3_text }}</a>
+      {% endif %}
+      {% if block.settings.nav_link_4_text != blank %}
+        <a href="{{ block.settings.nav_link_4_url }}">{{ block.settings.nav_link_4_text }}</a>
+      {% endif %}
+      {% if block.settings.nav_link_5_text != blank %}
+        <a href="{{ block.settings.nav_link_5_url }}">{{ block.settings.nav_link_5_text }}</a>
+      {% endif %}
+    </nav>
+
+    <div class="ai-header-actions-{{ ai_gen_id }}">
+      {% if block.settings.show_search %}
+        <button class="ai-header-action-btn-{{ ai_gen_id }}" aria-label="Buscar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      {% endif %}
+
+      {% if block.settings.show_account %}
+        <a href="/account" class="ai-header-action-btn-{{ ai_gen_id }}" aria-label="Conta">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+      {% endif %}
+
+      {% if block.settings.show_cart %}
+        <a href="/cart" class="ai-header-action-btn-{{ ai_gen_id }}" aria-label="Carrinho">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</header-component-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HeaderComponent{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.mobileToggle = this.querySelector('.ai-header-mobile-toggle-{{ ai_gen_id }}');
+        this.nav = this.querySelector('.ai-header-nav-{{ ai_gen_id }}');
+        
+        if (this.mobileToggle && this.nav) {
+          this.mobileToggle.addEventListener('click', () => {
+            const isActive = this.nav.classList.contains('active');
+            this.nav.classList.toggle('active');
+            this.mobileToggle.setAttribute('aria-expanded', !isActive);
+          });
+        }
+      }
+    }
+
+    customElements.define('header-component-{{ ai_gen_id }}', HeaderComponent{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Header",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Altura do logo",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Navegação"
+    },
+    {
+      "type": "text",
+      "id": "nav_link_1_text",
+      "label": "Link 1 - Texto",
+      "default": "Início"
+    },
+    {
+      "type": "url",
+      "id": "nav_link_1_url",
+      "label": "Link 1 - URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_link_2_text",
+      "label": "Link 2 - Texto",
+      "default": "Produtos"
+    },
+    {
+      "type": "url",
+      "id": "nav_link_2_url",
+      "label": "Link 2 - URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_link_3_text",
+      "label": "Link 3 - Texto",
+      "default": "Sobre"
+    },
+    {
+      "type": "url",
+      "id": "nav_link_3_url",
+      "label": "Link 3 - URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_link_4_text",
+      "label": "Link 4 - Texto"
+    },
+    {
+      "type": "url",
+      "id": "nav_link_4_url",
+      "label": "Link 4 - URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_link_5_text",
+      "label": "Link 5 - Texto"
+    },
+    {
+      "type": "url",
+      "id": "nav_link_5_url",
+      "label": "Link 5 - URL"
+    },
+    {
+      "type": "range",
+      "id": "nav_font_size",
+      "label": "Tamanho da fonte",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "nav_font_weight",
+      "label": "Peso da fonte",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Médio"
+        },
+        {
+          "value": "600",
+          "label": "Semi-negrito"
+        },
+        {
+          "value": "700",
+          "label": "Negrito"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "nav_spacing",
+      "label": "Espaçamento entre links",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Ações"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Mostrar busca",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Mostrar conta",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Mostrar carrinho",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamanho dos ícones",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "actions_spacing",
+      "label": "Espaçamento entre ações",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Posição",
+      "options": [
+        {
+          "value": "relative",
+          "label": "Normal"
+        },
+        {
+          "value": "sticky",
+          "label": "Fixo ao rolar"
+        }
+      ],
+      "default": "sticky"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Espaçamento vertical",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Espaçamento horizontal",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Cores"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fundo",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texto",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_hover_color",
+      "label": "Texto ao passar o mouse",
+      "default": "#acc100"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borda",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Largura da borda",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
 {% endschema %}

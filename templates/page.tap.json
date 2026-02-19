@@ -63,6 +63,7 @@
         "flow_step_8BKQLw": {
           "type": "_flow-step",
           "name": "Inicio",
+          "disabled": true,
           "settings": {
             "step_id": "inicio",
             "content_direction": "column",
@@ -249,6 +250,7 @@
         "flow_step_eqMTAe": {
           "type": "_flow-step",
           "name": "F1 - 0 | ACAD. X PADRÃO",
+          "disabled": true,
           "settings": {
             "step_id": "f1_0",
             "content_direction": "column",
@@ -479,6 +481,7 @@
         "flow_step_iEt7NT": {
           "type": "_flow-step",
           "name": "F2 - 0 | ACAD. X PADRÃO",
+          "disabled": true,
           "settings": {
             "step_id": "f2_0",
             "content_direction": "column",
@@ -709,6 +712,7 @@
         "flow_step_EnGidz": {
           "type": "_flow-step",
           "name": "F2_1 | ACADEMIA",
+          "disabled": true,
           "settings": {
             "step_id": "f2_1",
             "content_direction": "column",
@@ -808,6 +812,81 @@
             "group_8me9RF"
           ]
         },
+        "flow_step_8qQrRF": {
+          "type": "_flow-step",
+          "name": "Etapa do fluxo",
+          "settings": {
+            "step_id": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_YMwbne": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_YMwbne"
+          ]
+        },
         "success": {
           "type": "_flow-step",
           "name": "Sucesso",
@@ -845,7 +924,8 @@
         "flow_step_8BKQLw",
         "flow_step_eqMTAe",
         "flow_step_iEt7NT",
-        "flow_step_EnGidz"
+        "flow_step_EnGidz",
+        "flow_step_8qQrRF"
       ],
       "name": "Fluxo de compra TAP",
       "settings": {

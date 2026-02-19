@@ -60,8 +60,655 @@
     "flow_main_Tm6H8U": {
       "type": "flow-main",
       "blocks": {
+        "flow_step_8BKQLw": {
+          "type": "_flow-step",
+          "name": "Inicio",
+          "settings": {
+            "step_id": "inicio",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_yaAnWN": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>New arrivals</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_xcb7dH": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_nFddKt": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_aV7bEG": {
+                  "type": "_flow-button",
+                  "name": "Comprar Kimono",
+                  "settings": {
+                    "label": "Comprar Kimono",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f1_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_zxmYg8": {
+                  "type": "_flow-button",
+                  "name": "Comprar Kimono + Personalização",
+                  "settings": {
+                    "label": "Comprar Kimono + Personalização",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_CKiKED": {
+                  "type": "_flow-button",
+                  "name": "Botão de navegação",
+                  "settings": {
+                    "label": "Personalizar meu Kimono",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_aV7bEG",
+                "flow_button_zxmYg8",
+                "flow_button_CKiKED"
+              ]
+            }
+          },
+          "block_order": [
+            "text_yaAnWN",
+            "text_xcb7dH",
+            "group_nFddKt"
+          ]
+        },
+        "flow_step_eqMTAe": {
+          "type": "_flow-step",
+          "name": "F1 - 0 | ACAD. X PADRÃO",
+          "settings": {
+            "step_id": "f1_0",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_q3UcaG": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Que tipo de Kimono precisa?</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_jYVAJC": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_H9arfR": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_fQ9CHc": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Kimono Padrão",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_xhCMKL": {
+                  "type": "_flow-button",
+                  "name": "Academia Parceira",
+                  "settings": {
+                    "label": "Academia Parceira",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f1_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_fQ9CHc",
+                "flow_button_xhCMKL"
+              ]
+            },
+            "group_WVGdb4": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_Hb4z49": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "inicio",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_Hb4z49"
+              ]
+            }
+          },
+          "block_order": [
+            "text_q3UcaG",
+            "text_jYVAJC",
+            "group_H9arfR",
+            "group_WVGdb4"
+          ]
+        },
+        "flow_step_iEt7NT": {
+          "type": "_flow-step",
+          "name": "F2 - 0 | ACAD. X PADRÃO",
+          "settings": {
+            "step_id": "f2_0",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_FWtLT9": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Que tipo de Kimono deseja comprar e personalizar?</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_b6attx": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_dKJx4q": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_EpWj8B": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Kimono Padrão",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_6DebAF": {
+                  "type": "_flow-button",
+                  "name": "Academia Parceira",
+                  "settings": {
+                    "label": "Academia Parceira",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f1_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_EpWj8B",
+                "flow_button_6DebAF"
+              ]
+            },
+            "group_LG4a8n": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_8TW8HT": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "inicio",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_8TW8HT"
+              ]
+            }
+          },
+          "block_order": [
+            "text_FWtLT9",
+            "text_b6attx",
+            "group_dKJx4q",
+            "group_LG4a8n"
+          ]
+        },
         "success": {
           "type": "_flow-step",
+          "name": "Sucesso",
           "static": true,
           "settings": {
             "step_id": "success",
@@ -92,19 +739,25 @@
           "blocks": {}
         }
       },
+      "block_order": [
+        "flow_step_8BKQLw",
+        "flow_step_eqMTAe",
+        "flow_step_iEt7NT"
+      ],
       "name": "Fluxo de compra TAP",
       "settings": {
-        "show_progress_indicator": true,
+        "show_progress_indicator": false,
         "progress_style": "bar",
         "transition_animation": "fade",
-        "transition_speed": 300,
-        "transition_easing": "ease",
+        "transition_speed": 500,
+        "transition_easing": "ease-in",
         "error_message_cart_update": "Não foi possível salvar. Tente de novo.",
-        "section_width": "page-width",
-        "section_height": "",
+        "section_width": "full-width",
+        "section_height": "large",
         "section_height_custom": 50,
         "color_scheme": "",
-        "background_media": "none",
+        "background_media": "video",
+        "video": "shopify://files/videos/copy_0FE44B2A-07FD-4E29-BA85-6821381CABBA 2.mov",
         "video_position": "cover",
         "background_image_position": "cover",
         "border": "none",
@@ -115,8 +768,8 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 20,
-        "padding-block-end": 20
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     }
   },

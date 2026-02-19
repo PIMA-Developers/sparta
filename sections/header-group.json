@@ -62,16 +62,15 @@
         "ai_gen_block_7f769e3_xXKkYY": {
           "type": "ai_gen_block_7f769e3",
           "settings": {
-            "logo_1": "shopify://shop_images/logo-horizontal-preto_c6a83430-0bac-427c-ba46-b7d7b09f216c.png",
-            "logo_link_1": "",
-            "logo_2": "shopify://shop_images/logo-horizontal-preto_c6a83430-0bac-427c-ba46-b7d7b09f216c.png",
+            "logo_1": "shopify://shop_images/SPARTA_REDONDO_BRANCO_-_COSTAS.png",
+            "logo_link_1": "shopify://pages/tap",
             "logo_link_2": "",
             "logo_link_3": "",
-            "logo_height": 20,
+            "logo_height": 30,
             "logos_gap": 15,
             "placeholder_bg_color": "#f5f5f5",
             "menu": "top-menu",
-            "menu_font_size": 14,
+            "menu_font_size": 12,
             "menu_font_weight": "400",
             "menu_text_transform": "none",
             "menu_text_color": "#000000",
@@ -81,7 +80,7 @@
             "separator_height": 16,
             "separator_color": "#cccccc",
             "max_width": 1600,
-            "padding_vertical": 15,
+            "padding_vertical": 10,
             "padding_horizontal": 10,
             "background_color": "#f5f5f5"
           },
@@ -91,6 +90,7 @@
       "block_order": [
         "ai_gen_block_7f769e3_xXKkYY"
       ],
+      "name": "Barrra personalizável",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -127,7 +127,7 @@
           "static": true,
           "settings": {
             "hide_logo_on_home_page": false,
-            "custom_height": 32,
+            "custom_height": 35,
             "custom_height_mobile": 26,
             "padding-block-start": 0,
             "padding-block-end": 0,

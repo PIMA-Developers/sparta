@@ -81,6 +81,52 @@ class FlowEngine extends HTMLElement {
         this._handleAddToCart(addToCartBtn);
         return;
       }
+
+      // --- Addons: delegação (funciona mesmo após re-render do variant-picker) ---
+
+      // Toggle button
+      const toggleBtn = e.target.closest('button[data-flow-addon-toggle]');
+      if (toggleBtn) {
+        e.preventDefault();
+        const item = toggleBtn.closest('.flow-addon__item');
+        if (!item) return;
+
+        const isPressed = toggleBtn.getAttribute('aria-pressed') === 'true';
+        const next = !isPressed;
+
+        toggleBtn.setAttribute('aria-pressed', String(next));
+        item.dataset.addonSelected = String(next);
+
+        this._updatePriceSummary();
+        return;
+      }
+
+      // Clique no card inteiro alterna checkbox/toggle
+      const addonItem = e.target.closest('.flow-addon__item');
+      if (addonItem && addonItem.closest('[data-flow-addon]')) {
+        const checkbox = addonItem.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+        const btn = addonItem.querySelector('button[data-flow-addon-toggle]');
+
+        // Se clicou direto no input, deixa o change cuidar
+        if (checkbox && e.target === checkbox) return;
+
+        if (btn) {
+          e.preventDefault();
+          const isPressed = btn.getAttribute('aria-pressed') === 'true';
+          const next = !isPressed;
+          btn.setAttribute('aria-pressed', String(next));
+          addonItem.dataset.addonSelected = String(next);
+          this._updatePriceSummary();
+          return;
+        }
+
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          addonItem.dataset.addonSelected = String(checkbox.checked);
+          this._updatePriceSummary();
+          return;
+        }
+      }
     });
 
     this.addEventListener('flow:recalc', () => {

@@ -118,6 +118,9 @@ class FlowEngine extends HTMLElement {
           const next = !isPressed;
           btn.setAttribute('aria-pressed', String(next));
           addonItem.dataset.addonSelected = String(next);
+
+          if (next) this._enforceSingleSelection(addonItem);
+
           this._updatePriceSummary();
           return;
         }
@@ -611,29 +614,24 @@ class FlowEngine extends HTMLElement {
   /* ── Addon checkbox control ──────────────────────────────────────── */
 
   _enforceSingleSelection(itemEl) {
-  // itemEl = .flow-addon__item que acabou de ser selecionado
-  const addonBlock = itemEl?.closest?.('[data-flow-addon]');
-  if (!addonBlock) return;
+    const addonBlock = itemEl?.closest?.('[data-flow-addon]');
+    if (!addonBlock) return;
 
-  const mode = addonBlock.dataset.selectionMode || 'any';
-  if (mode !== 'single') return;
+    if ((addonBlock.dataset.selectionMode || 'any') !== 'single') return;
 
-  // desmarca todos os outros itens do mesmo bloco
-  const items = addonBlock.querySelectorAll('.flow-addon__item');
-  items.forEach((el) => {
-    if (el === itemEl) return;
+    const items = addonBlock.querySelectorAll('.flow-addon__item');
+    items.forEach((el) => {
+      if (el === itemEl) return;
 
-    el.dataset.addonSelected = 'false';
+      el.dataset.addonSelected = 'false';
 
-    // se tiver checkbox, desmarca
-    const cb = el.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
-    if (cb) cb.checked = false;
+      const cb = el.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+      if (cb) cb.checked = false;
 
-    // se tiver toggle button, desliga
-    const btn = el.querySelector('button[data-flow-addon-toggle]');
-    if (btn) btn.setAttribute('aria-pressed', 'false');
-  });
-}
+      const btn = el.querySelector('button[data-flow-addon-toggle]');
+      if (btn) btn.setAttribute('aria-pressed', 'false');
+    });
+  }
 
   /* ── Price summary ──────────────────────────────────────── */
 

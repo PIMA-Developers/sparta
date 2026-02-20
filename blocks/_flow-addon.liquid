@@ -345,6 +345,17 @@
       "limit": 20
     },
     {
+      "type": "select",
+      "id": "selection_mode",
+      "label": "Seleção",
+      "options": [
+        { "value": "any", "label": "Qualquer" },
+        { "value": "single", "label": "Apenas uma" }
+      ],
+      "default": "any",
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.appearance"
     },

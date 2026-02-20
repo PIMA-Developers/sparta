@@ -510,7 +510,9 @@ class FlowEngine extends HTMLElement {
 
     // Main product price
     const mainPrice = parseInt(form.dataset.price, 10) || 0;
-    total += mainPrice;
+    const mainQtyInput = form.querySelector('[data-flow-main-quantity]');
+    const mainQty = mainQtyInput ? parseInt(mainQtyInput.value, 10) || 1 : 1;
+    total += mainPrice * mainQty;
 
     // Selected addons
     const selectedAddons = form.querySelectorAll('[data-addon-selected="true"][data-price]');

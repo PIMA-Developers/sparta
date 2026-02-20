@@ -134,35 +134,30 @@ class FlowEngine extends HTMLElement {
     });
 
     this.addEventListener('change', (e) => {
-      this.addEventListener('change', (e) => {
-        // Checkbox addon: refletir estado no dataset
-        const addonCheckbox = e.target.closest('input[type="checkbox"][data-flow-addon-toggle]');
-        if (addonCheckbox) {
-          const item = addonCheckbox.closest('.flow-addon__item');
-          if (item) item.dataset.addonSelected = String(addonCheckbox.checked);
-          this._updatePriceSummary();
-          return;
-        }
+      // Checkbox addon: refletir estado no dataset e recalcular
+      const addonCheckbox = e.target.closest('input[type="checkbox"][data-flow-addon-toggle]');
+      if (addonCheckbox) {
+        const item = addonCheckbox.closest('.flow-addon__item');
+        if (item) item.dataset.addonSelected = String(addonCheckbox.checked);
+        this._updatePriceSummary();
+        return;
+      }
 
-        // Quantidade addon
-        const qtyInput = e.target.closest('[data-flow-addon-quantity]');
-        if (qtyInput) {
-          const item = qtyInput.closest('.flow-addon__item');
-          if (item) item.dataset.addonQuantity = qtyInput.value || '1';
-          this._updatePriceSummary();
-          return;
-        }
+      // Quantidade addon: refletir qty e recalcular
+      const qtyInput = e.target.closest('[data-flow-addon-quantity]');
+      if (qtyInput) {
+        const item = qtyInput.closest('.flow-addon__item');
+        if (item) item.dataset.addonQuantity = qtyInput.value || '1';
+        this._updatePriceSummary();
+        return;
+      }
 
-        // fallback
-        const addon = e.target.closest('[data-flow-addon]');
-        if (addon) this._updatePriceSummary();
-
-        const variantInput = e.target.closest('[data-flow-variant-change]');
-        if (variantInput) this._updatePriceSummary();
-      });
-
+      // (Opcional) Se você ainda usar algum input legado de variante
       const variantInput = e.target.closest('[data-flow-variant-change]');
-      if (variantInput) this._updatePriceSummary();
+      if (variantInput) {
+        this._updatePriceSummary();
+        return;
+      }
     });
 
     this.addEventListener('variant:update', (e) => {

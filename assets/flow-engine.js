@@ -119,9 +119,6 @@ class FlowEngine extends HTMLElement {
           optionEl.setAttribute('aria-pressed', String(optionEl === variantOption));
         });
 
-        const nameTarget = item.querySelector('[data-flow-addon-selected-variant-name]');
-        if (nameTarget && variantTitle) nameTarget.textContent = variantTitle;
-
         const priceTarget = item.querySelector('.flow-addon__item-price');
         if (priceTarget && variantPriceMoney) priceTarget.textContent = variantPriceMoney;
 
@@ -279,8 +276,11 @@ class FlowEngine extends HTMLElement {
 
     trigger.setAttribute('aria-expanded', String(isOpen));
 
+    const item = trigger.closest('.flow-addon__item');
+
     if (isOpen) {
       panel.classList.add('is-open');
+      if (item) item.classList.add('flow-addon__item--collapsible-open');
       panel.style.maxHeight = `${panel.scrollHeight}px`;
       const onOpenTransitionEnd = (event) => {
         if (event.propertyName !== 'max-height') return;
@@ -299,6 +299,7 @@ class FlowEngine extends HTMLElement {
 
     window.requestAnimationFrame(() => {
       panel.classList.remove('is-open');
+      if (item) item.classList.remove('flow-addon__item--collapsible-open');
       panel.style.maxHeight = '0px';
     });
   }
@@ -634,16 +635,23 @@ class FlowEngine extends HTMLElement {
       const selected = addon.querySelectorAll('[data-addon-selected="true"]');
       selected.forEach((item) => {
         const vid = item.dataset.addonVariantId;
-        const propKey = item.dataset.servicePropertyKey || '_service_type';
-        const propValue = item.dataset.servicePropertyValue || 'service';
+        const addMetadata = item.dataset.serviceAddMetadata === 'true';
+        const propKey = item.dataset.servicePropertyKey || '';
+        const propValue = item.dataset.servicePropertyValue || '';
         const displayName = item.dataset.serviceDisplayName || '';
         if (vid) {
-          const serviceProps = { [propKey]: propValue };
+          const serviceProps = {};
+
+          if (addMetadata && propKey && propValue) {
+            serviceProps[propKey] = propValue;
+          }
+
           if (displayName) serviceProps['_display_name'] = displayName;
+
           items.push({
             id: parseInt(vid, 10),
             quantity: 1,
-            properties: serviceProps,
+            properties: Object.keys(serviceProps).length > 0 ? serviceProps : undefined,
           });
         }
       });

@@ -1833,6 +1833,7 @@
                 "text_xAceHw": {
                   "type": "text",
                   "name": "t:names.heading",
+                  "disabled": true,
                   "settings": {
                     "text": "<h2>Escolha seu Kimono</h2>",
                     "width": "100%",
@@ -1870,11 +1871,36 @@
                     "text_kVqtVG": {
                       "type": "text",
                       "name": "t:names.heading",
-                      "disabled": true,
                       "settings": {
-                        "text": "<h2>New arrivals</h2>",
+                        "text": "<h4>Escolha seu kimono</h4>",
                         "width": "fit-content",
                         "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "product_description_eYHcGD": {
+                      "type": "product-description",
+                      "name": "t:names.product_description",
+                      "settings": {
+                        "text": "<h5>{{ closest.product.description }}</h5>",
+                        "width": "100%",
+                        "max_width": "none",
                         "alignment": "left",
                         "type_preset": "rte",
                         "font": "var(--font-body--family)",
@@ -2086,6 +2112,7 @@
                   },
                   "block_order": [
                     "text_kVqtVG",
+                    "product_description_eYHcGD",
                     "variant_picker_NmF7LJ",
                     "flow_addon_khym7y",
                     "divider_XGHqGp",

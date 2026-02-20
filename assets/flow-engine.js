@@ -84,6 +84,48 @@ class FlowEngine extends HTMLElement {
 
       // --- Addons: delegação (funciona mesmo após re-render do variant-picker) ---
 
+      const collapsibleTrigger = e.target.closest('[data-flow-addon-collapsible-trigger]');
+      if (collapsibleTrigger) {
+        e.preventDefault();
+        const panelId = collapsibleTrigger.getAttribute('aria-controls');
+        const panel = panelId ? this.querySelector(`#${panelId}`) : null;
+        if (!panel) return;
+
+        const isExpanded = collapsibleTrigger.getAttribute('aria-expanded') === 'true';
+        this._setAddonCollapsibleState(collapsibleTrigger, panel, !isExpanded);
+        return;
+      }
+
+      const variantOption = e.target.closest('[data-flow-addon-variant-option]');
+      if (variantOption) {
+        e.preventDefault();
+        const item = variantOption.closest('.flow-addon__item');
+        if (!item) return;
+
+        const variantId = variantOption.dataset.variantId;
+        const variantPrice = variantOption.dataset.variantPrice;
+        const variantTitle = variantOption.dataset.variantTitle;
+        const variantPriceMoney = variantOption.dataset.variantPriceMoney;
+
+        item.dataset.addonSelected = 'true';
+        if (variantId) item.dataset.addonVariantId = variantId;
+        if (variantPrice) item.dataset.price = variantPrice;
+
+        item.querySelectorAll('[data-flow-addon-variant-option]').forEach((optionEl) => {
+          optionEl.setAttribute('aria-pressed', String(optionEl === variantOption));
+        });
+
+        const nameTarget = item.querySelector('[data-flow-addon-selected-variant-name]');
+        if (nameTarget && variantTitle) nameTarget.textContent = variantTitle;
+
+        const priceTarget = item.querySelector('.flow-addon__item-price');
+        if (priceTarget && variantPriceMoney) priceTarget.textContent = variantPriceMoney;
+
+        this._enforceSingleSelection(item);
+        this._updatePriceSummary();
+        return;
+      }
+
       // Toggle button
       const toggleBtn = e.target.closest('button[data-flow-addon-toggle]');
       if (toggleBtn) {
@@ -106,6 +148,22 @@ class FlowEngine extends HTMLElement {
       // Clique no card inteiro alterna checkbox/toggle
       const addonItem = e.target.closest('.flow-addon__item');
       if (addonItem && addonItem.closest('[data-flow-addon]')) {
+        if (e.target.closest('[data-flow-addon-collapsible-trigger], [data-flow-addon-variant-option], [data-flow-addon-collapsible-panel]')) {
+          return;
+        }
+
+        const collapsibleTriggerInItem = addonItem.querySelector('[data-flow-addon-collapsible-trigger]');
+        if (collapsibleTriggerInItem) {
+          e.preventDefault();
+          const panelId = collapsibleTriggerInItem.getAttribute('aria-controls');
+          const panel = panelId ? this.querySelector(`#${panelId}`) : null;
+          if (!panel) return;
+
+          const isExpanded = collapsibleTriggerInItem.getAttribute('aria-expanded') === 'true';
+          this._setAddonCollapsibleState(collapsibleTriggerInItem, panel, !isExpanded);
+          return;
+        }
+
         const checkbox = addonItem.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
         const btn = addonItem.querySelector('button[data-flow-addon-toggle]');
 
@@ -206,6 +264,25 @@ class FlowEngine extends HTMLElement {
       }
 
       this._updatePriceSummary();
+    });
+  }
+
+
+  _setAddonCollapsibleState(trigger, panel, isOpen) {
+    if (!trigger || !panel) return;
+
+    trigger.setAttribute('aria-expanded', String(isOpen));
+
+    if (isOpen) {
+      panel.classList.add('is-open');
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+      return;
+    }
+
+    panel.style.maxHeight = `${panel.scrollHeight}px`;
+    window.requestAnimationFrame(() => {
+      panel.classList.remove('is-open');
+      panel.style.maxHeight = '0px';
     });
   }
 

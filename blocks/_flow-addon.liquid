@@ -172,6 +172,9 @@
 
       const isSelected = toggle.type === 'checkbox' ? toggle.checked : false;
       item.dataset.addonSelected = String(isSelected);
+
+      const engine = block.closest('flow-engine');
+      if (engine && engine._updatePriceSummary) engine._updatePriceSummary();
     });
 
     block.addEventListener('click', (e) => {

@@ -515,7 +515,9 @@ class FlowEngine extends HTMLElement {
     // Selected addons
     const selectedAddons = form.querySelectorAll('[data-addon-selected="true"][data-price]');
     selectedAddons.forEach((el) => {
-      total += parseInt(el.dataset.price, 10) || 0;
+      const price = parseInt(el.dataset.price, 10) || 0;
+      const qty = parseInt(el.dataset.addonQuantity, 10) || 1;
+      total += price * qty;
     });
 
     // Update summary element

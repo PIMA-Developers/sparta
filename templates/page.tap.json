@@ -2419,7 +2419,7 @@
                   "type": "_flow-product-form",
                   "name": "Form produto (fluxo)",
                   "settings": {
-                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "product": "kimono-proprio",
                     "show_gallery": true,
                     "show_price_summary": true,
                     "price_summary_label": "Total estimado:",

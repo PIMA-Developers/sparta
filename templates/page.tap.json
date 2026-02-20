@@ -1176,7 +1176,7 @@
                       "name": "Addons do produto",
                       "settings": {
                         "heading": "Prazo de produção",
-                        "addon_type": "service",
+                        "addon_type": "product",
                         "products": [
                           "entrega-expressa-ate-7-dias-uteis",
                           "entrega-turbo-ate-48h"

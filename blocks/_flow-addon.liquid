@@ -30,6 +30,7 @@
   {{ block.shopify_attributes }}
   data-flow-addon
   data-addon-type="{{ addon_type }}"
+  data-selection-mode="{{ block.settings.selection_mode | default: 'any' }}"
 >
   {%- if block.settings.heading != blank -%}
     <h3 class="flow-addon__heading">{{ block.settings.heading }}</h3>

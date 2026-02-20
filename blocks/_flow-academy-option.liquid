@@ -13,13 +13,15 @@
 {%- liquid
   assign product = block.settings.product
   assign img = block.settings.image | default: product.featured_image
+
+  assign academy_color_class = ''
+  if block.settings.inherit_color_scheme == false and block.settings.color_scheme != blank
+  assign academy_color_class = block.settings.color_scheme | prepend: ' color-'
+  endif
 -%}
 
 <button
-  class="flow-academy-option
-  {%- if block.settings.inherit_color_scheme == false and block.settings.color_scheme != blank -%}
-    color-{{ block.settings.color_scheme }}
-  {%- endif -%}
+  class="flow-academy-option{{ academy_color_class }}
   "
   {{ block.shopify_attributes }}
   type="button"
@@ -203,16 +205,6 @@
       "default": "scheme-1",
       "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
     },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "label": "t:settings.border_radius",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 4
-    }
   ],
   "presets": [
     {

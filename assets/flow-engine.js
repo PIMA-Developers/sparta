@@ -134,8 +134,32 @@ class FlowEngine extends HTMLElement {
     });
 
     this.addEventListener('change', (e) => {
-      const addon = e.target.closest('[data-flow-addon]');
-      if (addon) this._updatePriceSummary();
+      this.addEventListener('change', (e) => {
+        // Checkbox addon: refletir estado no dataset
+        const addonCheckbox = e.target.closest('input[type="checkbox"][data-flow-addon-toggle]');
+        if (addonCheckbox) {
+          const item = addonCheckbox.closest('.flow-addon__item');
+          if (item) item.dataset.addonSelected = String(addonCheckbox.checked);
+          this._updatePriceSummary();
+          return;
+        }
+
+        // Quantidade addon
+        const qtyInput = e.target.closest('[data-flow-addon-quantity]');
+        if (qtyInput) {
+          const item = qtyInput.closest('.flow-addon__item');
+          if (item) item.dataset.addonQuantity = qtyInput.value || '1';
+          this._updatePriceSummary();
+          return;
+        }
+
+        // fallback
+        const addon = e.target.closest('[data-flow-addon]');
+        if (addon) this._updatePriceSummary();
+
+        const variantInput = e.target.closest('[data-flow-variant-change]');
+        if (variantInput) this._updatePriceSummary();
+      });
 
       const variantInput = e.target.closest('[data-flow-variant-change]');
       if (variantInput) this._updatePriceSummary();

@@ -75,7 +75,7 @@
                   type="button"
                   class="flow-addon__toggle-btn"
                   data-flow-addon-toggle
-                  aria-pressed="false"
+                  aria-pressed="{% if is_preselected %}true{% else %}false{% endif %}"
                   aria-label="{{ addon_product.title | escape }}"
                 >
                   <span class="flow-addon__toggle-track">
@@ -157,6 +157,11 @@
         {%- assign service_variant = service_product.selected_or_first_available_variant -%}
         {%- if service_variant -%}
           {%- assign display_name = block.settings.service_display_name | default: service_product.title -%}
+            {%- assign pre_pos = block.settings.preselected_position | default: 0 | plus: 0 -%}
+            {%- assign is_preselected = false -%}
+            {%- if pre_pos > 0 and forloop.index == pre_pos -%}
+              {%- assign is_preselected = true -%}
+            {%- endif -%}
           <div
             class="flow-addon__item flow-addon__item--service"
             data-addon-variant-id="{{ service_variant.id }}"
@@ -182,7 +187,7 @@
                   type="button"
                   class="flow-addon__toggle-btn"
                   data-flow-addon-toggle
-                  aria-pressed="false"
+                  aria-pressed="{% if is_preselected %}true{% else %}false{% endif %}"
                   aria-label="{{ display_name | escape }}"
                 >
                   <span class="flow-addon__toggle-track">

@@ -1183,7 +1183,7 @@
         },
         "flow_step_8qQrRF": {
           "type": "_flow-step",
-          "name": "MODELO FORM PRODUTO",
+          "name": "Apenas Personalização",
           "settings": {
             "step_id": "apenas_personalizar",
             "content_direction": "column",
@@ -1211,32 +1211,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_WekCdt": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "group_YMwbne": {
               "type": "group",
               "name": "t:names.group",
@@ -1553,8 +1527,356 @@
             }
           },
           "block_order": [
-            "text_WekCdt",
             "group_YMwbne"
+          ]
+        },
+        "flow_step_z7Krbt": {
+          "type": "_flow-step",
+          "name": "Apenas Kimono",
+          "settings": {
+            "step_id": "apenas_kimono",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_i3xLmB": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 20,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "custom",
+                "custom_width_mobile": 90,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 8,
+                "toggle_overlay": true,
+                "overlay_color": "#f5f5f5",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 24,
+                "padding-block-end": 24,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "text_xAceHw": {
+                  "type": "text",
+                  "name": "t:names.heading",
+                  "settings": {
+                    "text": "<h2>Escolha seu Kimono</h2>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "flow_product_form_aUan3T": {
+                  "type": "_flow-product-form",
+                  "name": "Form produto (fluxo)",
+                  "settings": {
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "show_gallery": true,
+                    "show_price_summary": true,
+                    "price_summary_label": "Total estimado:",
+                    "add_to_cart_label": "Adicionar ao carrinho"
+                  },
+                  "blocks": {
+                    "text_kVqtVG": {
+                      "type": "text",
+                      "name": "t:names.heading",
+                      "disabled": true,
+                      "settings": {
+                        "text": "<h2>New arrivals</h2>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_NWpFE3": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
+                      "settings": {
+                        "heading": "Escolha seu tipo de personalização*:",
+                        "addon_type": "product",
+                        "products": [
+                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
+                          "sparta-camiseta-cottonflex-sprt-athlete"
+                        ],
+                        "display_style": "card",
+                        "activation_method": "checkbox",
+                        "show_quantity": false,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": ""
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_khym7y": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
+                      "settings": {
+                        "heading": "Adicionais (opicional)",
+                        "addon_type": "product",
+                        "products": [
+                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
+                          "sparta-camiseta-cottonflex-sprt-athlete"
+                        ],
+                        "display_style": "card",
+                        "activation_method": "checkbox",
+                        "show_quantity": true,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": ""
+                      },
+                      "blocks": {}
+                    },
+                    "divider_XGHqGp": {
+                      "type": "_divider",
+                      "name": "t:names.divider",
+                      "settings": {
+                        "thickness": 1,
+                        "corner_radius": "square",
+                        "width_percent": 100,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_7F3pXb": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
+                      "settings": {
+                        "heading": "",
+                        "addon_type": "service",
+                        "products": [
+                          "sparta-camiseta-overiszed-30-1-santa"
+                        ],
+                        "display_style": "compact",
+                        "activation_method": "toggle",
+                        "show_quantity": false,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": "Preparo Expresso"
+                      },
+                      "blocks": {}
+                    },
+                    "group_GNaEaB": {
+                      "type": "group",
+                      "name": "t:names.group",
+                      "settings": {
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
+                        "background_media": "none",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 0,
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {
+                        "text_njtCCa": {
+                          "type": "text",
+                          "name": "t:names.heading",
+                          "settings": {
+                            "text": "<h5>Aviso:</h5>",
+                            "width": "fit-content",
+                            "max_width": "normal",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        },
+                        "text_GKfb4H": {
+                          "type": "text",
+                          "name": "t:names.text",
+                          "settings": {
+                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. Em caso de dúvidas em sua compra, entre em contato direto via WhatsApp através do número <a href=\"https://wa.me/5521995888183\" target=\"_blank\" title=\"https://wa.me/5521995888183\">21 99588-8183.</a></p>",
+                            "width": "100%",
+                            "max_width": "none",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "text_njtCCa",
+                        "text_GKfb4H"
+                      ]
+                    },
+                    "flow-media-gallery": {
+                      "type": "_product-media-gallery",
+                      "static": true,
+                      "settings": {
+                        "product": "{{ closest.product }}",
+                        "media_presentation": "carousel",
+                        "media_columns": "one",
+                        "image_gap": 10,
+                        "large_first_image": false,
+                        "icons_style": "arrow",
+                        "slideshow_controls_style": "thumbnails",
+                        "slideshow_mobile_controls_style": "counter",
+                        "thumbnail_position": "left",
+                        "thumbnail_width": 72,
+                        "aspect_ratio": "1/1.25",
+                        "media_radius": 8,
+                        "extend_media": true,
+                        "constrain_to_viewport": true,
+                        "zoom": true,
+                        "video_loop": false,
+                        "hide_variants": true,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_kVqtVG",
+                    "flow_addon_NWpFE3",
+                    "flow_addon_khym7y",
+                    "divider_XGHqGp",
+                    "flow_addon_7F3pXb",
+                    "group_GNaEaB"
+                  ]
+                }
+              },
+              "block_order": [
+                "text_xAceHw",
+                "flow_product_form_aUan3T"
+              ]
+            }
+          },
+          "block_order": [
+            "group_i3xLmB"
           ]
         },
         "success": {
@@ -1626,7 +1948,8 @@
         "flow_step_eqMTAe",
         "flow_step_iEt7NT",
         "flow_step_EnGidz",
-        "flow_step_8qQrRF"
+        "flow_step_8qQrRF",
+        "flow_step_z7Krbt"
       ],
       "name": "Fluxo de compra TAP",
       "settings": {

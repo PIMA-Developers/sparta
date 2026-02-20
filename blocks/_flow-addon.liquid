@@ -48,11 +48,16 @@
       {%- for addon_product in block.settings.products -%}
         {%- assign addon_variant = addon_product.selected_or_first_available_variant -%}
         {%- if addon_variant -%}
+          {%- assign pre_pos = block.settings.preselected_position | default: 0 | plus: 0 -%}
+          {%- assign is_preselected = false -%}
+          {%- if pre_pos > 0 and forloop.index == pre_pos -%}
+            {%- assign is_preselected = true -%}
+          {%- endif -%}
           <div
             class="flow-addon__item flow-addon__item--product"
             data-addon-variant-id="{{ addon_variant.id }}"
             data-addon-quantity="1"
-            data-addon-selected="false"
+            data-addon-selected="{% if is_preselected %}true{% else %}false{% endif %}"
             data-price="{{ addon_variant.price }}"
           >
             <div class="flow-addon__item-toggle">

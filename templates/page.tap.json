@@ -94,11 +94,11 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/Design_sem_nome_20.png",
+                "image": "shopify://shop_images/Design_sem_nome_25.png",
                 "link": "",
                 "image_ratio": "adapt",
                 "width": "custom",
-                "custom_width": 10,
+                "custom_width": 15,
                 "width_mobile": "custom",
                 "custom_width_mobile": 40,
                 "height": "fit",
@@ -116,6 +116,7 @@
             "text_yaAnWN": {
               "type": "text",
               "name": "t:names.heading",
+              "disabled": true,
               "settings": {
                 "text": "",
                 "width": "fit-content",
@@ -1384,7 +1385,7 @@
               "blocks": {
                 "flow_button_rCE4mw": {
                   "type": "_flow-button",
-                  "name": "Kimono Padrão",
+                  "name": "Voltar",
                   "settings": {
                     "label": "Voltar",
                     "navigation_action": "go_to_step",
@@ -1898,7 +1899,7 @@
                       "type": "product-description",
                       "name": "t:names.product_description",
                       "settings": {
-                        "text": "<h5>{{ closest.product.description }}</h5>",
+                        "text": "{{ closest.product.description }}",
                         "width": "100%",
                         "max_width": "none",
                         "alignment": "left",
@@ -2119,11 +2120,91 @@
                     "flow_addon_7F3pXb",
                     "group_GNaEaB"
                   ]
+                },
+                "group_HjN4Dh": {
+                  "type": "group",
+                  "name": "Navegação",
+                  "settings": {
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "center",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 8,
+                    "width": "fill",
+                    "custom_width": 80,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 100,
+                    "toggle_overlay": false,
+                    "overlay_color": "#ffffff75",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "flow_button_k3VReA": {
+                      "type": "_flow-button",
+                      "name": "Kimono Padrão",
+                      "settings": {
+                        "label": "Voltar",
+                        "navigation_action": "go_to_step",
+                        "offset": 2,
+                        "target_step_id": "f1_0",
+                        "attribute_key": "",
+                        "attribute_value": "",
+                        "style": "secondary",
+                        "full_width": true,
+                        "show_arrow": true,
+                        "icon_position": "left"
+                      },
+                      "blocks": {}
+                    },
+                    "flow_button_6pUN9Y": {
+                      "type": "_flow-button",
+                      "name": "Kimono Padrão",
+                      "settings": {
+                        "label": "Recomeçar",
+                        "navigation_action": "go_to_step",
+                        "offset": 2,
+                        "target_step_id": "inicio",
+                        "attribute_key": "",
+                        "attribute_value": "",
+                        "style": "secondary",
+                        "full_width": true,
+                        "show_arrow": false,
+                        "icon_position": "right"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "flow_button_k3VReA",
+                    "flow_button_6pUN9Y"
+                  ]
                 }
               },
               "block_order": [
                 "text_xAceHw",
-                "flow_product_form_aUan3T"
+                "flow_product_form_aUan3T",
+                "group_HjN4Dh"
               ]
             }
           },
@@ -2224,9 +2305,9 @@
         "border_width": 1,
         "border_opacity": 100,
         "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
+        "toggle_overlay": true,
+        "overlay_color": "#000000",
+        "overlay_style": "gradient",
         "gradient_direction": "to top",
         "padding-block-start": 0,
         "padding-block-end": 0

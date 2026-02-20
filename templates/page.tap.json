@@ -1916,9 +1916,7 @@
                         "heading": "Adicionais (opicional)",
                         "addon_type": "product",
                         "products": [
-                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
-                          "sparta-camiseta-cottonflex-sprt-athlete"
+                          "estampas-tematicas-10x10-cm"
                         ],
                         "display_style": "card",
                         "activation_method": "checkbox",
@@ -1945,10 +1943,11 @@
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
-                        "heading": "",
+                        "heading": "Prazo de produção",
                         "addon_type": "service",
                         "products": [
-                          "sparta-camiseta-overiszed-30-1-santa"
+                          "entrega-expressa-ate-7-dias-uteis",
+                          "entrega-turbo-ate-48h"
                         ],
                         "display_style": "compact",
                         "activation_method": "toggle",
@@ -2028,7 +2027,7 @@
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. Em caso de dúvidas em sua compra, entre em contato direto via WhatsApp através do número <a href=\"https://wa.me/5521995888183\" target=\"_blank\" title=\"https://wa.me/5521995888183\">21 99588-8183.</a></p>",
+                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. </p><p>Descontos e Frete são calculados no checkout.</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "left",

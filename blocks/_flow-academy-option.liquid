@@ -21,6 +21,9 @@
   type="button"
   data-flow-academy-option
   data-attribute-value="{{ block.settings.attribute_value | escape }}"
+  {%- if target_step_id != blank -%}
+    data-target-step-id="{{ target_step_id | escape }}"
+  {%- endif -%}
 >
   {%- if img -%}
     <div class="flow-academy-option__image">
@@ -132,6 +135,21 @@
       "default": "Academia"
     },
     {
+      "type": "select",
+      "label": "Tipo de Navegação",
+      "id": "nav_type",
+      "options": [
+        {
+          "label": "next",
+          "value": "next",
+        },
+        {
+          "label": "id",
+          "value": "id",
+        }
+      ]
+    },
+    {
       "type": "product",
       "id": "product",
       "label": "Produto da academia"
@@ -151,6 +169,13 @@
       "id": "attribute_value",
       "label": "Valor do atributo fluxo_academia",
       "info": "Identificador salvo no pedido. Ex: academia_1, academia_alliance"
+    },
+    {
+      "type": "text",
+      "id": "target_step_id",
+      "label": "Target step id (optional)",
+      "info": "If set, selecting this academy will navigate directly to this step_id. If empty, it goes to next step.",
+      "visible_if": "{{ block.settings.nav_type == 'id' }}"
     }
   ],
   "presets": [

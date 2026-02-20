@@ -344,6 +344,7 @@ class FlowEngine extends HTMLElement {
     targetStep.hidden = false;
     targetStep.removeAttribute('inert');
     targetStep.setAttribute('aria-hidden', 'false');
+    this._normalizeSingleSelection(targetStep);
 
     if (this._transition !== 'none') {
       targetStep.classList.add(`flow-step--transition-${this._transition}`);
@@ -632,6 +633,24 @@ class FlowEngine extends HTMLElement {
       if (btn) btn.setAttribute('aria-pressed', 'false');
     });
   }
+  _normalizeSingleSelection(stepEl) {
+  const blocks = stepEl.querySelectorAll('[data-flow-addon][data-selection-mode="single"]');
+  blocks.forEach((block) => {
+    const selected = Array.from(block.querySelectorAll('.flow-addon__item[data-addon-selected="true"]'));
+    if (selected.length <= 1) return;
+
+    // mantém o primeiro e desmarca o resto
+    selected.slice(1).forEach((el) => {
+      el.dataset.addonSelected = 'false';
+
+      const cb = el.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+      if (cb) cb.checked = false;
+
+      const btn = el.querySelector('button[data-flow-addon-toggle]');
+      if (btn) btn.setAttribute('aria-pressed', 'false');
+    });
+  });
+}
 
   /* ── Price summary ──────────────────────────────────────── */
 

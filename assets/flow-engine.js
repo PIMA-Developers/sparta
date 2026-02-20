@@ -241,7 +241,10 @@ class FlowEngine extends HTMLElement {
     this._updateURL();
     this._updatePriceSummary();
 
-    targetStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const rect = targetStep.getBoundingClientRect();
+    if (rect.top < 0) {
+      targetStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   _showSuccess() {

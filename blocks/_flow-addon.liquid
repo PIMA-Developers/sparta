@@ -68,6 +68,7 @@
                   id="addon-{{ block.id }}-{{ addon_variant.id }}"
                   data-flow-addon-toggle
                   aria-label="{{ addon_product.title | escape }}"
+                  {% if is_preselected %}checked{% endif %}
                 >
               {%- else -%}
                 <button
@@ -174,6 +175,7 @@
                   id="addon-svc-{{ block.id }}-{{ service_variant.id }}"
                   data-flow-addon-toggle
                   aria-label="{{ display_name | escape }}"
+                  {% if is_preselected %}checked{% endif %}
                 >
               {%- else -%}
                 <button

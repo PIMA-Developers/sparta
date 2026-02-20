@@ -134,6 +134,7 @@ class FlowEngine extends HTMLElement {
     });
 
     this.addEventListener('change', (e) => {
+      this.addEventListener('change', (e) => {
         // Checkbox addon: refletir estado no dataset
         const addonCheckbox = e.target.closest('input[type="checkbox"][data-flow-addon-toggle]');
         if (addonCheckbox) {

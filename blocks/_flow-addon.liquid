@@ -31,6 +31,12 @@
   data-flow-addon
   data-addon-type="{{ addon_type }}"
   data-selection-mode="{{ block.settings.selection_mode | default: 'any' }}"
+  style="
+  --flow-badge-pad-y: {{ block.settings.badge_padding_y | default: 2 }}px;
+  --flow-badge-pad-x: {{ block.settings.badge_padding_x | default: 8 }}px;
+  --flow-badge-gap: {{ block.settings.badge_gap | default: 6 }}px;
+  --flow-badge-radius: {{ block.settings.badge_radius | default: 12 }}px;
+  "
 >
   {%- if block.settings.heading != blank -%}
     <h3 class="flow-addon__heading">{{ block.settings.heading }}</h3>
@@ -38,6 +44,7 @@
 
   <div class="flow-addon__items">
     {%- if addon_type == 'product' -%}
+      {%- assign badges_lines = block.settings.badges_config | strip_html | replace: '\r', '' | split: '\n' -%}
       {%- for addon_product in block.settings.products -%}
         {%- assign addon_variant = addon_product.selected_or_first_available_variant -%}
         {%- if addon_variant -%}
@@ -79,7 +86,38 @@
                 </div>
               {%- endif -%}
               <div class="flow-addon__item-details">
-                <span class="flow-addon__item-title">{{ addon_product.title }}</span>
+                <div class="flow-addon__title-row">
+                  <span class="flow-addon__item-title">{{ addon_product.title }}</span>
+
+                  {%- if badges_lines and badges_lines.size > 0 -%}
+                    <div class="flow-addon__badges">
+                      {%- for line in badges_lines -%}
+                        {%- assign row = line | strip -%}
+                        {%- if row != blank -%}
+                          {%- assign parts = row | split: '|' -%}
+                          {%- assign pos = parts[0] | strip | plus: 0 -%}
+                          {%- if pos == forloop.parentloop.index -%}
+                            {%- assign badge_text = parts[1] | strip -%}
+                            {%- assign badge_bg = parts[2] | strip -%}
+                            {%- assign badge_fg = parts[3] | strip -%}
+
+                            {%- if badge_text != blank -%}
+                              <span
+                                class="flow-addon__badge"
+                                style="
+                                  {%- if badge_bg != blank -%}background: {{ badge_bg }};{%- endif -%}
+                                  {%- if badge_fg != blank -%}color: {{ badge_fg }};{%- endif -%}
+                                "
+                              >
+                                {{ badge_text }}
+                              </span>
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
                 {%- if addon_product.description != blank and display_style == 'card' -%}
                   <span class="flow-addon__item-desc">{{ addon_product.description | strip_html | truncate: 80 }}</span>
                 {%- endif -%}
@@ -310,6 +348,34 @@
     width: 40px;
     height: 40px;
   }
+
+  .flow-addon__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--flow-badge-gap, 6px);
+  flex-wrap: wrap;
+}
+
+.flow-addon__badges {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--flow-badge-gap, 6px);
+  flex-wrap: wrap;
+}
+
+.flow-addon__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--flow-badge-pad-y, 2px) var(--flow-badge-pad-x, 8px);
+  border-radius: var(--flow-badge-radius, 12px);
+  font-size: var(--font-size--xs);
+  line-height: 1;
+  white-space: nowrap;
+  background: #111;
+  color: #fff;
+}
+
+
 {% endstylesheet %}
 
 {% schema %}

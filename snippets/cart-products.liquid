@@ -140,6 +140,22 @@
                       {{- item.product.title -}}
                     </a>
                   </p>
+
+                  {%- assign service_type = item.properties['_service_type'] -%}
+                  {%- assign service_display_name = item.properties['_display_name'] -%}
+                  {%- if service_type != blank or service_display_name != blank -%}
+                    <div class="cart-items__service-meta">
+                      <span class="cart-items__service-badge">Serviço</span>
+                      <div class="cart-items__service-copy">
+                        {%- if service_display_name != blank -%}
+                          <p class="cart-items__service-name">{{ service_display_name }}</p>
+                        {%- endif -%}
+                        {%- if service_type != blank -%}
+                          <p class="cart-items__service-type">Tipo: {{ service_type }}</p>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
                   {% if item.product.vendor and block.settings.vendor %}
                     <p>
                       {{ item.product.vendor }}
@@ -408,6 +424,44 @@
     font-size: var(--cart-font-size--md);
     color: var(--color-foreground);
     text-transform: var(--product-title-case);
+  }
+
+  .cart-items__service-meta {
+    margin-top: var(--margin-2xs);
+    padding: var(--padding-xs);
+    border: 1px solid rgb(from var(--color-foreground) r g b / 0.15);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: rgb(from var(--color-foreground) r g b / 0.03);
+    display: flex;
+    gap: var(--gap-xs);
+    align-items: flex-start;
+  }
+
+  .cart-items__service-badge {
+    font-size: var(--cart-font-size--2xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgb(from var(--color-primary) r g b / 0.12);
+    color: var(--color-primary);
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  .cart-items__service-copy p {
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .cart-items__service-name {
+    color: var(--color-foreground);
+    font-weight: 500;
+    font-size: var(--cart-font-size--xs);
+  }
+
+  .cart-items__service-type {
+    color: rgb(from var(--color-foreground) r g b / 0.65);
+    font-size: var(--cart-font-size--2xs);
   }
 
   .cart-items__variant {

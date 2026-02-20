@@ -12,7 +12,7 @@
 
   @param {select} addon_type - product | service
   @param {product_list} products - Products to show as addons (product type)
-  @param {select} display_style - card | compact
+  @param {select} display_style - card | compact | collapsible_select
   @param {select} activation_method - checkbox | toggle
   @param {checkbox} show_quantity - Show quantity selector (product type only)
   @param {text} service_property_key - Property key for service (default: _service_type)
@@ -31,11 +31,14 @@
   data-flow-addon
   data-addon-type="{{ addon_type }}"
   data-selection-mode="{{ block.settings.selection_mode | default: 'any' }}"
+  data-variant-card-layout="{{ block.settings.variant_card_layout | default: 'compact' }}"
   style="
   --flow-badge-pad-y: {{ block.settings.badge_padding_y | default: 2 }}px;
   --flow-badge-pad-x: {{ block.settings.badge_padding_x | default: 8 }}px;
   --flow-badge-gap: {{ block.settings.badge_gap | default: 6 }}px;
   --flow-badge-radius: {{ block.settings.badge_radius | default: 12 }}px;
+  --flow-addon-variant-cols-mobile: {{ block.settings.variant_columns_mobile | default: 2 }};
+  --flow-addon-variant-cols-desktop: {{ block.settings.variant_columns_desktop | default: 3 }};
   "
 >
   {%- if block.settings.heading != blank -%}
@@ -48,42 +51,52 @@
       {%- for addon_product in block.settings.products -%}
         {%- assign addon_variant = addon_product.selected_or_first_available_variant -%}
         {%- if addon_variant -%}
+          {%- assign has_multiple_variants = false -%}
+          {%- if addon_product.variants.size > 1 -%}
+            {%- assign has_multiple_variants = true -%}
+          {%- endif -%}
+          {%- assign use_collapsible_select = false -%}
+          {%- if display_style == 'collapsible_select' and has_multiple_variants -%}
+            {%- assign use_collapsible_select = true -%}
+          {%- endif -%}
           {%- assign pre_pos = block.settings.preselected_position | default: 0 | plus: 0 -%}
           {%- assign is_preselected = false -%}
           {%- if pre_pos > 0 and forloop.index == pre_pos -%}
             {%- assign is_preselected = true -%}
           {%- endif -%}
           <div
-            class="flow-addon__item flow-addon__item--product"
+            class="flow-addon__item flow-addon__item--product{% if use_collapsible_select %} flow-addon__item--collapsible{% endif %}"
             data-addon-variant-id="{{ addon_variant.id }}"
             data-addon-quantity="1"
             data-addon-selected="{% if is_preselected %}true{% else %}false{% endif %}"
             data-price="{{ addon_variant.price }}"
           >
-            <div class="flow-addon__item-toggle">
-              {%- if activation == 'checkbox' -%}
-                <input
-                  type="checkbox"
-                  class="flow-addon__checkbox"
-                  id="addon-{{ block.id }}-{{ addon_variant.id }}"
-                  data-flow-addon-toggle
-                  aria-label="{{ addon_product.title | escape }}"
-                  {% if is_preselected %}checked{% endif %}
-                >
-              {%- else -%}
-                <button
-                  type="button"
-                  class="flow-addon__toggle-btn"
-                  data-flow-addon-toggle
-                  aria-pressed="{% if is_preselected %}true{% else %}false{% endif %}"
-                  aria-label="{{ addon_product.title | escape }}"
-                >
-                  <span class="flow-addon__toggle-track">
-                    <span class="flow-addon__toggle-thumb"></span>
-                  </span>
-                </button>
-              {%- endif -%}
-            </div>
+            {%- unless use_collapsible_select -%}
+              <div class="flow-addon__item-toggle">
+                {%- if activation == 'checkbox' -%}
+                  <input
+                    type="checkbox"
+                    class="flow-addon__checkbox"
+                    id="addon-{{ block.id }}-{{ addon_variant.id }}"
+                    data-flow-addon-toggle
+                    aria-label="{{ addon_product.title | escape }}"
+                    {% if is_preselected %}checked{% endif %}
+                  >
+                {%- else -%}
+                  <button
+                    type="button"
+                    class="flow-addon__toggle-btn"
+                    data-flow-addon-toggle
+                    aria-pressed="{% if is_preselected %}true{% else %}false{% endif %}"
+                    aria-label="{{ addon_product.title | escape }}"
+                  >
+                    <span class="flow-addon__toggle-track">
+                      <span class="flow-addon__toggle-thumb"></span>
+                    </span>
+                  </button>
+                {%- endif -%}
+              </div>
+            {%- endunless -%}
 
             <div class="flow-addon__item-info">
               {%- if addon_product.featured_image -%}
@@ -127,9 +140,58 @@
                 {%- if addon_product.description != blank and display_style == 'card' -%}
                   <span class="flow-addon__item-desc">{{ addon_product.description | strip_html | truncate: 80 }}</span>
                 {%- endif -%}
-                <span class="flow-addon__item-price">{{ addon_variant.price | money }}</span>
+                {%- unless use_collapsible_select -%}
+                  <span class="flow-addon__item-price">{{ addon_variant.price | money }}</span>
+                {%- endunless -%}
               </div>
             </div>
+
+            {%- if use_collapsible_select -%}
+              <div class="flow-addon__collapsible">
+                <button
+                  type="button"
+                  class="flow-addon__collapsible-trigger"
+                  data-flow-addon-collapsible-trigger
+                  aria-expanded="false"
+                  aria-controls="addon-collapsible-{{ block.id }}-{{ addon_product.id }}"
+                >
+                  <span class="flow-addon__collapsible-label">Escolher opções</span>
+                </button>
+                <span class="flow-addon__collapsible-hint">Selecionar variante</span>
+
+                <div
+                  class="flow-addon__collapsible-panel"
+                  id="addon-collapsible-{{ block.id }}-{{ addon_product.id }}"
+                  data-flow-addon-collapsible-panel
+                >
+                  <div class="flow-addon__variant-picker" role="listbox" aria-label="Variantes de {{ addon_product.title | escape }}">
+                    {%- for product_variant in addon_product.variants -%}
+                      {%- assign variant_image = product_variant.image | default: addon_product.featured_image -%}
+                      <button
+                        type="button"
+                        class="flow-addon__variant-option"
+                        data-flow-addon-variant-option
+                        data-variant-id="{{ product_variant.id }}"
+                        data-variant-price="{{ product_variant.price }}"
+                        data-variant-title="{{ product_variant.title | escape }}"
+                        data-variant-price-money="{{ product_variant.price | money | escape }}"
+                        aria-pressed="{% if product_variant.id == addon_variant.id %}true{% else %}false{% endif %}"
+                      >
+                        {%- if variant_image -%}
+                          <span class="flow-addon__variant-image-wrapper">
+                            {{ variant_image | image_url: width: 120 | image_tag: class: 'flow-addon__variant-image' }}
+                          </span>
+                        {%- endif -%}
+                        <span class="flow-addon__variant-copy">
+                          <span class="flow-addon__variant-name">{{ product_variant.title }}</span>
+                          <span class="flow-addon__variant-price">{{ product_variant.price | money }}</span>
+                        </span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
 
             {%- if block.settings.show_quantity -%}
               <div class="flow-addon__item-quantity">
@@ -168,8 +230,9 @@
             data-addon-quantity="1"
             data-addon-selected="false"
             data-price="{{ service_variant.price }}"
-            data-service-property-key="{{ block.settings.service_property_key | default: '_service_type' }}"
-            data-service-property-value="{{ block.settings.service_property_value | default: 'service' }}"
+            data-service-add-metadata="{% if block.settings.add_service_metadata %}true{% else %}false{% endif %}"
+            data-service-property-key="{{ block.settings.service_property_key }}"
+            data-service-property-value="{{ block.settings.service_property_value }}"
             data-service-display-name="{{ display_name | escape }}"
           >
             <div class="flow-addon__item-toggle">
@@ -235,6 +298,150 @@
     border-radius: var(--style-border-radius-inputs, 4px);
     transition: border-color var(--animation-speed) ease, background var(--animation-speed) ease;
     cursor: pointer;
+  }
+
+  .flow-addon--collapsible_select .flow-addon__item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap-sm, 8px);
+  }
+
+  .flow-addon--collapsible_select .flow-addon__item-info {
+    width: 100%;
+  }
+
+  .flow-addon__collapsible {
+    width: 100%;
+  }
+
+  .flow-addon__collapsible-trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    padding: var(--padding-sm) var(--padding-md);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .flow-addon__collapsible-label {
+    font-size: var(--font-size--xs);
+    color: rgb(from var(--color-foreground) r g b / 0.7);
+  }
+
+  .flow-addon__collapsible-hint {
+    display: none;
+    margin-top: 4px;
+    font-size: var(--font-size--xs);
+    color: rgb(from var(--color-foreground) r g b / 0.75);
+  }
+
+  .flow-addon__item--collapsible.flow-addon__item--collapsible-open .flow-addon__collapsible-hint {
+    display: block;
+  }
+
+  .flow-addon__collapsible-panel {
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height var(--animation-speed) ease,
+      opacity var(--animation-speed) ease,
+      margin-top var(--animation-speed) ease;
+  }
+
+  .flow-addon__collapsible-panel.is-open {
+    margin-top: var(--margin-xs);
+    opacity: 1;
+  }
+
+  .flow-addon__variant-picker {
+    display: grid;
+    grid-template-columns: repeat(var(--flow-addon-variant-cols-mobile, 2), minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .flow-addon__variant-picker {
+      grid-template-columns: repeat(var(--flow-addon-variant-cols-desktop, 3), minmax(0, 1fr));
+      gap: 8px;
+    }
+  }
+
+  .flow-addon__variant-option {
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--style-border-radius-inputs, 4px) - 1px);
+    background: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .flow-addon[data-variant-card-layout='compact'] .flow-addon__variant-option {
+    flex-direction: row;
+    gap: 6px;
+    padding: 6px 8px;
+    min-height: 44px;
+  }
+
+  .flow-addon[data-variant-card-layout='full'] .flow-addon__variant-option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+    min-height: 72px;
+  }
+
+  .flow-addon__variant-option[aria-pressed='true'] {
+    border-color: var(--color-primary);
+    background: rgb(from var(--color-primary) r g b / 0.08);
+  }
+
+  .flow-addon__variant-image-wrapper {
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .flow-addon__variant-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .flow-addon[data-variant-card-layout='full'] .flow-addon__variant-image-wrapper {
+    width: 42px;
+    height: 42px;
+  }
+
+  .flow-addon__variant-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .flow-addon__variant-name {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .flow-addon__variant-price {
+    font-size: 0.7rem;
+    color: rgb(from var(--color-foreground) r g b / 0.7);
   }
 
   .flow-addon__item[data-addon-selected="true"] {
@@ -449,9 +656,42 @@
         {
           "value": "compact",
           "label": "Compacto"
+        },
+        {
+          "value": "collapsible_select",
+          "label": "Select colapsável (variantes)"
         }
       ],
       "default": "card"
+    },
+
+    {
+      "type": "select",
+      "id": "variant_card_layout",
+      "label": "Layout do card da variante",
+      "options": [
+        { "value": "compact", "label": "Compacto" },
+        { "value": "full", "label": "Completo" }
+      ],
+      "default": "compact"
+    },
+    {
+      "type": "range",
+      "id": "variant_columns_mobile",
+      "label": "Colunas variantes (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "variant_columns_desktop",
+      "label": "Colunas variantes (desktop)",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "select",
@@ -486,6 +726,14 @@
     {
       "type": "header",
       "content": "Serviço",
+      "visible_if": "{{ block.settings.addon_type == 'service' }}"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "add_service_metadata",
+      "label": "Adicionar metadados de serviço no carrinho",
+      "default": true,
       "visible_if": "{{ block.settings.addon_type == 'service' }}"
     },
     {

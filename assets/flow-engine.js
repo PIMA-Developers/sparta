@@ -85,21 +85,6 @@ class FlowEngine extends HTMLElement {
 
       // --- Addons: delegação (funciona mesmo após re-render do variant-picker) ---
 
-      const collapsibleTrigger = e.target.closest('[data-flow-addon-collapsible-trigger]');
-      if (collapsibleTrigger) {
-        e.preventDefault();
-        const item = collapsibleTrigger.closest('.flow-addon__item');
-        const panelId = collapsibleTrigger.getAttribute('aria-controls');
-        const panel = panelId ? this.querySelector(`#${panelId}`) : null;
-        if (!panel || !item) return;
-
-        item.dataset.addonSelected = 'true';
-        this._enforceSingleSelection(item);
-        this._setAddonCollapsibleState(collapsibleTrigger, panel, true);
-        this._updatePriceSummary();
-        return;
-      }
-
       const variantOption = e.target.closest('[data-flow-addon-variant-option]');
       if (variantOption) {
         e.preventDefault();
@@ -149,20 +134,16 @@ class FlowEngine extends HTMLElement {
       // Clique no card inteiro alterna checkbox/toggle
       const addonItem = e.target.closest('.flow-addon__item');
       if (addonItem && addonItem.closest('[data-flow-addon]')) {
-        if (e.target.closest('[data-flow-addon-collapsible-trigger], [data-flow-addon-variant-option], [data-flow-addon-collapsible-panel]')) {
+        if (e.target.closest('[data-flow-addon-variant-option], [data-flow-addon-collapsible-panel]')) {
           return;
         }
 
-        const collapsibleTriggerInItem = addonItem.querySelector('[data-flow-addon-collapsible-trigger]');
-        if (collapsibleTriggerInItem) {
+        const collapsiblePanelInItem = addonItem.querySelector('[data-flow-addon-collapsible-panel]');
+        if (collapsiblePanelInItem) {
           e.preventDefault();
-          const panelId = collapsibleTriggerInItem.getAttribute('aria-controls');
-          const panel = panelId ? this.querySelector(`#${panelId}`) : null;
-          if (!panel) return;
-
           addonItem.dataset.addonSelected = 'true';
           this._enforceSingleSelection(addonItem);
-          this._setAddonCollapsibleState(collapsibleTriggerInItem, panel, true);
+          this._setAddonCollapsibleState(collapsiblePanelInItem, true, addonItem);
           this._updatePriceSummary();
           return;
         }
@@ -271,16 +252,18 @@ class FlowEngine extends HTMLElement {
   }
 
 
-  _setAddonCollapsibleState(trigger, panel, isOpen) {
-    if (!trigger || !panel) return;
+  _setAddonCollapsibleState(panel, isOpen, item = null, trigger = null) {
+    if (!panel) return;
 
-    trigger.setAttribute('aria-expanded', String(isOpen));
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    }
 
-    const item = trigger.closest('.flow-addon__item');
+    const resolvedItem = item || panel.closest('.flow-addon__item');
 
     if (isOpen) {
       panel.classList.add('is-open');
-      if (item) item.classList.add('flow-addon__item--collapsible-open');
+      if (resolvedItem) resolvedItem.classList.add('flow-addon__item--collapsible-open');
       panel.style.maxHeight = `${panel.scrollHeight}px`;
       const onOpenTransitionEnd = (event) => {
         if (event.propertyName !== 'max-height') return;
@@ -291,15 +274,11 @@ class FlowEngine extends HTMLElement {
       return;
     }
 
-    if (panel.style.maxHeight === 'none') {
-      panel.style.maxHeight = `${panel.scrollHeight}px`;
-    } else {
-      panel.style.maxHeight = `${panel.scrollHeight}px`;
-    }
+    panel.style.maxHeight = `${panel.scrollHeight}px`;
 
     window.requestAnimationFrame(() => {
       panel.classList.remove('is-open');
-      if (item) item.classList.remove('flow-addon__item--collapsible-open');
+      if (resolvedItem) resolvedItem.classList.remove('flow-addon__item--collapsible-open');
       panel.style.maxHeight = '0px';
     });
   }
@@ -734,10 +713,9 @@ class FlowEngine extends HTMLElement {
       const btn = el.querySelector('button[data-flow-addon-toggle]');
       if (btn) btn.setAttribute('aria-pressed', 'false');
 
-      const collapsibleTrigger = el.querySelector('[data-flow-addon-collapsible-trigger]');
       const panel = el.querySelector('[data-flow-addon-collapsible-panel]');
-      if (collapsibleTrigger && panel) {
-        this._setAddonCollapsibleState(collapsibleTrigger, panel, false);
+      if (panel) {
+        this._setAddonCollapsibleState(panel, false, el);
       }
     });
   }

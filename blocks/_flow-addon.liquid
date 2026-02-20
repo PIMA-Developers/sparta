@@ -150,15 +150,6 @@
 
             {%- if use_collapsible_select -%}
               <div class="flow-addon__collapsible">
-                <button
-                  type="button"
-                  class="flow-addon__collapsible-trigger"
-                  data-flow-addon-collapsible-trigger
-                  aria-expanded="false"
-                  aria-controls="addon-collapsible-{{ block.id }}-{{ addon_product.id }}"
-                >
-                  <span class="flow-addon__collapsible-label">Escolher opções</span>
-                </button>
                 <span class="flow-addon__collapsible-hint">Selecionar variante</span>
 
                 <div
@@ -316,25 +307,6 @@
     width: 100%;
   }
 
-  .flow-addon__collapsible-trigger {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid var(--color-border);
-    border-radius: var(--style-border-radius-inputs, 4px);
-    background: var(--color-background);
-    color: var(--color-foreground);
-    padding: var(--padding-sm) var(--padding-md);
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .flow-addon__collapsible-label {
-    font-size: var(--font-size--xs);
-    color: rgb(from var(--color-foreground) r g b / 0.7);
-  }
-
   .flow-addon__collapsible-hint {
     display: none;
     margin-top: 4px;
@@ -407,8 +379,8 @@
   }
 
   .flow-addon__variant-image-wrapper {
-    width: 28px;
-    height: 28px;
+    width: 48px;
+    height: 48px;
     overflow: hidden;
     border-radius: 50%;
     flex-shrink: 0;
@@ -421,8 +393,8 @@
   }
 
   .flow-addon[data-variant-card-layout='full'] .flow-addon__variant-image-wrapper {
-    width: 42px;
-    height: 42px;
+    width: 60px;
+    height: 60px;
   }
 
   .flow-addon__variant-copy {

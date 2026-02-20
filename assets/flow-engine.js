@@ -88,12 +88,15 @@ class FlowEngine extends HTMLElement {
       const collapsibleTrigger = e.target.closest('[data-flow-addon-collapsible-trigger]');
       if (collapsibleTrigger) {
         e.preventDefault();
+        const item = collapsibleTrigger.closest('.flow-addon__item');
         const panelId = collapsibleTrigger.getAttribute('aria-controls');
         const panel = panelId ? this.querySelector(`#${panelId}`) : null;
-        if (!panel) return;
+        if (!panel || !item) return;
 
-        const isExpanded = collapsibleTrigger.getAttribute('aria-expanded') === 'true';
-        this._setAddonCollapsibleState(collapsibleTrigger, panel, !isExpanded);
+        item.dataset.addonSelected = 'true';
+        this._enforceSingleSelection(item);
+        this._setAddonCollapsibleState(collapsibleTrigger, panel, true);
+        this._updatePriceSummary();
         return;
       }
 
@@ -160,8 +163,10 @@ class FlowEngine extends HTMLElement {
           const panel = panelId ? this.querySelector(`#${panelId}`) : null;
           if (!panel) return;
 
-          const isExpanded = collapsibleTriggerInItem.getAttribute('aria-expanded') === 'true';
-          this._setAddonCollapsibleState(collapsibleTriggerInItem, panel, !isExpanded);
+          addonItem.dataset.addonSelected = 'true';
+          this._enforceSingleSelection(addonItem);
+          this._setAddonCollapsibleState(collapsibleTriggerInItem, panel, true);
+          this._updatePriceSummary();
           return;
         }
 
@@ -277,10 +282,21 @@ class FlowEngine extends HTMLElement {
     if (isOpen) {
       panel.classList.add('is-open');
       panel.style.maxHeight = `${panel.scrollHeight}px`;
+      const onOpenTransitionEnd = (event) => {
+        if (event.propertyName !== 'max-height') return;
+        panel.style.maxHeight = 'none';
+        panel.removeEventListener('transitionend', onOpenTransitionEnd);
+      };
+      panel.addEventListener('transitionend', onOpenTransitionEnd);
       return;
     }
 
-    panel.style.maxHeight = `${panel.scrollHeight}px`;
+    if (panel.style.maxHeight === 'none') {
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+    } else {
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+    }
+
     window.requestAnimationFrame(() => {
       panel.classList.remove('is-open');
       panel.style.maxHeight = '0px';
@@ -709,6 +725,12 @@ class FlowEngine extends HTMLElement {
 
       const btn = el.querySelector('button[data-flow-addon-toggle]');
       if (btn) btn.setAttribute('aria-pressed', 'false');
+
+      const collapsibleTrigger = el.querySelector('[data-flow-addon-collapsible-trigger]');
+      const panel = el.querySelector('[data-flow-addon-collapsible-panel]');
+      if (collapsibleTrigger && panel) {
+        this._setAddonCollapsibleState(collapsibleTrigger, panel, false);
+      }
     });
   }
   _normalizeSingleSelection(stepEl) {

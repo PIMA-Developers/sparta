@@ -529,8 +529,8 @@
             "gradient_direction": "to top",
             "padding-block-start": 20,
             "padding-block-end": 20,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-start": 20,
+            "padding-inline-end": 20
           },
           "blocks": {
             "text_FWtLT9": {
@@ -603,7 +603,7 @@
                 "width": "custom",
                 "custom_width": 80,
                 "width_mobile": "fill",
-                "custom_width_mobile": 100,
+                "custom_width_mobile": 90,
                 "height": "fit",
                 "custom_height": 100,
                 "inherit_color_scheme": true,
@@ -760,8 +760,8 @@
             "gradient_direction": "to top",
             "padding-block-start": 20,
             "padding-block-end": 20,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-start": 20,
+            "padding-inline-end": 20
           },
           "blocks": {
             "text_9YKVKw": {
@@ -938,7 +938,7 @@
                     "label": "Voltar",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "f2_0",
+                    "target_step_id": "f1_0",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "secondary",
@@ -1887,8 +1887,8 @@
             "gradient_direction": "to top",
             "padding-block-start": 20,
             "padding-block-end": 20,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-start": 20,
+            "padding-inline-end": 20
           },
           "blocks": {
             "text_rTQw8g": {

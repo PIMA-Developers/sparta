@@ -93,15 +93,37 @@ class FlowEngine extends HTMLElement {
 
     this.addEventListener('variant:update', (e) => {
       const variant = e?.detail?.resource;
-      if (!variant || typeof variant.price !== 'number') return;
+      if (!variant) return;
 
-      // garante que é um variant:update disparado dentro de um product form do flow
-      const sourceEl = e.target instanceof Element ? e.target : null;
-      const form = sourceEl?.closest?.('[data-flow-product-form]');
-      if (!form) return;
+      // pega o form do flow da forma mais robusta
+      const form = (e.target instanceof Element)
+        ? e.target.closest('[data-flow-product-form]')
+        : null;
 
-      // atualiza o preço base (em centavos) usado pelo _updatePriceSummary()
-      form.dataset.price = String(variant.price);
+      // fallback: se o target não estiver dentro, tenta achar o primeiro form no step atual
+      const resolvedForm = form || this.querySelector('[data-flow-product-form]');
+      if (!resolvedForm) return;
+
+      // price pode vir como number, string, ou em estruturas diferentes dependendo do componente
+      let priceCents = 0;
+
+      if (variant.price != null) {
+        priceCents = parseInt(variant.price, 10);
+      } else if (variant.price?.amount != null) {
+        priceCents = parseInt(variant.price.amount, 10);
+      } else if (variant.compare_at_price != null) {
+        // não é o ideal, mas evita NaN em casos estranhos
+        priceCents = parseInt(variant.compare_at_price, 10);
+      }
+
+      if (!Number.isFinite(priceCents)) priceCents = 0;
+
+      resolvedForm.dataset.price = String(priceCents);
+
+      // opcional (ajuda outros fluxos que leem defaultVariantId)
+      if (variant.id != null) {
+        resolvedForm.dataset.defaultVariantId = String(variant.id);
+      }
 
       this._updatePriceSummary();
     });

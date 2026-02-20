@@ -21,8 +21,8 @@
   type="button"
   data-flow-academy-option
   data-attribute-value="{{ block.settings.attribute_value | escape }}"
-  {%- if target_step_id != blank -%}
-    data-target-step-id="{{ target_step_id | escape }}"
+  {%- if block.settings.nav_type == 'id' and block.settings.target_step_id != blank -%}
+    data-target-step-id="{{ block.settings.target_step_id | escape }}"
   {%- endif -%}
 >
   {%- if img -%}

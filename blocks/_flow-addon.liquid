@@ -162,7 +162,6 @@
                   class="flow-addon__collapsible-panel"
                   id="addon-collapsible-{{ block.id }}-{{ addon_product.id }}"
                   data-flow-addon-collapsible-panel
-                  hidden
                 >
                   <div class="flow-addon__variant-picker" role="listbox" aria-label="Variantes de {{ addon_product.title | escape }}">
                     {%- for product_variant in addon_product.variants -%}
@@ -335,7 +334,19 @@
   }
 
   .flow-addon__collapsible-panel {
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height var(--animation-speed) ease,
+      opacity var(--animation-speed) ease,
+      margin-top var(--animation-speed) ease;
+  }
+
+  .flow-addon__collapsible-panel.is-open {
     margin-top: var(--margin-xs);
+    opacity: 1;
   }
 
   .flow-addon__variant-picker {

@@ -93,8 +93,7 @@ class FlowEngine extends HTMLElement {
         if (!panel) return;
 
         const isExpanded = collapsibleTrigger.getAttribute('aria-expanded') === 'true';
-        collapsibleTrigger.setAttribute('aria-expanded', String(!isExpanded));
-        panel.hidden = isExpanded;
+        this._setAddonCollapsibleState(collapsibleTrigger, panel, !isExpanded);
         return;
       }
 
@@ -122,13 +121,6 @@ class FlowEngine extends HTMLElement {
 
         const priceTarget = item.querySelector('.flow-addon__item-price');
         if (priceTarget && variantPriceMoney) priceTarget.textContent = variantPriceMoney;
-
-        const panel = variantOption.closest('[data-flow-addon-collapsible-panel]');
-        const trigger = item.querySelector('[data-flow-addon-collapsible-trigger]');
-        if (trigger && panel) {
-          trigger.setAttribute('aria-expanded', 'false');
-          panel.hidden = true;
-        }
 
         this._enforceSingleSelection(item);
         this._updatePriceSummary();
@@ -158,6 +150,18 @@ class FlowEngine extends HTMLElement {
       const addonItem = e.target.closest('.flow-addon__item');
       if (addonItem && addonItem.closest('[data-flow-addon]')) {
         if (e.target.closest('[data-flow-addon-collapsible-trigger], [data-flow-addon-variant-option], [data-flow-addon-collapsible-panel]')) {
+          return;
+        }
+
+        const collapsibleTriggerInItem = addonItem.querySelector('[data-flow-addon-collapsible-trigger]');
+        if (collapsibleTriggerInItem) {
+          e.preventDefault();
+          const panelId = collapsibleTriggerInItem.getAttribute('aria-controls');
+          const panel = panelId ? this.querySelector(`#${panelId}`) : null;
+          if (!panel) return;
+
+          const isExpanded = collapsibleTriggerInItem.getAttribute('aria-expanded') === 'true';
+          this._setAddonCollapsibleState(collapsibleTriggerInItem, panel, !isExpanded);
           return;
         }
 
@@ -261,6 +265,25 @@ class FlowEngine extends HTMLElement {
       }
 
       this._updatePriceSummary();
+    });
+  }
+
+
+  _setAddonCollapsibleState(trigger, panel, isOpen) {
+    if (!trigger || !panel) return;
+
+    trigger.setAttribute('aria-expanded', String(isOpen));
+
+    if (isOpen) {
+      panel.classList.add('is-open');
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+      return;
+    }
+
+    panel.style.maxHeight = `${panel.scrollHeight}px`;
+    window.requestAnimationFrame(() => {
+      panel.classList.remove('is-open');
+      panel.style.maxHeight = '0px';
     });
   }
 

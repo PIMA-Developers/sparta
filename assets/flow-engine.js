@@ -544,40 +544,38 @@ class FlowEngine extends HTMLElement {
     const step = this._steps[currentIdx];
     if (!step) return;
 
-    // ✅ pega TODOS os summaries do step (não depende de estar dentro do form)
-    const summaryEls = step.querySelectorAll('[data-flow-price-summary]');
-    if (!summaryEls.length) return;
-
-    // ✅ pega o form do step (pra preço base e qty do produto principal)
     const form = step.querySelector('[data-flow-product-form]');
+    if (!form) return;
+
+    // Se o resumo estiver desligado no bloco, não tem o que atualizar
+    const summaryEl = form.querySelector('[data-flow-price-summary]');
+    if (!summaryEl) return;
 
     let total = 0;
 
-    // Main product (preço * quantidade) — só se tiver form
-    if (form) {
-      const mainPrice = parseInt(form.dataset.price, 10) || 0;
-      const mainQtyEl = form.querySelector('[data-flow-main-quantity]');
-      const mainQty = mainQtyEl ? (parseInt(mainQtyEl.value, 10) || 1) : 1;
-      total += mainPrice * mainQty;
-    }
+    // Main product (preço * quantidade)
+    const mainPrice = parseInt(form.dataset.price, 10) || 0;
+    const mainQtyEl = form.querySelector('[data-flow-main-quantity]');
+    const mainQty = mainQtyEl ? (parseInt(mainQtyEl.value, 10) || 1) : 1;
+    total += mainPrice * mainQty;
 
-    // ✅ Addons/Services selecionados (preço * quantidade) — no STEP inteiro
+    // Addons selecionados (preço * quantidade)
     const selectedAddons = step.querySelectorAll('[data-addon-selected="true"][data-price]');
     selectedAddons.forEach((el) => {
       const price = parseInt(el.dataset.price, 10) || 0;
-
-      let qty = parseInt(el.dataset.addonQuantity, 10);
-      if (!Number.isFinite(qty) || qty <= 0) qty = 1;
-
+      const qty = parseInt(el.dataset.addonQuantity, 10) || 1;
       total += price * qty;
     });
 
-    const formatted = this._formatMoney(total);
+    summaryEl.textContent = this._formatMoney(total);
+  }
 
-    // ✅ atualiza todos os summaries do step
-    summaryEls.forEach((el) => {
-      el.textContent = formatted;
-    });
+  _formatMoney(cents) {
+    if (window.Shopify?.formatMoney) {
+      return window.Shopify.formatMoney(cents);
+    }
+    const amount = (cents / 100).toFixed(2);
+    return `R$ ${amount.replace('.', ',')}`;
   }
 
   /* ── Progress ───────────────────────────────────────────── */

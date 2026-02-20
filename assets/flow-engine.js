@@ -271,9 +271,18 @@ class FlowEngine extends HTMLElement {
   async _handleAcademyOption(el) {
     if (this._isNavigating) return;
 
-    const attrValue = el.dataset.attributeValue;
+    const attrValue = el?.dataset?.attributeValue;
     if (attrValue) {
-      this._pendingAttributes['fluxo_academia'] = attrValue;
+      this._pendingAttributes["fluxo_academia"] = attrValue;
+    }
+
+    const targetStepId = el?.dataset?.targetStepId;
+
+    // If a target step is defined, go directly to that step.
+    // Otherwise keep current behavior: go to next.
+    if (targetStepId) {
+      await this._goToStepById(targetStepId);
+      return;
     }
 
     await this._goNext();

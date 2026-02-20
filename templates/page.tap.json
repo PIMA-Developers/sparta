@@ -1150,7 +1150,12 @@
                         "show_quantity": true,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": ""
+                        "service_display_name": "",
+                        "badges_config": "",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },
@@ -1182,7 +1187,12 @@
                         "show_quantity": false,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": ""
+                        "service_display_name": "",
+                        "badges_config": "<p>1|Recomendado|#FFE600|#111111</p>",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },
@@ -1602,7 +1612,12 @@
                         "show_quantity": true,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": ""
+                        "service_display_name": "",
+                        "badges_config": "",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },
@@ -1634,7 +1649,12 @@
                         "show_quantity": false,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": "Preparo Expresso"
+                        "service_display_name": "Preparo Expresso",
+                        "badges_config": "",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },
@@ -2445,7 +2465,12 @@
                         "show_quantity": false,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": ""
+                        "service_display_name": "",
+                        "badges_config": "",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },
@@ -2466,7 +2491,12 @@
                         "show_quantity": true,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": ""
+                        "service_display_name": "",
+                        "badges_config": "",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },
@@ -2497,7 +2527,12 @@
                         "show_quantity": false,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": "Preparo Expresso"
+                        "service_display_name": "Preparo Expresso",
+                        "badges_config": "",
+                        "badge_padding_y": 2,
+                        "badge_padding_x": 8,
+                        "badge_gap": 6,
+                        "badge_radius": 12
                       },
                       "blocks": {}
                     },

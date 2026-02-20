@@ -50,7 +50,10 @@
       {%- for addon_product in block.settings.products -%}
         {%- assign addon_variant = addon_product.selected_or_first_available_variant -%}
         {%- if addon_variant -%}
-          {%- assign has_multiple_variants = addon_product.variants.size > 1 -%}
+          {%- assign has_multiple_variants = false -%}
+          {%- if addon_product.variants.size > 1 -%}
+            {%- assign has_multiple_variants = true -%}
+          {%- endif -%}
           {%- assign use_collapsible_select = false -%}
           {%- if display_style == 'collapsible_select' and has_multiple_variants -%}
             {%- assign use_collapsible_select = true -%}

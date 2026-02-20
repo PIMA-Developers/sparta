@@ -2460,10 +2460,11 @@
                         "heading": "Escolha seu tipo de personalização*:",
                         "addon_type": "product",
                         "products": [
-                          "pacote-2-elementos"
+                          "pacote-2-elementos",
+                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie"
                         ],
-                        "selection_mode": "any",
-                        "display_style": "card",
+                        "selection_mode": "single",
+                        "display_style": "collapsible_select",
                         "activation_method": "checkbox",
                         "preselected_position": 0,
                         "show_quantity": false,

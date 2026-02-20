@@ -1206,7 +1206,7 @@
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 16,
-            "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+            "color_scheme": "scheme-6",
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
@@ -1283,7 +1283,7 @@
               "settings": {
                 "link": "",
                 "open_in_new_tab": false,
-                "content_direction": "column",
+                "content_direction": "row",
                 "vertical_on_mobile": true,
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
@@ -1293,8 +1293,8 @@
                 "gap": 12,
                 "width": "custom",
                 "custom_width": 80,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
+                "width_mobile": "custom",
+                "custom_width_mobile": 90,
                 "height": "fit",
                 "custom_height": 100,
                 "inherit_color_scheme": false,
@@ -1321,9 +1321,14 @@
                   "name": "Opção de academia",
                   "settings": {
                     "label": "Academia",
+                    "nav_type": "next",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                     "description": "Academia",
-                    "attribute_value": ""
+                    "attribute_value": "",
+                    "target_step_id": "",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997",
+                    "border_radius": 0
                   },
                   "blocks": {}
                 },
@@ -1332,9 +1337,14 @@
                   "name": "Opção de academia",
                   "settings": {
                     "label": "Academia",
+                    "nav_type": "next",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                     "description": "Academia",
-                    "attribute_value": ""
+                    "attribute_value": "",
+                    "target_step_id": "",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "border_radius": 4
                   },
                   "blocks": {}
                 }

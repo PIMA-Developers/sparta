@@ -623,14 +623,14 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "flow_button_fQ9CHc": {
+                "flow_button_xhCMKL": {
                   "type": "_flow-button",
-                  "name": "Kimono Padrão",
+                  "name": "Academia Parceira",
                   "settings": {
-                    "label": "Kimono Padrão",
+                    "label": "Academia Parceira",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "f2_0",
+                    "target_step_id": "f1_1",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "primary",
@@ -640,14 +640,14 @@
                   },
                   "blocks": {}
                 },
-                "flow_button_xhCMKL": {
+                "flow_button_fQ9CHc": {
                   "type": "_flow-button",
-                  "name": "Academia Parceira",
+                  "name": "Kimono Padrão",
                   "settings": {
-                    "label": "Academia Parceira",
+                    "label": "Não",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "f1_0",
+                    "target_step_id": "apenas_kimono",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "primary",
@@ -659,8 +659,8 @@
                 }
               },
               "block_order": [
-                "flow_button_fQ9CHc",
-                "flow_button_xhCMKL"
+                "flow_button_xhCMKL",
+                "flow_button_fQ9CHc"
               ]
             },
             "group_WVGdb4": {
@@ -736,7 +736,7 @@
           "type": "_flow-step",
           "name": "F2 - 0 | ACAD. X PADRÃO",
           "settings": {
-            "step_id": "f2_0",
+            "step_id": "f1_0",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -791,11 +791,12 @@
             "text_b6attx": {
               "type": "text",
               "name": "t:names.text",
+              "disabled": true,
               "settings": {
                 "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "center",
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
@@ -860,7 +861,7 @@
                     "label": "Sim",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "f2_1",
+                    "target_step_id": "f1_1",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "primary",
@@ -877,7 +878,7 @@
                     "label": "Não",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "f2_0",
+                    "target_step_id": "apenas_kimono",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "primary",
@@ -960,6 +961,236 @@
             "text_b6attx",
             "group_dKJx4q",
             "group_LG4a8n"
+          ]
+        },
+        "flow_step_XWANhA": {
+          "type": "_flow-step",
+          "name": "F2 - 0 | ACAD. X PADRÃO",
+          "settings": {
+            "step_id": "f2_0",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_rTQw8g": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Veio de alguma academia parceira?</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_eyRMk4": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_MLNpJq": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_qrmaCF": {
+                  "type": "_flow-button",
+                  "name": "Academia Parceira",
+                  "settings": {
+                    "label": "Sim",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_1",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_dEMVEt": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Não",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_qrmaCF",
+                "flow_button_dEMVEt"
+              ]
+            },
+            "group_8ww4wF": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_gnF4CK": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "inicio",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_gnF4CK"
+              ]
+            }
+          },
+          "block_order": [
+            "text_rTQw8g",
+            "text_eyRMk4",
+            "group_MLNpJq",
+            "group_8ww4wF"
           ]
         },
         "flow_step_EnGidz": {
@@ -1629,7 +1860,7 @@
                   "type": "_flow-product-form",
                   "name": "Form produto (fluxo)",
                   "settings": {
-                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "product": "kimono-classic-brazil-combat",
                     "show_gallery": true,
                     "show_price_summary": true,
                     "price_summary_label": "Total estimado:",
@@ -1663,23 +1894,18 @@
                       },
                       "blocks": {}
                     },
-                    "flow_addon_NWpFE3": {
-                      "type": "_flow-addon",
-                      "name": "Addons do produto",
+                    "variant_picker_NmF7LJ": {
+                      "type": "variant-picker",
+                      "name": "t:names.product_variant_picker",
                       "settings": {
-                        "heading": "Escolha seu tipo de personalização*:",
-                        "addon_type": "product",
-                        "products": [
-                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
-                          "sparta-camiseta-cottonflex-sprt-athlete"
-                        ],
-                        "display_style": "card",
-                        "activation_method": "checkbox",
-                        "show_quantity": false,
-                        "service_property_key": "_service_type",
-                        "service_property_value": "producao",
-                        "service_display_name": ""
+                        "product": "{{ closest.product }}",
+                        "variant_style": "buttons",
+                        "show_swatches": true,
+                        "alignment": "left",
+                        "padding-block-start": 0,
+                        "padding-block-end": 8,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
                       },
                       "blocks": {}
                     },
@@ -1861,7 +2087,7 @@
                   },
                   "block_order": [
                     "text_kVqtVG",
-                    "flow_addon_NWpFE3",
+                    "variant_picker_NmF7LJ",
                     "flow_addon_khym7y",
                     "divider_XGHqGp",
                     "flow_addon_7F3pXb",
@@ -1947,6 +2173,7 @@
         "flow_step_FCxR9x",
         "flow_step_eqMTAe",
         "flow_step_iEt7NT",
+        "flow_step_XWANhA",
         "flow_step_EnGidz",
         "flow_step_8qQrRF",
         "flow_step_z7Krbt"

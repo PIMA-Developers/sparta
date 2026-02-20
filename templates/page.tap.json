@@ -62,9 +62,9 @@
       "blocks": {
         "flow_step_8BKQLw": {
           "type": "_flow-step",
-          "name": "Inicio",
+          "name": "Fase 0",
           "settings": {
-            "step_id": "inicio",
+            "step_id": "fase_0",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -90,11 +90,34 @@
             "padding-inline-end": 20
           },
           "blocks": {
+            "image_aY8Nag": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Design_sem_nome_20.png",
+                "link": "",
+                "image_ratio": "adapt",
+                "width": "custom",
+                "custom_width": 10,
+                "width_mobile": "custom",
+                "custom_width_mobile": 40,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "text_yaAnWN": {
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>New arrivals</h2>",
+                "text": "",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -120,7 +143,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "text": "<p>Customizando kimonos e uniformes desde 2017.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -157,7 +180,7 @@
                 "vertical_alignment_flex_direction_column": "center",
                 "gap": 12,
                 "width": "custom",
-                "custom_width": 80,
+                "custom_width": 60,
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
                 "height": "fit",
@@ -183,9 +206,180 @@
               "blocks": {
                 "flow_button_aV7bEG": {
                   "type": "_flow-button",
+                  "name": "Iniciar",
+                  "disabled": true,
+                  "settings": {
+                    "label": "O que é a TAP",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "inicio",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "left"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_93tpef": {
+                  "type": "_flow-button",
+                  "name": "Iniciar",
+                  "settings": {
+                    "label": "Iniciar experiência",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "inicio",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": false,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_aV7bEG",
+                "flow_button_93tpef"
+              ]
+            }
+          },
+          "block_order": [
+            "image_aY8Nag",
+            "text_yaAnWN",
+            "text_xcb7dH",
+            "group_nFddKt"
+          ]
+        },
+        "flow_step_FCxR9x": {
+          "type": "_flow-step",
+          "name": "Inicio",
+          "settings": {
+            "step_id": "inicio",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 20,
+            "padding-inline-end": 20
+          },
+          "blocks": {
+            "text_pnwUFx": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>O que você está procurando?</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_GFzDTc": {
+              "type": "text",
+              "name": "t:names.text",
+              "disabled": true,
+              "settings": {
+                "text": "<p>Que tipo de Kimono v</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_jdxRxJ": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 60,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_t7K8Da": {
+                  "type": "_flow-button",
                   "name": "Comprar Kimono",
                   "settings": {
-                    "label": "Comprar Kimono",
+                    "label": "Kimono sem personalização",
                     "navigation_action": "go_to_step",
                     "offset": 2,
                     "target_step_id": "f1_0",
@@ -198,11 +392,11 @@
                   },
                   "blocks": {}
                 },
-                "flow_button_zxmYg8": {
+                "flow_button_jJp6HA": {
                   "type": "_flow-button",
                   "name": "Comprar Kimono + Personalização",
                   "settings": {
-                    "label": "Comprar Kimono + Personalização",
+                    "label": "Kimono com personalização",
                     "navigation_action": "go_to_step",
                     "offset": 2,
                     "target_step_id": "f2_0",
@@ -215,14 +409,14 @@
                   },
                   "blocks": {}
                 },
-                "flow_button_CKiKED": {
+                "flow_button_CkabFV": {
                   "type": "_flow-button",
-                  "name": "Botão de navegação",
+                  "name": "Personalizar meu Kimono",
                   "settings": {
                     "label": "Personalizar meu Kimono",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "",
+                    "target_step_id": "apenas_personalizar",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "primary",
@@ -234,46 +428,83 @@
                 }
               },
               "block_order": [
-                "flow_button_aV7bEG",
-                "flow_button_zxmYg8",
-                "flow_button_CKiKED"
+                "flow_button_t7K8Da",
+                "flow_button_jJp6HA",
+                "flow_button_CkabFV"
               ]
             },
-            "image_aY8Nag": {
-              "type": "image",
-              "name": "t:names.image",
+            "group_ar9in7": {
+              "type": "group",
+              "name": "Navegação",
               "settings": {
-                "image": "shopify://shop_images/Design_sem_nome_20.png",
                 "link": "",
-                "image_ratio": "adapt",
-                "width": "custom",
-                "custom_width": 10,
-                "width_mobile": "custom",
-                "custom_width_mobile": 40,
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
                 "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
-                "border_radius": 0,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {}
+              "blocks": {
+                "flow_button_CxpRcw": {
+                  "type": "_flow-button",
+                  "name": "Voltar",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "fase_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_CxpRcw"
+              ]
             }
           },
           "block_order": [
-            "text_yaAnWN",
-            "text_xcb7dH",
-            "group_nFddKt",
-            "image_aY8Nag"
+            "text_pnwUFx",
+            "text_GFzDTc",
+            "group_jdxRxJ",
+            "group_ar9in7"
           ]
         },
         "flow_step_eqMTAe": {
           "type": "_flow-step",
           "name": "F1 - 0 | ACAD. X PADRÃO",
-          "disabled": true,
           "settings": {
             "step_id": "f1_0",
             "content_direction": "column",
@@ -473,7 +704,7 @@
               "blocks": {
                 "flow_button_Hb4z49": {
                   "type": "_flow-button",
-                  "name": "Kimono Padrão",
+                  "name": "Voltar",
                   "settings": {
                     "label": "Voltar",
                     "navigation_action": "go_to_step",
@@ -504,7 +735,6 @@
         "flow_step_iEt7NT": {
           "type": "_flow-step",
           "name": "F2 - 0 | ACAD. X PADRÃO",
-          "disabled": true,
           "settings": {
             "step_id": "f2_0",
             "content_direction": "column",
@@ -536,7 +766,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Que tipo de Kimono deseja comprar e personalizar?</h2>",
+                "text": "<h2>Veio de alguma academia parceira?</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -623,28 +853,11 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "flow_button_EpWj8B": {
-                  "type": "_flow-button",
-                  "name": "Kimono Padrão",
-                  "settings": {
-                    "label": "Kimono Padrão",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "f2_0",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "primary",
-                    "full_width": true,
-                    "show_arrow": true,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                },
                 "flow_button_6DebAF": {
                   "type": "_flow-button",
                   "name": "Academia Parceira",
                   "settings": {
-                    "label": "Academia Parceira",
+                    "label": "Sim",
                     "navigation_action": "go_to_step",
                     "offset": 2,
                     "target_step_id": "f2_1",
@@ -656,11 +869,28 @@
                     "icon_position": "right"
                   },
                   "blocks": {}
+                },
+                "flow_button_EpWj8B": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Não",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
-                "flow_button_EpWj8B",
-                "flow_button_6DebAF"
+                "flow_button_6DebAF",
+                "flow_button_EpWj8B"
               ]
             },
             "group_LG4a8n": {
@@ -735,7 +965,6 @@
         "flow_step_EnGidz": {
           "type": "_flow-step",
           "name": "F2_1 | ACADEMIA",
-          "disabled": true,
           "settings": {
             "step_id": "f2_1",
             "content_direction": "column",
@@ -763,6 +992,59 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "text_n3B4gY": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Selecione sua Academia</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_mahPTK": {
+              "type": "text",
+              "name": "t:names.text",
+              "disabled": true,
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "group_8me9RF": {
               "type": "group",
               "name": "t:names.group",
@@ -829,17 +1111,81 @@
                 "flow_academy_option_HrwxeJ",
                 "flow_academy_option_TdBgye"
               ]
+            },
+            "group_CjQm6F": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_rCE4mw": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_rCE4mw"
+              ]
             }
           },
           "block_order": [
-            "group_8me9RF"
+            "text_n3B4gY",
+            "text_mahPTK",
+            "group_8me9RF",
+            "group_CjQm6F"
           ]
         },
         "flow_step_8qQrRF": {
           "type": "_flow-step",
-          "name": "Etapa do fluxo",
+          "name": "MODELO FORM PRODUTO",
           "settings": {
-            "step_id": "",
+            "step_id": "apenas_personalizar",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -865,6 +1211,32 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "text_WekCdt": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "group_YMwbne": {
               "type": "group",
               "name": "t:names.group",
@@ -878,14 +1250,14 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
+                "gap": 20,
                 "width": "custom",
                 "custom_width": 80,
                 "width_mobile": "custom",
                 "custom_width_mobile": 90,
                 "height": "fit",
                 "custom_height": 100,
-                "inherit_color_scheme": true,
+                "inherit_color_scheme": false,
                 "color_scheme": "",
                 "background_media": "none",
                 "video_position": "cover",
@@ -895,7 +1267,7 @@
                 "border_opacity": 100,
                 "border_radius": 8,
                 "toggle_overlay": true,
-                "overlay_color": "#ffffff7d",
+                "overlay_color": "#f5f5f5",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
                 "padding-block-start": 24,
@@ -904,6 +1276,32 @@
                 "padding-inline-end": 24
               },
               "blocks": {
+                "text_Hkg7im": {
+                  "type": "text",
+                  "name": "t:names.heading",
+                  "settings": {
+                    "text": "<h2>Personalize seu Kimono</h2>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
                 "flow_product_form_DME69d": {
                   "type": "_flow-product-form",
                   "name": "Form produto (fluxo)",
@@ -918,6 +1316,7 @@
                     "text_JzdWzP": {
                       "type": "text",
                       "name": "t:names.heading",
+                      "disabled": true,
                       "settings": {
                         "text": "<h2>New arrivals</h2>",
                         "width": "fit-content",
@@ -945,14 +1344,14 @@
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
-                        "heading": "Adicionar extras:",
+                        "heading": "Escolha seu tipo de personalização*:",
                         "addon_type": "product",
                         "products": [
                           "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                           "sparta-camiseta-basic-oversized-30-1-striking-juice",
                           "sparta-camiseta-cottonflex-sprt-athlete"
                         ],
-                        "display_style": "compact",
+                        "display_style": "card",
                         "activation_method": "checkbox",
                         "show_quantity": false,
                         "service_property_key": "_service_type",
@@ -961,25 +1360,152 @@
                       },
                       "blocks": {}
                     },
-                    "flow_addon_TrrjHT": {
+                    "flow_addon_GzRcxJ": {
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
-                        "heading": "Adicionar extras:",
-                        "addon_type": "service",
+                        "heading": "Adicionais (opicional)",
+                        "addon_type": "product",
                         "products": [
                           "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                           "sparta-camiseta-basic-oversized-30-1-striking-juice",
                           "sparta-camiseta-cottonflex-sprt-athlete"
+                        ],
+                        "display_style": "card",
+                        "activation_method": "checkbox",
+                        "show_quantity": true,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": ""
+                      },
+                      "blocks": {}
+                    },
+                    "divider_BbgKcn": {
+                      "type": "_divider",
+                      "name": "t:names.divider",
+                      "settings": {
+                        "thickness": 1,
+                        "corner_radius": "square",
+                        "width_percent": 100,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_TrrjHT": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
+                      "settings": {
+                        "heading": "",
+                        "addon_type": "service",
+                        "products": [
+                          "sparta-camiseta-overiszed-30-1-santa"
                         ],
                         "display_style": "compact",
                         "activation_method": "toggle",
                         "show_quantity": false,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": ""
+                        "service_display_name": "Preparo Expresso"
                       },
                       "blocks": {}
+                    },
+                    "group_Nrg939": {
+                      "type": "group",
+                      "name": "t:names.group",
+                      "settings": {
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
+                        "background_media": "none",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 0,
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {
+                        "text_WYEdTt": {
+                          "type": "text",
+                          "name": "t:names.heading",
+                          "settings": {
+                            "text": "<h5>Aviso:</h5>",
+                            "width": "fit-content",
+                            "max_width": "normal",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        },
+                        "text_VgreMQ": {
+                          "type": "text",
+                          "name": "t:names.text",
+                          "settings": {
+                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. Em caso de dúvidas em sua compra, entre em contato direto via WhatsApp através do número <a href=\"https://wa.me/5521995888183\" target=\"_blank\" title=\"https://wa.me/5521995888183\">21 99588-8183.</a></p>",
+                            "width": "100%",
+                            "max_width": "none",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "text_WYEdTt",
+                        "text_VgreMQ"
+                      ]
                     },
                     "flow-media-gallery": {
                       "type": "_product-media-gallery",
@@ -987,7 +1513,7 @@
                       "settings": {
                         "product": "{{ closest.product }}",
                         "media_presentation": "carousel",
-                        "media_columns": "two",
+                        "media_columns": "one",
                         "image_gap": 10,
                         "large_first_image": false,
                         "icons_style": "arrow",
@@ -998,7 +1524,7 @@
                         "aspect_ratio": "1/1.25",
                         "media_radius": 8,
                         "extend_media": true,
-                        "constrain_to_viewport": false,
+                        "constrain_to_viewport": true,
                         "zoom": true,
                         "video_loop": false,
                         "hide_variants": true,
@@ -1013,23 +1539,27 @@
                   "block_order": [
                     "text_JzdWzP",
                     "flow_addon_7pk6EY",
-                    "flow_addon_TrrjHT"
+                    "flow_addon_GzRcxJ",
+                    "divider_BbgKcn",
+                    "flow_addon_TrrjHT",
+                    "group_Nrg939"
                   ]
                 }
               },
               "block_order": [
+                "text_Hkg7im",
                 "flow_product_form_DME69d"
               ]
             }
           },
           "block_order": [
+            "text_WekCdt",
             "group_YMwbne"
           ]
         },
         "success": {
           "type": "_flow-step",
           "name": "Sucesso",
-          "disabled": true,
           "static": true,
           "settings": {
             "step_id": "success",
@@ -1092,6 +1622,7 @@
       },
       "block_order": [
         "flow_step_8BKQLw",
+        "flow_step_FCxR9x",
         "flow_step_eqMTAe",
         "flow_step_iEt7NT",
         "flow_step_EnGidz",

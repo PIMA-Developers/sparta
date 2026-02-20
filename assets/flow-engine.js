@@ -83,6 +83,10 @@ class FlowEngine extends HTMLElement {
       }
     });
 
+    this.addEventListener('flow:recalc', () => {
+      this._updatePriceSummary();
+    });
+
     this.addEventListener('change', (e) => {
       const addon = e.target.closest('[data-flow-addon]');
       if (addon) this._updatePriceSummary();
@@ -556,7 +560,7 @@ class FlowEngine extends HTMLElement {
     total += mainPrice * mainQty;
 
     // Addons selecionados (preço * quantidade)
-    const selectedAddons = form.querySelectorAll('[data-addon-selected="true"][data-price]');
+    const selectedAddons = step.querySelectorAll('[data-addon-selected="true"][data-price]');
     selectedAddons.forEach((el) => {
       const price = parseInt(el.dataset.price, 10) || 0;
       const qty = parseInt(el.dataset.addonQuantity, 10) || 1;

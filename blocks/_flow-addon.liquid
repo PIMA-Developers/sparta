@@ -172,6 +172,7 @@
 
       const isSelected = toggle.type === 'checkbox' ? toggle.checked : false;
       item.dataset.addonSelected = String(isSelected);
+      block.dispatchEvent(new CustomEvent('flow:recalc', { bubbles: true }));
 
       const engine = block.closest('flow-engine');
       if (engine && engine._updatePriceSummary) engine._updatePriceSummary();
@@ -187,6 +188,7 @@
       const newState = !isPressed;
       toggleBtn.setAttribute('aria-pressed', String(newState));
       item.dataset.addonSelected = String(newState);
+      
 
       const engine = block.closest('flow-engine');
       if (engine && engine._updatePriceSummary) engine._updatePriceSummary();

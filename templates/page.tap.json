@@ -1180,7 +1180,7 @@
                         "show_quantity": false,
                         "service_property_key": "_service_type",
                         "service_property_value": "producao",
-                        "service_display_name": "Preparo Expresso"
+                        "service_display_name": ""
                       },
                       "blocks": {}
                     },

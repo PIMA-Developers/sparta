@@ -424,6 +424,58 @@
       "label": "Nome de exibição do serviço",
       "info": "Substitui o título do produto no step e no carrinho. Aceita metafield.",
       "visible_if": "{{ block.settings.addon_type == 'service' }}"
+    },
+    {
+      "type": "header",
+      "content": "Badges",
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
+    },
+    {
+      "type": "richtext",
+      "id": "badges_config",
+      "label": "Configuração de badges",
+      "info": "Formato por linha: posição|texto|#HEX fundo|#HEX texto. Ex: 1|Mais vendido|#111111|#FFFFFF",
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_y",
+      "label": "Badge padding vertical (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_x",
+      "label": "Badge padding horizontal (px)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8,
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
+    },
+    {
+      "type": "range",
+      "id": "badge_gap",
+      "label": "Gap entre badges (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 6,
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
+    },
+    {
+      "type": "range",
+      "id": "badge_radius",
+      "label": "Arredondamento (px)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 12,
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
     }
   ],
   "presets": [

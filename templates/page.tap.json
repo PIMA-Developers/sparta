@@ -1020,32 +1020,6 @@
               },
               "blocks": {}
             },
-            "text_eyRMk4": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "group_MLNpJq": {
               "type": "group",
               "name": "t:names.group",
@@ -1189,7 +1163,6 @@
           },
           "block_order": [
             "text_rTQw8g",
-            "text_eyRMk4",
             "group_MLNpJq",
             "group_8ww4wF"
           ]
@@ -1297,7 +1270,7 @@
                 "custom_width_mobile": 90,
                 "height": "fit",
                 "custom_height": 100,
-                "inherit_color_scheme": false,
+                "inherit_color_scheme": true,
                 "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997",
                 "background_media": "none",
                 "video_position": "cover",
@@ -1320,15 +1293,14 @@
                   "type": "_flow-academy-option",
                   "name": "Opção de academia",
                   "settings": {
-                    "label": "Academia",
-                    "nav_type": "next",
+                    "label": "SPRT",
+                    "nav_type": "id",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                    "description": "Academia",
-                    "attribute_value": "",
-                    "target_step_id": "",
-                    "inherit_color_scheme": true,
-                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997",
-                    "border_radius": 0
+                    "description": "",
+                    "attribute_value": "academia_sparta",
+                    "target_step_id": "apenas_kimono_sparta",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
                   },
                   "blocks": {}
                 },
@@ -1336,15 +1308,14 @@
                   "type": "_flow-academy-option",
                   "name": "Opção de academia",
                   "settings": {
-                    "label": "Academia",
+                    "label": "Academia 2",
                     "nav_type": "next",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                     "description": "Academia",
                     "attribute_value": "",
                     "target_step_id": "",
-                    "inherit_color_scheme": true,
-                    "color_scheme": "",
-                    "border_radius": 4
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
                   },
                   "blocks": {}
                 }
@@ -2222,6 +2193,456 @@
             "group_i3xLmB"
           ]
         },
+        "flow_step_HnhXB4": {
+          "type": "_flow-step",
+          "name": "Apenas Kimono | Sparta",
+          "settings": {
+            "step_id": "apenas_kimono_sparta",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_iCqU6y": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 20,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "custom",
+                "custom_width_mobile": 90,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 8,
+                "toggle_overlay": true,
+                "overlay_color": "#f5f5f5",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 24,
+                "padding-block-end": 24,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "text_Ld36XE": {
+                  "type": "text",
+                  "name": "t:names.heading",
+                  "disabled": true,
+                  "settings": {
+                    "text": "<h2>Escolha seu Kimono</h2>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "flow_product_form_L3ak8p": {
+                  "type": "_flow-product-form",
+                  "name": "Form produto (fluxo)",
+                  "settings": {
+                    "product": "kimono-classic-brazil-combat",
+                    "show_gallery": true,
+                    "show_price_summary": true,
+                    "price_summary_label": "Total estimado:",
+                    "add_to_cart_label": "Adicionar ao carrinho"
+                  },
+                  "blocks": {
+                    "text_WJ3pQE": {
+                      "type": "text",
+                      "name": "t:names.heading",
+                      "settings": {
+                        "text": "<h4>Escolha seu kimono</h4>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "product_description_NKxrQg": {
+                      "type": "product-description",
+                      "name": "t:names.product_description",
+                      "settings": {
+                        "text": "{{ closest.product.description }}",
+                        "width": "100%",
+                        "max_width": "none",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "variant_picker_9PKrX8": {
+                      "type": "variant-picker",
+                      "name": "t:names.product_variant_picker",
+                      "settings": {
+                        "product": "{{ closest.product }}",
+                        "variant_style": "buttons",
+                        "show_swatches": true,
+                        "alignment": "left",
+                        "padding-block-start": 0,
+                        "padding-block-end": 8,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_wNKdqT": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
+                      "settings": {
+                        "heading": "Adicionais (opicional)",
+                        "addon_type": "product",
+                        "products": [
+                          "estampas-tematicas-10x10-cm"
+                        ],
+                        "display_style": "card",
+                        "activation_method": "checkbox",
+                        "show_quantity": true,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": ""
+                      },
+                      "blocks": {}
+                    },
+                    "divider_MbVbrz": {
+                      "type": "_divider",
+                      "name": "t:names.divider",
+                      "settings": {
+                        "thickness": 1,
+                        "corner_radius": "square",
+                        "width_percent": 100,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_y7t7te": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
+                      "settings": {
+                        "heading": "Prazo de produção",
+                        "addon_type": "service",
+                        "products": [
+                          "entrega-expressa-ate-7-dias-uteis",
+                          "entrega-turbo-ate-48h"
+                        ],
+                        "display_style": "compact",
+                        "activation_method": "toggle",
+                        "show_quantity": false,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": "Preparo Expresso"
+                      },
+                      "blocks": {}
+                    },
+                    "group_kCdHwr": {
+                      "type": "group",
+                      "name": "t:names.group",
+                      "settings": {
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "content_direction": "column",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "flex-start",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
+                        "background_media": "none",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 0,
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {
+                        "text_hxKEcU": {
+                          "type": "text",
+                          "name": "t:names.heading",
+                          "settings": {
+                            "text": "<h5>Aviso:</h5>",
+                            "width": "fit-content",
+                            "max_width": "normal",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        },
+                        "text_Wt9XWb": {
+                          "type": "text",
+                          "name": "t:names.text",
+                          "settings": {
+                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. </p><p>Descontos e Frete são calculados no checkout.</p>",
+                            "width": "100%",
+                            "max_width": "none",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "text_hxKEcU",
+                        "text_Wt9XWb"
+                      ]
+                    },
+                    "flow-media-gallery": {
+                      "type": "_product-media-gallery",
+                      "static": true,
+                      "settings": {
+                        "product": "{{ closest.product }}",
+                        "media_presentation": "carousel",
+                        "media_columns": "one",
+                        "image_gap": 10,
+                        "large_first_image": false,
+                        "icons_style": "arrow",
+                        "slideshow_controls_style": "thumbnails",
+                        "slideshow_mobile_controls_style": "counter",
+                        "thumbnail_position": "left",
+                        "thumbnail_width": 72,
+                        "aspect_ratio": "1/1.25",
+                        "media_radius": 8,
+                        "extend_media": true,
+                        "constrain_to_viewport": true,
+                        "zoom": true,
+                        "video_loop": false,
+                        "hide_variants": true,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_WJ3pQE",
+                    "product_description_NKxrQg",
+                    "variant_picker_9PKrX8",
+                    "flow_addon_wNKdqT",
+                    "divider_MbVbrz",
+                    "flow_addon_y7t7te",
+                    "group_kCdHwr"
+                  ]
+                },
+                "group_EGUrkb": {
+                  "type": "group",
+                  "name": "Navegação",
+                  "settings": {
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "center",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 8,
+                    "width": "fill",
+                    "custom_width": 80,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 100,
+                    "toggle_overlay": false,
+                    "overlay_color": "#ffffff75",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "flow_button_Lbj3qk": {
+                      "type": "_flow-button",
+                      "name": "Kimono Padrão",
+                      "settings": {
+                        "label": "Voltar",
+                        "navigation_action": "go_to_step",
+                        "offset": 2,
+                        "target_step_id": "f2_1",
+                        "attribute_key": "",
+                        "attribute_value": "",
+                        "style": "secondary",
+                        "full_width": true,
+                        "show_arrow": true,
+                        "icon_position": "left"
+                      },
+                      "blocks": {}
+                    },
+                    "flow_button_PYTpiA": {
+                      "type": "_flow-button",
+                      "name": "Kimono Padrão",
+                      "settings": {
+                        "label": "Recomeçar",
+                        "navigation_action": "go_to_step",
+                        "offset": 2,
+                        "target_step_id": "inicio",
+                        "attribute_key": "",
+                        "attribute_value": "",
+                        "style": "secondary",
+                        "full_width": true,
+                        "show_arrow": false,
+                        "icon_position": "right"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "flow_button_Lbj3qk",
+                    "flow_button_PYTpiA"
+                  ]
+                }
+              },
+              "block_order": [
+                "text_Ld36XE",
+                "flow_product_form_L3ak8p",
+                "group_EGUrkb"
+              ]
+            }
+          },
+          "block_order": [
+            "group_iCqU6y"
+          ]
+        },
         "success": {
           "type": "_flow-step",
           "name": "Sucesso",
@@ -2293,7 +2714,8 @@
         "flow_step_XWANhA",
         "flow_step_EnGidz",
         "flow_step_8qQrRF",
-        "flow_step_z7Krbt"
+        "flow_step_z7Krbt",
+        "flow_step_HnhXB4"
       ],
       "name": "Fluxo de compra TAP",
       "settings": {

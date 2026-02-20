@@ -159,56 +159,6 @@
   </div>
 </div>
 
-<script>
-  (() => {
-    const block = document.currentScript.closest('[data-flow-addon]');
-    if (!block) return;
-
-    block.addEventListener('change', (e) => {
-      const toggle = e.target.closest('[data-flow-addon-toggle]');
-      if (!toggle) return;
-      const item = toggle.closest('.flow-addon__item');
-      if (!item) return;
-
-      const isSelected = toggle.type === 'checkbox' ? toggle.checked : false;
-      item.dataset.addonSelected = String(isSelected);
-      block.dispatchEvent(new CustomEvent('flow:recalc', { bubbles: true }));
-
-      const engine = block.closest('flow-engine');
-      if (engine && engine._updatePriceSummary) engine._updatePriceSummary();
-    });
-
-    block.addEventListener('click', (e) => {
-      const toggleBtn = e.target.closest('.flow-addon__toggle-btn');
-      if (!toggleBtn) return;
-      const item = toggleBtn.closest('.flow-addon__item');
-      if (!item) return;
-
-      const isPressed = toggleBtn.getAttribute('aria-pressed') === 'true';
-      const newState = !isPressed;
-      toggleBtn.setAttribute('aria-pressed', String(newState));
-      item.dataset.addonSelected = String(newState);
-      block.dispatchEvent(new CustomEvent('flow:recalc', { bubbles: true }));
-      
-
-      const engine = block.closest('flow-engine');
-      if (engine && engine._updatePriceSummary) engine._updatePriceSummary();
-    });
-
-    block.addEventListener('change', (e) => {
-      if (e.target.matches('[data-flow-addon-quantity]')) {
-        const item = e.target.closest('.flow-addon__item');
-        if (item) {
-          item.dataset.addonQuantity = e.target.value || '1';
-        }
-      }
-
-      const engine = block.closest('flow-engine');
-      if (engine && engine._updatePriceSummary) engine._updatePriceSummary();
-    });
-  })();
-</script>
-
 {% stylesheet %}
   .flow-addon {
     width: 100%;

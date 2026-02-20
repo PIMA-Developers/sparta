@@ -12,7 +12,7 @@
 
   @param {select} addon_type - product | service
   @param {product_list} products - Products to show as addons (product type)
-  @param {select} display_style - card | compact
+  @param {select} display_style - card | compact | collapsible_select
   @param {select} activation_method - checkbox | toggle
   @param {checkbox} show_quantity - Show quantity selector (product type only)
   @param {text} service_property_key - Property key for service (default: _service_type)
@@ -48,6 +48,14 @@
       {%- for addon_product in block.settings.products -%}
         {%- assign addon_variant = addon_product.selected_or_first_available_variant -%}
         {%- if addon_variant -%}
+          {%- assign has_multiple_variants = false -%}
+          {%- if addon_product.variants.size > 1 -%}
+            {%- assign has_multiple_variants = true -%}
+          {%- endif -%}
+          {%- assign use_collapsible_select = false -%}
+          {%- if display_style == 'collapsible_select' and has_multiple_variants -%}
+            {%- assign use_collapsible_select = true -%}
+          {%- endif -%}
           {%- assign pre_pos = block.settings.preselected_position | default: 0 | plus: 0 -%}
           {%- assign is_preselected = false -%}
           {%- if pre_pos > 0 and forloop.index == pre_pos -%}
@@ -60,30 +68,32 @@
             data-addon-selected="{% if is_preselected %}true{% else %}false{% endif %}"
             data-price="{{ addon_variant.price }}"
           >
-            <div class="flow-addon__item-toggle">
-              {%- if activation == 'checkbox' -%}
-                <input
-                  type="checkbox"
-                  class="flow-addon__checkbox"
-                  id="addon-{{ block.id }}-{{ addon_variant.id }}"
-                  data-flow-addon-toggle
-                  aria-label="{{ addon_product.title | escape }}"
-                  {% if is_preselected %}checked{% endif %}
-                >
-              {%- else -%}
-                <button
-                  type="button"
-                  class="flow-addon__toggle-btn"
-                  data-flow-addon-toggle
-                  aria-pressed="{% if is_preselected %}true{% else %}false{% endif %}"
-                  aria-label="{{ addon_product.title | escape }}"
-                >
-                  <span class="flow-addon__toggle-track">
-                    <span class="flow-addon__toggle-thumb"></span>
-                  </span>
-                </button>
-              {%- endif -%}
-            </div>
+            {%- unless use_collapsible_select -%}
+              <div class="flow-addon__item-toggle">
+                {%- if activation == 'checkbox' -%}
+                  <input
+                    type="checkbox"
+                    class="flow-addon__checkbox"
+                    id="addon-{{ block.id }}-{{ addon_variant.id }}"
+                    data-flow-addon-toggle
+                    aria-label="{{ addon_product.title | escape }}"
+                    {% if is_preselected %}checked{% endif %}
+                  >
+                {%- else -%}
+                  <button
+                    type="button"
+                    class="flow-addon__toggle-btn"
+                    data-flow-addon-toggle
+                    aria-pressed="{% if is_preselected %}true{% else %}false{% endif %}"
+                    aria-label="{{ addon_product.title | escape }}"
+                  >
+                    <span class="flow-addon__toggle-track">
+                      <span class="flow-addon__toggle-thumb"></span>
+                    </span>
+                  </button>
+                {%- endif -%}
+              </div>
+            {%- endunless -%}
 
             <div class="flow-addon__item-info">
               {%- if addon_product.featured_image -%}
@@ -130,6 +140,52 @@
                 <span class="flow-addon__item-price">{{ addon_variant.price | money }}</span>
               </div>
             </div>
+
+            {%- if use_collapsible_select -%}
+              <div class="flow-addon__collapsible">
+                <button
+                  type="button"
+                  class="flow-addon__collapsible-trigger"
+                  data-flow-addon-collapsible-trigger
+                  aria-expanded="false"
+                  aria-controls="addon-collapsible-{{ block.id }}-{{ addon_product.id }}"
+                >
+                  <span class="flow-addon__collapsible-label">Selecionar variante</span>
+                  <span class="flow-addon__collapsible-value" data-flow-addon-selected-variant-name>
+                    {{ addon_variant.title }}
+                  </span>
+                </button>
+
+                <div
+                  class="flow-addon__collapsible-panel"
+                  id="addon-collapsible-{{ block.id }}-{{ addon_product.id }}"
+                  data-flow-addon-collapsible-panel
+                >
+                  <div class="flow-addon__variant-picker" role="listbox" aria-label="Variantes de {{ addon_product.title | escape }}">
+                    {%- for product_variant in addon_product.variants -%}
+                      {%- assign variant_image = product_variant.image | default: addon_product.featured_image -%}
+                      <button
+                        type="button"
+                        class="flow-addon__variant-option"
+                        data-flow-addon-variant-option
+                        data-variant-id="{{ product_variant.id }}"
+                        data-variant-price="{{ product_variant.price }}"
+                        data-variant-title="{{ product_variant.title | escape }}"
+                        data-variant-price-money="{{ product_variant.price | money | escape }}"
+                        aria-pressed="{% if product_variant.id == addon_variant.id %}true{% else %}false{% endif %}"
+                      >
+                        {%- if variant_image -%}
+                          <span class="flow-addon__variant-image-wrapper">
+                            {{ variant_image | image_url: width: 120 | image_tag: class: 'flow-addon__variant-image' }}
+                          </span>
+                        {%- endif -%}
+                        <span class="flow-addon__variant-name">{{ product_variant.title }}</span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
 
             {%- if block.settings.show_quantity -%}
               <div class="flow-addon__item-quantity">
@@ -235,6 +291,116 @@
     border-radius: var(--style-border-radius-inputs, 4px);
     transition: border-color var(--animation-speed) ease, background var(--animation-speed) ease;
     cursor: pointer;
+  }
+
+  .flow-addon--collapsible_select .flow-addon__item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap-sm, 8px);
+  }
+
+  .flow-addon--collapsible_select .flow-addon__item-info {
+    width: 100%;
+  }
+
+  .flow-addon__collapsible {
+    width: 100%;
+  }
+
+  .flow-addon__collapsible-trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    padding: var(--padding-sm) var(--padding-md);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .flow-addon__collapsible-label {
+    font-size: var(--font-size--xs);
+    color: rgb(from var(--color-foreground) r g b / 0.7);
+  }
+
+  .flow-addon__collapsible-value {
+    font-size: var(--font-size--sm);
+    font-weight: 500;
+  }
+
+  .flow-addon__collapsible-panel {
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height var(--animation-speed) ease,
+      opacity var(--animation-speed) ease,
+      margin-top var(--animation-speed) ease;
+  }
+
+  .flow-addon__collapsible-panel.is-open {
+    margin-top: var(--margin-xs);
+    opacity: 1;
+  }
+
+  .flow-addon__variant-picker {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .flow-addon__variant-picker {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+  }
+
+  .flow-addon__variant-option {
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--style-border-radius-inputs, 4px) - 1px);
+    background: var(--color-background);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 6px 8px;
+    min-height: 44px;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .flow-addon__variant-option[aria-pressed='true'] {
+    border-color: var(--color-primary);
+    background: rgb(from var(--color-primary) r g b / 0.08);
+  }
+
+  .flow-addon__variant-image-wrapper {
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .flow-addon__variant-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .flow-addon__variant-name {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .flow-addon__item[data-addon-selected="true"] {
@@ -449,6 +615,10 @@
         {
           "value": "compact",
           "label": "Compacto"
+        },
+        {
+          "value": "collapsible_select",
+          "label": "Select colapsável (variantes)"
         }
       ],
       "default": "card"

@@ -16,7 +16,11 @@
 -%}
 
 <button
-  class="flow-academy-option"
+  class="flow-academy-option
+  {%- if block.settings.inherit_color_scheme == false and block.settings.color_scheme != blank -%}
+    color-{{ block.settings.color_scheme }}
+  {%- endif -%}
+  "
   {{ block.shopify_attributes }}
   type="button"
   data-flow-academy-option
@@ -24,6 +28,11 @@
   {%- if block.settings.nav_type == 'id' and block.settings.target_step_id != blank -%}
     data-target-step-id="{{ block.settings.target_step_id | escape }}"
   {%- endif -%}
+  style="
+  {%- if block.settings.border_radius != blank -%}
+    --academy-border-radius: {{ block.settings.border_radius }}px;
+  {%- endif -%}
+  "
 >
   {%- if img -%}
     <div class="flow-academy-option__image">
@@ -56,7 +65,7 @@
     width: 100%;
     padding: var(--padding-md) var(--padding-lg);
     border: 1px solid var(--color-border);
-    border-radius: var(--style-border-radius-inputs, 4px);
+    border-radius: var(--academy-border-radius, var(--style-border-radius-inputs, 4px));
     background: var(--color-background);
     color: var(--color-foreground);
     cursor: pointer;
@@ -83,7 +92,7 @@
     flex-shrink: 0;
     width: 64px;
     height: 64px;
-    border-radius: var(--style-border-radius-inputs, 4px);
+    border-radius: var(--academy-border-radius, var(--style-border-radius-inputs, 4px));
     overflow: hidden;
   }
 
@@ -176,6 +185,33 @@
       "label": "Target step id (optional)",
       "info": "If set, selecting this academy will navigate directly to this step_id. If empty, it goes to next step.",
       "visible_if": "{{ block.settings.nav_type == 'id' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 4
     }
   ],
   "presets": [

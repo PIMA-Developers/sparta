@@ -567,7 +567,15 @@ class FlowEngine extends HTMLElement {
       total += price * qty;
     });
 
-    summaryEl.textContent = this._formatMoney(total);
+    const safeFormat =
+      (typeof this._formatMoney === 'function' && this._formatMoney.bind(this)) ||
+      (window.Shopify?.formatMoney && ((c) => window.Shopify.formatMoney(c))) ||
+      ((c) => {
+        const amount = (c / 100).toFixed(2);
+        return `R$ ${amount.replace('.', ',')}`;
+      });
+
+    summaryEl.textContent = safeFormat(total);
   }
 
   _formatMoney(cents) {

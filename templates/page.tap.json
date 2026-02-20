@@ -503,239 +503,9 @@
             "group_ar9in7"
           ]
         },
-        "flow_step_eqMTAe": {
-          "type": "_flow-step",
-          "name": "F1 - 0 | ACAD. X PADRÃO",
-          "settings": {
-            "step_id": "f1_0",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "center",
-            "vertical_alignment": "center",
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 16,
-            "color_scheme": "scheme-6",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 20,
-            "padding-block-end": 20,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_q3UcaG": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h2>Que tipo de Kimono precisa?</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_jYVAJC": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "group_H9arfR": {
-              "type": "group",
-              "name": "t:names.group",
-              "settings": {
-                "link": "",
-                "open_in_new_tab": false,
-                "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "center",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "center",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "custom",
-                "custom_width": 80,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "flow_button_xhCMKL": {
-                  "type": "_flow-button",
-                  "name": "Academia Parceira",
-                  "settings": {
-                    "label": "Academia Parceira",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "f1_1",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "primary",
-                    "full_width": true,
-                    "show_arrow": true,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                },
-                "flow_button_fQ9CHc": {
-                  "type": "_flow-button",
-                  "name": "Kimono Padrão",
-                  "settings": {
-                    "label": "Não",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "apenas_kimono",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "primary",
-                    "full_width": true,
-                    "show_arrow": true,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "flow_button_xhCMKL",
-                "flow_button_fQ9CHc"
-              ]
-            },
-            "group_WVGdb4": {
-              "type": "group",
-              "name": "Navegação",
-              "settings": {
-                "link": "",
-                "open_in_new_tab": false,
-                "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "center",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "center",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "fit-content",
-                "custom_width": 80,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": false,
-                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 100,
-                "toggle_overlay": true,
-                "overlay_color": "#ffffff75",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "flow_button_Hb4z49": {
-                  "type": "_flow-button",
-                  "name": "Voltar",
-                  "settings": {
-                    "label": "Voltar",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "inicio",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "secondary",
-                    "full_width": false,
-                    "show_arrow": false,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "flow_button_Hb4z49"
-              ]
-            }
-          },
-          "block_order": [
-            "text_q3UcaG",
-            "text_jYVAJC",
-            "group_H9arfR",
-            "group_WVGdb4"
-          ]
-        },
         "flow_step_iEt7NT": {
           "type": "_flow-step",
-          "name": "F2 - 0 | ACAD. X PADRÃO",
+          "name": "F1_0 | ACAD. X PADRÃO",
           "settings": {
             "step_id": "f1_0",
             "content_direction": "column",
@@ -879,7 +649,7 @@
                     "label": "Não",
                     "navigation_action": "go_to_step",
                     "offset": 2,
-                    "target_step_id": "apenas_kimono",
+                    "target_step_id": "f1_2",
                     "attribute_key": "",
                     "attribute_value": "",
                     "style": "primary",
@@ -964,11 +734,11 @@
             "group_LG4a8n"
           ]
         },
-        "flow_step_XWANhA": {
+        "flow_step_ypjtr4": {
           "type": "_flow-step",
-          "name": "F2 - 0 | ACAD. X PADRÃO",
+          "name": "F1_1 | ACADEMIA",
           "settings": {
-            "step_id": "f2_0",
+            "step_id": "f1_1",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -994,210 +764,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_rTQw8g": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h2>Veio de alguma academia parceira?</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "group_MLNpJq": {
-              "type": "group",
-              "name": "t:names.group",
-              "settings": {
-                "link": "",
-                "open_in_new_tab": false,
-                "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "center",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "center",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "custom",
-                "custom_width": 80,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "flow_button_qrmaCF": {
-                  "type": "_flow-button",
-                  "name": "Academia Parceira",
-                  "settings": {
-                    "label": "Sim",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "f2_1",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "primary",
-                    "full_width": true,
-                    "show_arrow": true,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                },
-                "flow_button_dEMVEt": {
-                  "type": "_flow-button",
-                  "name": "Kimono Padrão",
-                  "settings": {
-                    "label": "Não",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "f2_0",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "primary",
-                    "full_width": true,
-                    "show_arrow": true,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "flow_button_qrmaCF",
-                "flow_button_dEMVEt"
-              ]
-            },
-            "group_8ww4wF": {
-              "type": "group",
-              "name": "Navegação",
-              "settings": {
-                "link": "",
-                "open_in_new_tab": false,
-                "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "center",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "center",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "fit-content",
-                "custom_width": 80,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": false,
-                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 100,
-                "toggle_overlay": true,
-                "overlay_color": "#ffffff75",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "flow_button_gnF4CK": {
-                  "type": "_flow-button",
-                  "name": "Kimono Padrão",
-                  "settings": {
-                    "label": "Voltar",
-                    "navigation_action": "go_to_step",
-                    "offset": 2,
-                    "target_step_id": "inicio",
-                    "attribute_key": "",
-                    "attribute_value": "",
-                    "style": "secondary",
-                    "full_width": false,
-                    "show_arrow": false,
-                    "icon_position": "right"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "flow_button_gnF4CK"
-              ]
-            }
-          },
-          "block_order": [
-            "text_rTQw8g",
-            "group_MLNpJq",
-            "group_8ww4wF"
-          ]
-        },
-        "flow_step_EnGidz": {
-          "type": "_flow-step",
-          "name": "F2_1 | ACADEMIA",
-          "settings": {
-            "step_id": "f2_1",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "center",
-            "vertical_alignment": "center",
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 16,
-            "color_scheme": "scheme-6",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 20,
-            "padding-block-end": 20,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_n3B4gY": {
+            "text_9YKVKw": {
               "type": "text",
               "name": "t:names.heading",
               "settings": {
@@ -1223,7 +790,7 @@
               },
               "blocks": {}
             },
-            "text_mahPTK": {
+            "text_JDhLPk": {
               "type": "text",
               "name": "t:names.text",
               "disabled": true,
@@ -1250,7 +817,7 @@
               },
               "blocks": {}
             },
-            "group_8me9RF": {
+            "group_cCfb7m": {
               "type": "group",
               "name": "t:names.group",
               "settings": {
@@ -1289,7 +856,7 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "flow_academy_option_HrwxeJ": {
+                "flow_academy_option_HVACLH": {
                   "type": "_flow-academy-option",
                   "name": "Opção de academia",
                   "settings": {
@@ -1298,18 +865,18 @@
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                     "description": "",
                     "attribute_value": "academia_sparta",
-                    "target_step_id": "apenas_kimono_sparta",
+                    "target_step_id": "F1_2_sparta",
                     "inherit_color_scheme": false,
                     "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
                   },
                   "blocks": {}
                 },
-                "flow_academy_option_TdBgye": {
+                "flow_academy_option_3xFRQb": {
                   "type": "_flow-academy-option",
                   "name": "Opção de academia",
                   "settings": {
                     "label": "Academia 2",
-                    "nav_type": "next",
+                    "nav_type": "id",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                     "description": "Academia",
                     "attribute_value": "",
@@ -1321,11 +888,11 @@
                 }
               },
               "block_order": [
-                "flow_academy_option_HrwxeJ",
-                "flow_academy_option_TdBgye"
+                "flow_academy_option_HVACLH",
+                "flow_academy_option_3xFRQb"
               ]
             },
-            "group_CjQm6F": {
+            "group_VUtGKC": {
               "type": "group",
               "name": "Navegação",
               "settings": {
@@ -1364,7 +931,7 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "flow_button_rCE4mw": {
+                "flow_button_CAPwtF": {
                   "type": "_flow-button",
                   "name": "Voltar",
                   "settings": {
@@ -1383,22 +950,22 @@
                 }
               },
               "block_order": [
-                "flow_button_rCE4mw"
+                "flow_button_CAPwtF"
               ]
             }
           },
           "block_order": [
-            "text_n3B4gY",
-            "text_mahPTK",
-            "group_8me9RF",
-            "group_CjQm6F"
+            "text_9YKVKw",
+            "text_JDhLPk",
+            "group_cCfb7m",
+            "group_VUtGKC"
           ]
         },
-        "flow_step_8qQrRF": {
+        "flow_step_HnhXB4": {
           "type": "_flow-step",
-          "name": "Apenas Personalização",
+          "name": "F1_2 | Apenas Kimono | Sparta",
           "settings": {
-            "step_id": "apenas_personalizar",
+            "step_id": "F1_2_sparta",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -1424,7 +991,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "group_YMwbne": {
+            "group_iCqU6y": {
               "type": "group",
               "name": "t:names.group",
               "settings": {
@@ -1463,11 +1030,12 @@
                 "padding-inline-end": 24
               },
               "blocks": {
-                "text_Hkg7im": {
+                "text_Ld36XE": {
                   "type": "text",
                   "name": "t:names.heading",
+                  "disabled": true,
                   "settings": {
-                    "text": "<h2>Personalize seu Kimono</h2>",
+                    "text": "<h2>Escolha seu Kimono</h2>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1489,23 +1057,22 @@
                   },
                   "blocks": {}
                 },
-                "flow_product_form_DME69d": {
+                "flow_product_form_L3ak8p": {
                   "type": "_flow-product-form",
                   "name": "Form produto (fluxo)",
                   "settings": {
-                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "product": "kimono-classic-brazil-combat",
                     "show_gallery": true,
                     "show_price_summary": true,
                     "price_summary_label": "Total estimado:",
                     "add_to_cart_label": "Adicionar ao carrinho"
                   },
                   "blocks": {
-                    "text_JzdWzP": {
+                    "text_WJ3pQE": {
                       "type": "text",
                       "name": "t:names.heading",
-                      "disabled": true,
                       "settings": {
-                        "text": "<h2>New arrivals</h2>",
+                        "text": "<h4>Escolha seu kimono</h4>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -1527,36 +1094,55 @@
                       },
                       "blocks": {}
                     },
-                    "flow_addon_7pk6EY": {
-                      "type": "_flow-addon",
-                      "name": "Addons do produto",
+                    "product_description_NKxrQg": {
+                      "type": "product-description",
+                      "name": "t:names.product_description",
                       "settings": {
-                        "heading": "Escolha seu tipo de personalização*:",
-                        "addon_type": "product",
-                        "products": [
-                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
-                          "sparta-camiseta-cottonflex-sprt-athlete"
-                        ],
-                        "display_style": "card",
-                        "activation_method": "checkbox",
-                        "show_quantity": false,
-                        "service_property_key": "_service_type",
-                        "service_property_value": "producao",
-                        "service_display_name": ""
+                        "text": "{{ closest.product.description }}",
+                        "width": "100%",
+                        "max_width": "none",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
                       },
                       "blocks": {}
                     },
-                    "flow_addon_GzRcxJ": {
+                    "variant_picker_9PKrX8": {
+                      "type": "variant-picker",
+                      "name": "t:names.product_variant_picker",
+                      "settings": {
+                        "product": "{{ closest.product }}",
+                        "variant_style": "buttons",
+                        "show_swatches": true,
+                        "alignment": "left",
+                        "padding-block-start": 0,
+                        "padding-block-end": 8,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "flow_addon_wNKdqT": {
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
                         "heading": "Adicionais (opicional)",
                         "addon_type": "product",
                         "products": [
-                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
-                          "sparta-camiseta-cottonflex-sprt-athlete"
+                          "estampas-tematicas-10x10-cm"
                         ],
                         "display_style": "card",
                         "activation_method": "checkbox",
@@ -1567,7 +1153,7 @@
                       },
                       "blocks": {}
                     },
-                    "divider_BbgKcn": {
+                    "divider_MbVbrz": {
                       "type": "_divider",
                       "name": "t:names.divider",
                       "settings": {
@@ -1579,14 +1165,15 @@
                       },
                       "blocks": {}
                     },
-                    "flow_addon_TrrjHT": {
+                    "flow_addon_y7t7te": {
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
-                        "heading": "",
+                        "heading": "Prazo de produção",
                         "addon_type": "service",
                         "products": [
-                          "sparta-camiseta-overiszed-30-1-santa"
+                          "entrega-expressa-ate-7-dias-uteis",
+                          "entrega-turbo-ate-48h"
                         ],
                         "display_style": "compact",
                         "activation_method": "toggle",
@@ -1597,7 +1184,7 @@
                       },
                       "blocks": {}
                     },
-                    "group_Nrg939": {
+                    "group_kCdHwr": {
                       "type": "group",
                       "name": "t:names.group",
                       "settings": {
@@ -1636,7 +1223,7 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {
-                        "text_WYEdTt": {
+                        "text_hxKEcU": {
                           "type": "text",
                           "name": "t:names.heading",
                           "settings": {
@@ -1662,11 +1249,11 @@
                           },
                           "blocks": {}
                         },
-                        "text_VgreMQ": {
+                        "text_Wt9XWb": {
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. Em caso de dúvidas em sua compra, entre em contato direto via WhatsApp através do número <a href=\"https://wa.me/5521995888183\" target=\"_blank\" title=\"https://wa.me/5521995888183\">21 99588-8183.</a></p>",
+                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. </p><p>Descontos e Frete são calculados no checkout.</p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "left",
@@ -1690,8 +1277,8 @@
                         }
                       },
                       "block_order": [
-                        "text_WYEdTt",
-                        "text_VgreMQ"
+                        "text_hxKEcU",
+                        "text_Wt9XWb"
                       ]
                     },
                     "flow-media-gallery": {
@@ -1724,30 +1311,111 @@
                     }
                   },
                   "block_order": [
-                    "text_JzdWzP",
-                    "flow_addon_7pk6EY",
-                    "flow_addon_GzRcxJ",
-                    "divider_BbgKcn",
-                    "flow_addon_TrrjHT",
-                    "group_Nrg939"
+                    "text_WJ3pQE",
+                    "product_description_NKxrQg",
+                    "variant_picker_9PKrX8",
+                    "flow_addon_wNKdqT",
+                    "divider_MbVbrz",
+                    "flow_addon_y7t7te",
+                    "group_kCdHwr"
+                  ]
+                },
+                "group_EGUrkb": {
+                  "type": "group",
+                  "name": "Navegação",
+                  "settings": {
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "center",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 8,
+                    "width": "fill",
+                    "custom_width": 80,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 100,
+                    "toggle_overlay": false,
+                    "overlay_color": "#ffffff75",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "flow_button_Lbj3qk": {
+                      "type": "_flow-button",
+                      "name": "Kimono Padrão",
+                      "settings": {
+                        "label": "Voltar",
+                        "navigation_action": "go_to_step",
+                        "offset": 2,
+                        "target_step_id": "f1_1",
+                        "attribute_key": "",
+                        "attribute_value": "",
+                        "style": "secondary",
+                        "full_width": true,
+                        "show_arrow": true,
+                        "icon_position": "left"
+                      },
+                      "blocks": {}
+                    },
+                    "flow_button_PYTpiA": {
+                      "type": "_flow-button",
+                      "name": "Kimono Padrão",
+                      "settings": {
+                        "label": "Recomeçar",
+                        "navigation_action": "go_to_step",
+                        "offset": 2,
+                        "target_step_id": "inicio",
+                        "attribute_key": "",
+                        "attribute_value": "",
+                        "style": "secondary",
+                        "full_width": true,
+                        "show_arrow": false,
+                        "icon_position": "right"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "flow_button_Lbj3qk",
+                    "flow_button_PYTpiA"
                   ]
                 }
               },
               "block_order": [
-                "text_Hkg7im",
-                "flow_product_form_DME69d"
+                "text_Ld36XE",
+                "flow_product_form_L3ak8p",
+                "group_EGUrkb"
               ]
             }
           },
           "block_order": [
-            "group_YMwbne"
+            "group_iCqU6y"
           ]
         },
         "flow_step_z7Krbt": {
           "type": "_flow-step",
-          "name": "Apenas Kimono",
+          "name": "F1_2 | Apenas Kimono",
           "settings": {
-            "step_id": "apenas_kimono",
+            "step_id": "f1_2",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -2193,11 +1861,11 @@
             "group_i3xLmB"
           ]
         },
-        "flow_step_HnhXB4": {
+        "flow_step_XWANhA": {
           "type": "_flow-step",
-          "name": "Apenas Kimono | Sparta",
+          "name": "F2_0 | ACAD. X PADRÃO",
           "settings": {
-            "step_id": "apenas_kimono_sparta",
+            "step_id": "f2_0",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "center",
@@ -2223,7 +1891,437 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "group_iCqU6y": {
+            "text_rTQw8g": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Veio de alguma academia parceira?</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_MLNpJq": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_qrmaCF": {
+                  "type": "_flow-button",
+                  "name": "Academia Parceira",
+                  "settings": {
+                    "label": "Sim",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_1",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                },
+                "flow_button_dEMVEt": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Não",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "primary",
+                    "full_width": true,
+                    "show_arrow": true,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_qrmaCF",
+                "flow_button_dEMVEt"
+              ]
+            },
+            "group_8ww4wF": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_gnF4CK": {
+                  "type": "_flow-button",
+                  "name": "Kimono Padrão",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "inicio",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_gnF4CK"
+              ]
+            }
+          },
+          "block_order": [
+            "text_rTQw8g",
+            "group_MLNpJq",
+            "group_8ww4wF"
+          ]
+        },
+        "flow_step_EnGidz": {
+          "type": "_flow-step",
+          "name": "F2_1 | ACADEMIA",
+          "settings": {
+            "step_id": "f2_1",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_n3B4gY": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Selecione sua Academia</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_mahPTK": {
+              "type": "text",
+              "name": "t:names.text",
+              "disabled": true,
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_8me9RF": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "custom",
+                "custom_width_mobile": 90,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_academy_option_HrwxeJ": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "SPRT",
+                    "nav_type": "id",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "description": "",
+                    "attribute_value": "academia_sparta",
+                    "target_step_id": "apenas_kimono_sparta",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
+                  },
+                  "blocks": {}
+                },
+                "flow_academy_option_TdBgye": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "Academia 2",
+                    "nav_type": "next",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "description": "Academia",
+                    "attribute_value": "",
+                    "target_step_id": "",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_academy_option_HrwxeJ",
+                "flow_academy_option_TdBgye"
+              ]
+            },
+            "group_CjQm6F": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_rCE4mw": {
+                  "type": "_flow-button",
+                  "name": "Voltar",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_rCE4mw"
+              ]
+            }
+          },
+          "block_order": [
+            "text_n3B4gY",
+            "text_mahPTK",
+            "group_8me9RF",
+            "group_CjQm6F"
+          ]
+        },
+        "flow_step_8qQrRF": {
+          "type": "_flow-step",
+          "name": "F3_1 | Apenas Personalização",
+          "settings": {
+            "step_id": "apenas_personalizar",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_YMwbne": {
               "type": "group",
               "name": "t:names.group",
               "settings": {
@@ -2262,12 +2360,11 @@
                 "padding-inline-end": 24
               },
               "blocks": {
-                "text_Ld36XE": {
+                "text_Hkg7im": {
                   "type": "text",
                   "name": "t:names.heading",
-                  "disabled": true,
                   "settings": {
-                    "text": "<h2>Escolha seu Kimono</h2>",
+                    "text": "<h2>Personalize seu Kimono</h2>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -2289,22 +2386,23 @@
                   },
                   "blocks": {}
                 },
-                "flow_product_form_L3ak8p": {
+                "flow_product_form_DME69d": {
                   "type": "_flow-product-form",
                   "name": "Form produto (fluxo)",
                   "settings": {
-                    "product": "kimono-classic-brazil-combat",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
                     "show_gallery": true,
                     "show_price_summary": true,
                     "price_summary_label": "Total estimado:",
                     "add_to_cart_label": "Adicionar ao carrinho"
                   },
                   "blocks": {
-                    "text_WJ3pQE": {
+                    "text_JzdWzP": {
                       "type": "text",
                       "name": "t:names.heading",
+                      "disabled": true,
                       "settings": {
-                        "text": "<h4>Escolha seu kimono</h4>",
+                        "text": "<h2>New arrivals</h2>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -2326,55 +2424,36 @@
                       },
                       "blocks": {}
                     },
-                    "product_description_NKxrQg": {
-                      "type": "product-description",
-                      "name": "t:names.product_description",
+                    "flow_addon_7pk6EY": {
+                      "type": "_flow-addon",
+                      "name": "Addons do produto",
                       "settings": {
-                        "text": "{{ closest.product.description }}",
-                        "width": "100%",
-                        "max_width": "none",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "heading": "Escolha seu tipo de personalização*:",
+                        "addon_type": "product",
+                        "products": [
+                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
+                          "sparta-camiseta-cottonflex-sprt-athlete"
+                        ],
+                        "display_style": "card",
+                        "activation_method": "checkbox",
+                        "show_quantity": false,
+                        "service_property_key": "_service_type",
+                        "service_property_value": "producao",
+                        "service_display_name": ""
                       },
                       "blocks": {}
                     },
-                    "variant_picker_9PKrX8": {
-                      "type": "variant-picker",
-                      "name": "t:names.product_variant_picker",
-                      "settings": {
-                        "product": "{{ closest.product }}",
-                        "variant_style": "buttons",
-                        "show_swatches": true,
-                        "alignment": "left",
-                        "padding-block-start": 0,
-                        "padding-block-end": 8,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    },
-                    "flow_addon_wNKdqT": {
+                    "flow_addon_GzRcxJ": {
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
                         "heading": "Adicionais (opicional)",
                         "addon_type": "product",
                         "products": [
-                          "estampas-tematicas-10x10-cm"
+                          "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                          "sparta-camiseta-basic-oversized-30-1-striking-juice",
+                          "sparta-camiseta-cottonflex-sprt-athlete"
                         ],
                         "display_style": "card",
                         "activation_method": "checkbox",
@@ -2385,7 +2464,7 @@
                       },
                       "blocks": {}
                     },
-                    "divider_MbVbrz": {
+                    "divider_BbgKcn": {
                       "type": "_divider",
                       "name": "t:names.divider",
                       "settings": {
@@ -2397,15 +2476,14 @@
                       },
                       "blocks": {}
                     },
-                    "flow_addon_y7t7te": {
+                    "flow_addon_TrrjHT": {
                       "type": "_flow-addon",
                       "name": "Addons do produto",
                       "settings": {
-                        "heading": "Prazo de produção",
+                        "heading": "",
                         "addon_type": "service",
                         "products": [
-                          "entrega-expressa-ate-7-dias-uteis",
-                          "entrega-turbo-ate-48h"
+                          "sparta-camiseta-overiszed-30-1-santa"
                         ],
                         "display_style": "compact",
                         "activation_method": "toggle",
@@ -2416,7 +2494,7 @@
                       },
                       "blocks": {}
                     },
-                    "group_kCdHwr": {
+                    "group_Nrg939": {
                       "type": "group",
                       "name": "t:names.group",
                       "settings": {
@@ -2455,7 +2533,7 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {
-                        "text_hxKEcU": {
+                        "text_WYEdTt": {
                           "type": "text",
                           "name": "t:names.heading",
                           "settings": {
@@ -2481,11 +2559,11 @@
                           },
                           "blocks": {}
                         },
-                        "text_Wt9XWb": {
+                        "text_VgreMQ": {
                           "type": "text",
                           "name": "t:names.text",
                           "settings": {
-                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. </p><p>Descontos e Frete são calculados no checkout.</p>",
+                            "text": "<p>Após a confirmação de pagamento, nossa equipe entrará em contato com você em até 24h via WhatsApp para confirmar a arte e dar sequência à personalização. Em caso de dúvidas em sua compra, entre em contato direto via WhatsApp através do número <a href=\"https://wa.me/5521995888183\" target=\"_blank\" title=\"https://wa.me/5521995888183\">21 99588-8183.</a></p>",
                             "width": "100%",
                             "max_width": "none",
                             "alignment": "left",
@@ -2509,8 +2587,8 @@
                         }
                       },
                       "block_order": [
-                        "text_hxKEcU",
-                        "text_Wt9XWb"
+                        "text_WYEdTt",
+                        "text_VgreMQ"
                       ]
                     },
                     "flow-media-gallery": {
@@ -2543,16 +2621,15 @@
                     }
                   },
                   "block_order": [
-                    "text_WJ3pQE",
-                    "product_description_NKxrQg",
-                    "variant_picker_9PKrX8",
-                    "flow_addon_wNKdqT",
-                    "divider_MbVbrz",
-                    "flow_addon_y7t7te",
-                    "group_kCdHwr"
+                    "text_JzdWzP",
+                    "flow_addon_7pk6EY",
+                    "flow_addon_GzRcxJ",
+                    "divider_BbgKcn",
+                    "flow_addon_TrrjHT",
+                    "group_Nrg939"
                   ]
                 },
-                "group_EGUrkb": {
+                "group_BTQtTz": {
                   "type": "group",
                   "name": "Navegação",
                   "settings": {
@@ -2591,14 +2668,14 @@
                     "padding-inline-end": 0
                   },
                   "blocks": {
-                    "flow_button_Lbj3qk": {
+                    "flow_button_WiKJ8L": {
                       "type": "_flow-button",
                       "name": "Kimono Padrão",
                       "settings": {
                         "label": "Voltar",
                         "navigation_action": "go_to_step",
                         "offset": 2,
-                        "target_step_id": "f2_1",
+                        "target_step_id": "inicio",
                         "attribute_key": "",
                         "attribute_value": "",
                         "style": "secondary",
@@ -2608,7 +2685,7 @@
                       },
                       "blocks": {}
                     },
-                    "flow_button_PYTpiA": {
+                    "flow_button_icjEgm": {
                       "type": "_flow-button",
                       "name": "Kimono Padrão",
                       "settings": {
@@ -2627,20 +2704,20 @@
                     }
                   },
                   "block_order": [
-                    "flow_button_Lbj3qk",
-                    "flow_button_PYTpiA"
+                    "flow_button_WiKJ8L",
+                    "flow_button_icjEgm"
                   ]
                 }
               },
               "block_order": [
-                "text_Ld36XE",
-                "flow_product_form_L3ak8p",
-                "group_EGUrkb"
+                "text_Hkg7im",
+                "flow_product_form_DME69d",
+                "group_BTQtTz"
               ]
             }
           },
           "block_order": [
-            "group_iCqU6y"
+            "group_YMwbne"
           ]
         },
         "success": {
@@ -2709,13 +2786,13 @@
       "block_order": [
         "flow_step_8BKQLw",
         "flow_step_FCxR9x",
-        "flow_step_eqMTAe",
         "flow_step_iEt7NT",
+        "flow_step_ypjtr4",
+        "flow_step_HnhXB4",
+        "flow_step_z7Krbt",
         "flow_step_XWANhA",
         "flow_step_EnGidz",
-        "flow_step_8qQrRF",
-        "flow_step_z7Krbt",
-        "flow_step_HnhXB4"
+        "flow_step_8qQrRF"
       ],
       "name": "Fluxo de compra TAP",
       "settings": {

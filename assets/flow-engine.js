@@ -506,15 +506,19 @@ class FlowEngine extends HTMLElement {
     const form = step.querySelector('[data-flow-product-form]');
     if (!form) return;
 
+    // Se o resumo estiver desligado no bloco, não tem o que atualizar
+    const summaryEl = form.querySelector('[data-flow-price-summary]');
+    if (!summaryEl) return;
+
     let total = 0;
 
-    // Main product price
+    // Main product (preço * quantidade)
     const mainPrice = parseInt(form.dataset.price, 10) || 0;
-    const mainQtyInput = form.querySelector('[data-flow-main-quantity]');
-    const mainQty = mainQtyInput ? parseInt(mainQtyInput.value, 10) || 1 : 1;
+    const mainQtyEl = form.querySelector('[data-flow-main-quantity]');
+    const mainQty = mainQtyEl ? (parseInt(mainQtyEl.value, 10) || 1) : 1;
     total += mainPrice * mainQty;
 
-    // Selected addons
+    // Addons selecionados (preço * quantidade)
     const selectedAddons = form.querySelectorAll('[data-addon-selected="true"][data-price]');
     selectedAddons.forEach((el) => {
       const price = parseInt(el.dataset.price, 10) || 0;
@@ -522,11 +526,7 @@ class FlowEngine extends HTMLElement {
       total += price * qty;
     });
 
-    // Update summary element
-    const summaryEl = form.querySelector('[data-flow-price-summary]');
-    if (summaryEl) {
-      summaryEl.textContent = this._formatMoney(total);
-    }
+    summaryEl.textContent = this._formatMoney(total);
   }
 
   _formatMoney(cents) {

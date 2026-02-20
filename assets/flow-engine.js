@@ -97,6 +97,8 @@ class FlowEngine extends HTMLElement {
         toggleBtn.setAttribute('aria-pressed', String(next));
         item.dataset.addonSelected = String(next);
 
+        if (next) this._enforceSingleSelection(item);
+
         this._updatePriceSummary();
         return;
       }
@@ -123,6 +125,9 @@ class FlowEngine extends HTMLElement {
         if (checkbox) {
           checkbox.checked = !checkbox.checked;
           addonItem.dataset.addonSelected = String(checkbox.checked);
+
+          if (checkbox.checked) this._enforceSingleSelection(addonItem);
+
           this._updatePriceSummary();
           return;
         }
@@ -138,9 +143,12 @@ class FlowEngine extends HTMLElement {
       const addonCheckbox = e.target.closest('input[type="checkbox"][data-flow-addon-toggle]');
       if (addonCheckbox) {
         const item = addonCheckbox.closest('.flow-addon__item');
-        if (item) item.dataset.addonSelected = String(addonCheckbox.checked);
-        this._updatePriceSummary();
-        return;
+          if (item) {
+            item.dataset.addonSelected = String(addonCheckbox.checked);
+            if (addonCheckbox.checked) this._enforceSingleSelection(item);
+          }
+          this._updatePriceSummary();
+          return;
       }
 
       // Quantidade addon: refletir qty e recalcular

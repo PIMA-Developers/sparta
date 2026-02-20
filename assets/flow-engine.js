@@ -90,6 +90,21 @@ class FlowEngine extends HTMLElement {
       const variantInput = e.target.closest('[data-flow-variant-change]');
       if (variantInput) this._updatePriceSummary();
     });
+
+    this.addEventListener('variant:update', (e) => {
+      const variant = e?.detail?.resource;
+      if (!variant || typeof variant.price !== 'number') return;
+
+      // garante que é um variant:update disparado dentro de um product form do flow
+      const sourceEl = e.target instanceof Element ? e.target : null;
+      const form = sourceEl?.closest?.('[data-flow-product-form]');
+      if (!form) return;
+
+      // atualiza o preço base (em centavos) usado pelo _updatePriceSummary()
+      form.dataset.price = String(variant.price);
+
+      this._updatePriceSummary();
+    });
   }
 
   /* ── Navigation ─────────────────────────────────────────── */

@@ -19,11 +19,13 @@
   @param {text} service_display_name - Display name override for cart/step
 {%- enddoc -%}
 
+
 {%- liquid
   assign addon_type = block.settings.addon_type | default: 'product'
   assign display_style = block.settings.display_style | default: 'card'
   assign activation = block.settings.activation_method | default: 'checkbox'
 -%}
+
 
 <div
   class="flow-addon flow-addon--{{ addon_type }} flow-addon--{{ display_style }}"

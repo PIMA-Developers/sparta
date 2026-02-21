@@ -90,7 +90,7 @@
     "product_card_carousel": false,
     "product_corner_radius": 0,
     "card_corner_radius": 4,
-    "show_variant_image": true,
+    "show_variant_image": false,
     "variant_swatch_width": 34,
     "variant_swatch_height": 34,
     "variant_swatch_radius": 8,

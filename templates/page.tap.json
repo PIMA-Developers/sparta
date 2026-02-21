@@ -2482,7 +2482,7 @@
                         "selection_mode": "single",
                         "display_style": "collapsible_select",
                         "variant_card_layout": "full",
-                        "variant_columns_mobile": 1,
+                        "variant_columns_mobile": 2,
                         "variant_columns_desktop": 2,
                         "activation_method": "checkbox",
                         "preselected_position": 0,

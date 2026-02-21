@@ -84,6 +84,33 @@ class FlowEngine extends HTMLElement {
 
       // --- Addons: delegação (funciona mesmo após re-render do variant-picker) ---
 
+      const variantOption = e.target.closest('[data-flow-addon-variant-option]');
+      if (variantOption) {
+        e.preventDefault();
+        const item = variantOption.closest('.flow-addon__item');
+        if (!item) return;
+
+        const variantId = variantOption.dataset.variantId;
+        const variantPrice = variantOption.dataset.variantPrice;
+        const variantTitle = variantOption.dataset.variantTitle;
+        const variantPriceMoney = variantOption.dataset.variantPriceMoney;
+
+        item.dataset.addonSelected = 'true';
+        if (variantId) item.dataset.addonVariantId = variantId;
+        if (variantPrice) item.dataset.price = variantPrice;
+
+        item.querySelectorAll('[data-flow-addon-variant-option]').forEach((optionEl) => {
+          optionEl.setAttribute('aria-pressed', String(optionEl === variantOption));
+        });
+
+        const priceTarget = item.querySelector('.flow-addon__item-price');
+        if (priceTarget && variantPriceMoney) priceTarget.textContent = variantPriceMoney;
+
+        this._enforceSingleSelection(item);
+        this._updatePriceSummary();
+        return;
+      }
+
       // Toggle button
       const toggleBtn = e.target.closest('button[data-flow-addon-toggle]');
       if (toggleBtn) {
@@ -106,6 +133,20 @@ class FlowEngine extends HTMLElement {
       // Clique no card inteiro alterna checkbox/toggle
       const addonItem = e.target.closest('.flow-addon__item');
       if (addonItem && addonItem.closest('[data-flow-addon]')) {
+        if (e.target.closest('[data-flow-addon-variant-option], [data-flow-addon-collapsible-panel]')) {
+          return;
+        }
+
+        const collapsiblePanelInItem = addonItem.querySelector('[data-flow-addon-collapsible-panel]');
+        if (collapsiblePanelInItem) {
+          e.preventDefault();
+          addonItem.dataset.addonSelected = 'true';
+          this._enforceSingleSelection(addonItem);
+          this._setAddonCollapsibleState(collapsiblePanelInItem, true, addonItem);
+          this._updatePriceSummary();
+          return;
+        }
+
         const checkbox = addonItem.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
         const btn = addonItem.querySelector('button[data-flow-addon-toggle]');
 
@@ -206,6 +247,38 @@ class FlowEngine extends HTMLElement {
       }
 
       this._updatePriceSummary();
+    });
+  }
+
+
+  _setAddonCollapsibleState(panel, isOpen, item = null, trigger = null) {
+    if (!panel) return;
+
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    const resolvedItem = item || panel.closest('.flow-addon__item');
+
+    if (isOpen) {
+      panel.classList.add('is-open');
+      if (resolvedItem) resolvedItem.classList.add('flow-addon__item--collapsible-open');
+      panel.style.maxHeight = `${panel.scrollHeight}px`;
+      const onOpenTransitionEnd = (event) => {
+        if (event.propertyName !== 'max-height') return;
+        panel.style.maxHeight = 'none';
+        panel.removeEventListener('transitionend', onOpenTransitionEnd);
+      };
+      panel.addEventListener('transitionend', onOpenTransitionEnd);
+      return;
+    }
+
+    panel.style.maxHeight = `${panel.scrollHeight}px`;
+
+    window.requestAnimationFrame(() => {
+      panel.classList.remove('is-open');
+      if (resolvedItem) resolvedItem.classList.remove('flow-addon__item--collapsible-open');
+      panel.style.maxHeight = '0px';
     });
   }
 
@@ -540,16 +613,23 @@ class FlowEngine extends HTMLElement {
       const selected = addon.querySelectorAll('[data-addon-selected="true"]');
       selected.forEach((item) => {
         const vid = item.dataset.addonVariantId;
-        const propKey = item.dataset.servicePropertyKey || '_service_type';
-        const propValue = item.dataset.servicePropertyValue || 'service';
+        const addMetadata = item.dataset.serviceAddMetadata === 'true';
+        const propKey = item.dataset.servicePropertyKey || '';
+        const propValue = item.dataset.servicePropertyValue || '';
         const displayName = item.dataset.serviceDisplayName || '';
         if (vid) {
-          const serviceProps = { [propKey]: propValue };
+          const serviceProps = {};
+
+          if (addMetadata && propKey && propValue) {
+            serviceProps[propKey] = propValue;
+          }
+
           if (displayName) serviceProps['_display_name'] = displayName;
+
           items.push({
             id: parseInt(vid, 10),
             quantity: 1,
-            properties: serviceProps,
+            properties: Object.keys(serviceProps).length > 0 ? serviceProps : undefined,
           });
         }
       });
@@ -631,6 +711,11 @@ class FlowEngine extends HTMLElement {
 
       const btn = el.querySelector('button[data-flow-addon-toggle]');
       if (btn) btn.setAttribute('aria-pressed', 'false');
+
+      const panel = el.querySelector('[data-flow-addon-collapsible-panel]');
+      if (panel) {
+        this._setAddonCollapsibleState(panel, false, el);
+      }
     });
   }
   _normalizeSingleSelection(stepEl) {

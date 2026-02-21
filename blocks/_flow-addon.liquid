@@ -43,6 +43,11 @@
   --flow-badge-radius: {{ block.settings.badge_radius | default: 12 }}px;
   --flow-addon-variant-cols-mobile: {{ block.settings.variant_columns_mobile | default: 2 }};
   --flow-addon-variant-cols-desktop: {{ block.settings.variant_columns_desktop | default: 3 }};
+  --flow-addon-variant-card-radius: {{ block.settings.variant_card_border_radius | default: 4 }}px;
+  --flow-addon-variant-card-border-width: {{ block.settings.variant_card_border_width | default: 1 }}px;
+  --flow-addon-variant-card-pad-y: {{ block.settings.variant_card_padding_y | default: 6 }}px;
+  --flow-addon-variant-card-pad-x: {{ block.settings.variant_card_padding_x | default: 8 }}px;
+  --flow-addon-variant-thumb-custom-size: {{ block.settings.variant_thumb_custom_size | default: 0 }}px;
   "
 >
   {%- if block.settings.heading != blank -%}
@@ -350,8 +355,8 @@
   }
 
   .flow-addon__variant-option {
-    border: 1px solid var(--color-border);
-    border-radius: calc(var(--style-border-radius-inputs, 4px) - 1px);
+    border: var(--flow-addon-variant-card-border-width, 1px) solid var(--color-border);
+    border-radius: var(--flow-addon-variant-card-radius, 4px);
     background: var(--color-background);
     display: flex;
     align-items: center;
@@ -363,7 +368,7 @@
   .flow-addon[data-variant-card-layout='compact'] .flow-addon__variant-option {
     flex-direction: row;
     gap: 6px;
-    padding: 6px 8px;
+    padding: var(--flow-addon-variant-card-pad-y, 6px) var(--flow-addon-variant-card-pad-x, 8px);
     min-height: 44px;
   }
 
@@ -371,7 +376,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    padding: 10px;
+    padding: calc(var(--flow-addon-variant-card-pad-y, 6px) + 4px) calc(var(--flow-addon-variant-card-pad-x, 8px) + 2px);
     min-height: 72px;
   }
 
@@ -381,7 +386,7 @@
   }
 
   .flow-addon__variant-image-wrapper {
-    width: var(--flow-addon-variant-thumb-size, 48px);
+    width: max(var(--flow-addon-variant-thumb-custom-size, 0px), var(--flow-addon-variant-thumb-size, 48px));
     aspect-ratio: var(--flow-addon-variant-thumb-aspect-ratio, 1 / 1);
     overflow: hidden;
     border-radius: var(--style-border-radius-inputs, 4px);
@@ -447,9 +452,7 @@
     font-size: 0.75rem;
     line-height: 1.2;
     text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
   }
 
   .flow-addon__variant-price {
@@ -711,6 +714,52 @@
         { "value": "wide", "label": "Wide (16:9)" }
       ],
       "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "variant_thumb_custom_size",
+      "label": "Tamanho custom da thumbnail (px)",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "default": 0,
+      "info": "0 usa o preset Pequeno/Médio/Grande"
+    },
+    {
+      "type": "range",
+      "id": "variant_card_border_radius",
+      "label": "Raio da borda do card de variante (px)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "variant_card_border_width",
+      "label": "Espessura da borda do card (px)",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "variant_card_padding_y",
+      "label": "Padding vertical do card (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "variant_card_padding_x",
+      "label": "Padding horizontal do card (px)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 8
     },
     {
       "type": "checkbox",

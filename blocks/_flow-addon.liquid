@@ -34,6 +34,8 @@
   data-addon-type="{{ addon_type }}"
   data-selection-mode="{{ block.settings.selection_mode | default: 'any' }}"
   data-variant-card-layout="{{ block.settings.variant_card_layout | default: 'compact' }}"
+  data-variant-thumb-size="{{ block.settings.variant_thumb_size | default: 'medium' }}"
+  data-variant-thumb-ratio="{{ block.settings.variant_thumb_ratio | default: 'square' }}"
   style="
   --flow-badge-pad-y: {{ block.settings.badge_padding_y | default: 2 }}px;
   --flow-badge-pad-x: {{ block.settings.badge_padding_x | default: 8 }}px;
@@ -101,7 +103,7 @@
             {%- endunless -%}
 
             <div class="flow-addon__item-info">
-              {%- if addon_product.featured_image -%}
+              {%- if block.settings.show_wrapper_thumbnail and addon_product.featured_image -%}
                 <div class="flow-addon__item-image">
                   {{ addon_product.featured_image | image_url: width: 120 | image_tag: class: 'flow-addon__img' }}
                 </div>
@@ -379,22 +381,59 @@
   }
 
   .flow-addon__variant-image-wrapper {
-    width: 48px;
-    height: 48px;
+    width: var(--flow-addon-variant-thumb-size, 48px);
+    aspect-ratio: var(--flow-addon-variant-thumb-aspect-ratio, 1 / 1);
     overflow: hidden;
-    border-radius: 50%;
+    border-radius: var(--style-border-radius-inputs, 4px);
     flex-shrink: 0;
+  }
+
+  .flow-addon[data-variant-thumb-size='small'] {
+    --flow-addon-variant-thumb-size: 40px;
+  }
+
+  .flow-addon[data-variant-thumb-size='medium'] {
+    --flow-addon-variant-thumb-size: 48px;
+  }
+
+  .flow-addon[data-variant-thumb-size='large'] {
+    --flow-addon-variant-thumb-size: 60px;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='auto'] {
+    --flow-addon-variant-thumb-aspect-ratio: auto;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='auto'] .flow-addon__variant-image-wrapper {
+    aspect-ratio: auto;
+    height: auto;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='auto'] .flow-addon__variant-image {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='portrait'] {
+    --flow-addon-variant-thumb-aspect-ratio: 3 / 4;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='landscape'] {
+    --flow-addon-variant-thumb-aspect-ratio: 4 / 3;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='square'] {
+    --flow-addon-variant-thumb-aspect-ratio: 1 / 1;
+  }
+
+  .flow-addon[data-variant-thumb-ratio='wide'] {
+    --flow-addon-variant-thumb-aspect-ratio: 16 / 9;
   }
 
   .flow-addon__variant-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .flow-addon[data-variant-card-layout='full'] .flow-addon__variant-image-wrapper {
-    width: 60px;
-    height: 60px;
   }
 
   .flow-addon__variant-copy {
@@ -648,6 +687,37 @@
         { "value": "full", "label": "Completo" }
       ],
       "default": "compact"
+    },
+    {
+      "type": "select",
+      "id": "variant_thumb_size",
+      "label": "Tamanho da thumbnail da variante",
+      "options": [
+        { "value": "small", "label": "Pequeno" },
+        { "value": "medium", "label": "Médio" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "variant_thumb_ratio",
+      "label": "Aspect ratio da thumbnail da variante",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "portrait", "label": "Portrait (3:4)" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (4:3)" },
+        { "value": "wide", "label": "Wide (16:9)" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wrapper_thumbnail",
+      "label": "Mostrar thumbnail no card do addon",
+      "default": true,
+      "visible_if": "{{ block.settings.addon_type == 'product' }}"
     },
     {
       "type": "range",

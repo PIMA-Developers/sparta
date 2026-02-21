@@ -2521,7 +2521,7 @@
                         "variant_card_border_width": 1,
                         "variant_card_padding_y": 6,
                         "variant_card_padding_x": 8,
-                        "show_wrapper_thumbnail": false,
+                        "show_wrapper_thumbnail": true,
                         "variant_columns_mobile": 2,
                         "variant_columns_desktop": 3,
                         "activation_method": "checkbox",

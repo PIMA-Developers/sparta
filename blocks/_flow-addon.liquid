@@ -47,7 +47,7 @@
   --flow-addon-variant-card-border-width: {{ block.settings.variant_card_border_width | default: 1 }}px;
   --flow-addon-variant-card-pad-y: {{ block.settings.variant_card_padding_y | default: 6 }}px;
   --flow-addon-variant-card-pad-x: {{ block.settings.variant_card_padding_x | default: 8 }}px;
-  --flow-addon-variant-thumb-custom-size: {{ block.settings.variant_thumb_custom_size | default: 0 }}px;
+  --flow-addon-variant-thumb-size-percent: {{ block.settings.variant_thumb_size_percent | default: 34 }}%;
   "
 >
   {%- if block.settings.heading != blank -%}
@@ -386,7 +386,8 @@
   }
 
   .flow-addon__variant-image-wrapper {
-    width: max(var(--flow-addon-variant-thumb-custom-size, 0px), var(--flow-addon-variant-thumb-size, 48px));
+    width: var(--flow-addon-variant-thumb-size-percent, 34%);
+    max-width: var(--flow-addon-variant-thumb-size, 48px);
     aspect-ratio: var(--flow-addon-variant-thumb-aspect-ratio, 1 / 1);
     overflow: hidden;
     border-radius: var(--style-border-radius-inputs, 4px);
@@ -717,13 +718,12 @@
     },
     {
       "type": "range",
-      "id": "variant_thumb_custom_size",
-      "label": "Tamanho custom da thumbnail (px)",
-      "min": 0,
-      "max": 180,
-      "step": 2,
-      "default": 0,
-      "info": "0 usa o preset Pequeno/Médio/Grande"
+      "id": "variant_thumb_size_percent",
+      "label": "Tamanho da thumbnail (% do card)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 34
     },
     {
       "type": "range",

@@ -863,6 +863,7 @@
                     "label": "SPRT",
                     "nav_type": "id",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "image": "shopify://shop_images/SPARTA_REDONDO_BRANCO_-_COSTAS.png",
                     "description": "",
                     "attribute_value": "academia_sparta",
                     "target_step_id": "F1_2_sparta",
@@ -875,10 +876,27 @@
                   "type": "_flow-academy-option",
                   "name": "Opção de academia",
                   "settings": {
-                    "label": "Academia 2",
+                    "label": "VBJJ",
                     "nav_type": "id",
                     "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
-                    "description": "Academia",
+                    "image": "shopify://shop_images/generate-a-white-kimono-in-transparent-background.png",
+                    "description": "",
+                    "attribute_value": "",
+                    "target_step_id": "",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
+                  },
+                  "blocks": {}
+                },
+                "flow_academy_option_KTfkEr": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "MACHADO JIU JITSU",
+                    "nav_type": "id",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "image": "shopify://shop_images/generate-a-white-kimono-in-transparent-background.png",
+                    "description": "",
                     "attribute_value": "",
                     "target_step_id": "",
                     "inherit_color_scheme": false,
@@ -889,7 +907,8 @@
               },
               "block_order": [
                 "flow_academy_option_HVACLH",
-                "flow_academy_option_3xFRQb"
+                "flow_academy_option_3xFRQb",
+                "flow_academy_option_KTfkEr"
               ]
             },
             "group_VUtGKC": {

@@ -3927,7 +3927,7 @@
                           "entrega-expressa-ate-7-dias-uteis",
                           "entrega-turbo-ate-48h"
                         ],
-                        "selection_mode": "any",
+                        "selection_mode": "single",
                         "display_style": "compact",
                         "variant_card_layout": "compact",
                         "variant_thumb_size": "medium",

@@ -3209,6 +3209,7 @@
         "flow_step_EnGidz": {
           "type": "_flow-step",
           "name": "F2_1 | ACADEMIA",
+          "disabled": true,
           "settings": {
             "step_id": "f2_1",
             "content_direction": "column",
@@ -3431,6 +3432,252 @@
             "text_mahPTK",
             "group_8me9RF",
             "group_CjQm6F"
+          ]
+        },
+        "flow_step_xqGap4": {
+          "type": "_flow-step",
+          "name": "F2_1 | ACADEMIA",
+          "settings": {
+            "step_id": "f2_1",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "color_scheme": "scheme-6",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 20,
+            "padding-block-end": 20,
+            "padding-inline-start": 20,
+            "padding-inline-end": 20
+          },
+          "blocks": {
+            "text_G6RX7a": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Selecione sua Academia</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_pdHTy3": {
+              "type": "text",
+              "name": "t:names.text",
+              "disabled": true,
+              "settings": {
+                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_VH4gWE": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "custom",
+                "custom_width_mobile": 90,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_academy_option_74GK4a": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "SPRT",
+                    "nav_type": "id",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "image": "shopify://shop_images/SPARTA_REDONDO_BRANCO_-_COSTAS.png",
+                    "description": "",
+                    "attribute_value": "academia_sparta",
+                    "target_step_id": "F1_2_sparta",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
+                  },
+                  "blocks": {}
+                },
+                "flow_academy_option_yYdQpe": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "VBJJ",
+                    "nav_type": "id",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "image": "shopify://shop_images/generate-a-white-kimono-in-transparent-background.png",
+                    "description": "",
+                    "attribute_value": "academia_VBJJ",
+                    "target_step_id": "F1_2_VBJJ",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
+                  },
+                  "blocks": {}
+                },
+                "flow_academy_option_hkN7qa": {
+                  "type": "_flow-academy-option",
+                  "name": "Opção de academia",
+                  "settings": {
+                    "label": "MACHADO JIU JITSU",
+                    "nav_type": "id",
+                    "product": "sparta-moletom-canguru-premium-3-cabos-sprt-athlete-hoodie",
+                    "image": "shopify://shop_images/generate-a-white-kimono-in-transparent-background.png",
+                    "description": "",
+                    "attribute_value": "academia_MACHADO",
+                    "target_step_id": "F1_2_MACHADO",
+                    "inherit_color_scheme": false,
+                    "color_scheme": "scheme-c8051e77-601c-4784-9a7c-84c407137997"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_academy_option_74GK4a",
+                "flow_academy_option_yYdQpe",
+                "flow_academy_option_hkN7qa"
+              ]
+            },
+            "group_i3dfAB": {
+              "type": "group",
+              "name": "Navegação",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 80,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 100,
+                "toggle_overlay": true,
+                "overlay_color": "#ffffff75",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "flow_button_N9C3mE": {
+                  "type": "_flow-button",
+                  "name": "Voltar",
+                  "settings": {
+                    "label": "Voltar",
+                    "navigation_action": "go_to_step",
+                    "offset": 2,
+                    "target_step_id": "f2_0",
+                    "attribute_key": "",
+                    "attribute_value": "",
+                    "style": "secondary",
+                    "full_width": false,
+                    "show_arrow": false,
+                    "icon_position": "right"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "flow_button_N9C3mE"
+              ]
+            }
+          },
+          "block_order": [
+            "text_G6RX7a",
+            "text_pdHTy3",
+            "group_VH4gWE",
+            "group_i3dfAB"
           ]
         },
         "flow_step_8qQrRF": {
@@ -3996,6 +4243,7 @@
         "flow_step_z7Krbt",
         "flow_step_XWANhA",
         "flow_step_EnGidz",
+        "flow_step_xqGap4",
         "flow_step_8qQrRF"
       ],
       "name": "Fluxo de compra TAP",

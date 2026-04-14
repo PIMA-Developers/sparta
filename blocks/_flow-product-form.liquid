@@ -40,9 +40,11 @@
   {%- if product != blank -%}
     <div class="flow-product-form__layout">
       {%- if block.settings.show_gallery -%}
-        <div class="flow-product-form__media">
-          {% content_for 'block', type: '_product-media-gallery', id: 'flow-media-gallery', closest.product: product %}
-        </div>
+        {%- unless request.path contains '/pages/preview-tap' -%}
+          <div class="flow-product-form__media">
+            {% content_for 'block', type: '_product-media-gallery', id: 'flow-media-gallery', closest.product: product %}
+          </div>
+        {%- endunless -%}
       {%- endif -%}
 
       <div class="flow-product-form__details">

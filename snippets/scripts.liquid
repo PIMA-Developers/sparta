@@ -21,6 +21,12 @@
   }
 </script>
 
+{%- comment -%}
+  TAP flow runtime (non-module): registers capture listeners early so addon toggles
+  still work even if other theme scripts stopPropagation in capture.
+{%- endcomment -%}
+<script src="{{ 'flow-engine-runtime.js' | asset_url }}" defer></script>
+
 {% if settings.transition_to_main_product %}
   {% # theme-check-disable ParserBlockingScript %}
   <script

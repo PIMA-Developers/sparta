@@ -6,10 +6,10 @@
  * current page URL (Section Rendering API) before opening the drawer so markup matches the updated cart.
  */
 
-import { CartAddEvent, CartErrorEvent, ThemeEvents } from '@theme/events';
-import { cartPerformance } from '@theme/performance';
-import { morphSection, sectionRenderer } from '@theme/section-renderer';
-import { fetchConfig } from '@theme/utilities';
+import { CartAddEvent, CartErrorEvent, ThemeEvents } from './events.js';
+import { cartPerformance } from './performance.js';
+import { morphSection, sectionRenderer } from './section-renderer.js';
+import { fetchConfig } from './utilities.js';
 
 const cartAddUrl = () => window.Theme?.routes?.cart_add_url || `${window.Shopify?.routes?.root || '/'}cart/add.js`;
 const CART_DEBUG_FLAG = 'cart_debug';

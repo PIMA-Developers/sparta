@@ -32,6 +32,47 @@
     if (btn instanceof HTMLElement) btn.setAttribute('aria-pressed', String(Boolean(selected)));
   };
 
+  const getAddonConfig = (addonRoot) => {
+    const selectionMode = addonRoot?.dataset?.selectionMode || 'multiple';
+    const enforceSingle = selectionMode === 'single';
+    const preselectMode = addonRoot?.dataset?.preselectMode || 'none';
+    const mustHaveOneSelected = enforceSingle && preselectMode !== 'none';
+    return { enforceSingle, mustHaveOneSelected };
+  };
+
+  const deselectSiblings = (addonRoot, keepItem) => {
+    if (!addonRoot) return;
+    addonRoot.querySelectorAll('[data-addon-variant-id]').forEach((el) => {
+      if (el !== keepItem && el instanceof HTMLElement) setSelected(el, false);
+    });
+  };
+
+  const handleAddonToggleChange = (target) => {
+    const cb = target;
+    if (!(cb instanceof HTMLInputElement)) return false;
+    if (cb.type !== 'checkbox') return false;
+    if (!cb.closest?.('[data-flow-addon]')) return false;
+
+    const addonRoot = cb.closest('[data-flow-addon]');
+    const item = resolveItem(cb);
+    if (!addonRoot || !item) return true;
+
+    const { enforceSingle, mustHaveOneSelected } = getAddonConfig(addonRoot);
+    const next = enforceSingle ? true : cb.checked;
+
+    if (mustHaveOneSelected && !next) {
+      // Revert: single+preselected modes cannot be cleared.
+      cb.checked = true;
+      setSelected(item, true);
+      return true;
+    }
+
+    debug('addon toggle change', { next, id: item.dataset.addonVariantId });
+    setSelected(item, next);
+    if (next && enforceSingle) deselectSiblings(addonRoot, item);
+    return true;
+  };
+
   class FlowEngineRuntime extends HTMLElement {
     connectedCallback() {
       this.addEventListener(
@@ -43,6 +84,13 @@
         },
         true
       );
+
+      this.addEventListener('change', (e) => {
+        const target = e.target;
+        if (handleAddonToggleChange(target)) {
+          e.stopPropagation();
+        }
+      });
 
       this.addEventListener('click', (e) => {
         const btn = e.target?.closest?.('[data-flow-button]');
@@ -85,42 +133,28 @@
       const item = resolveItem(target);
       if (!item) return false;
 
-      const selectionMode = addonRoot.dataset.selectionMode || 'multiple';
-      const enforceSingle = selectionMode === 'single';
-      const preselectMode = addonRoot.dataset.preselectMode || 'none';
-      const mustHaveOneSelected = enforceSingle && preselectMode !== 'none';
-
-      const deselectSiblings = () => {
-        if (!enforceSingle) return;
-        addonRoot.querySelectorAll('[data-addon-variant-id]').forEach((el) => {
-          if (el !== item && el instanceof HTMLElement) setSelected(el, false);
-        });
-      };
-
-      e.preventDefault();
+      const { enforceSingle, mustHaveOneSelected } = getAddonConfig(addonRoot);
 
       const directToggle = target?.closest?.('[data-flow-addon-toggle]');
       if (directToggle instanceof HTMLInputElement && directToggle.type === 'checkbox') {
-        const isSelected = directToggle.checked;
-        if (mustHaveOneSelected && isSelected) return true;
-        const next = enforceSingle ? true : !isSelected;
-        debug('addon checkbox toggle', { next, id: item.dataset.addonVariantId });
-        setSelected(item, next);
-        if (next) deselectSiblings();
-        directToggle.dispatchEvent(new Event('change', { bubbles: true }));
-        return true;
+        // Let the browser toggle the checkbox; we will sync on `change`.
+        // Still prevent clearing in single+preselected modes.
+        if (mustHaveOneSelected && directToggle.checked) return true;
+        return false;
       }
 
       if (directToggle instanceof HTMLElement && directToggle.tagName === 'BUTTON') {
+        e.preventDefault();
         const pressed = directToggle.getAttribute('aria-pressed') === 'true';
         if (mustHaveOneSelected && pressed) return true;
         const next = enforceSingle ? true : !pressed;
         debug('addon button toggle', { next, id: item.dataset.addonVariantId });
         setSelected(item, next);
-        if (next) deselectSiblings();
+        if (next && enforceSingle) deselectSiblings(addonRoot, item);
         return true;
       }
 
+      e.preventDefault();
       const cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
       if (cb instanceof HTMLInputElement) {
         const isSelected = cb.checked;
@@ -128,7 +162,7 @@
         const next = enforceSingle ? true : !isSelected;
         debug('addon row toggle', { next, id: item.dataset.addonVariantId });
         setSelected(item, next);
-        if (next) deselectSiblings();
+        if (enforceSingle && next) deselectSiblings(addonRoot, item);
         cb.dispatchEvent(new Event('change', { bubbles: true }));
         return true;
       }
@@ -152,31 +186,16 @@
         const item = resolveItem(target);
         if (!item) return;
 
-        const selectionMode = addonRoot.dataset.selectionMode || 'multiple';
-        const enforceSingle = selectionMode === 'single';
-        const preselectMode = addonRoot.dataset.preselectMode || 'none';
-        const mustHaveOneSelected = enforceSingle && preselectMode !== 'none';
-        const deselectSiblings = () => {
-          if (!enforceSingle) return;
-          addonRoot.querySelectorAll('[data-addon-variant-id]').forEach((el) => {
-            if (el !== item && el instanceof HTMLElement) setSelected(el, false);
-          });
-        };
-
-        e.preventDefault();
+        const { enforceSingle, mustHaveOneSelected } = getAddonConfig(addonRoot);
 
         const directToggle = target?.closest?.('[data-flow-addon-toggle]');
         if (directToggle instanceof HTMLInputElement && directToggle.type === 'checkbox') {
-          const isSelected = directToggle.checked;
-          if (mustHaveOneSelected && isSelected) return;
-          const next = enforceSingle ? true : !isSelected;
-          debug('addon checkbox toggle (global)', { next, id: item.dataset.addonVariantId });
-          setSelected(item, next);
-          if (next) deselectSiblings();
-          directToggle.dispatchEvent(new Event('change', { bubbles: true }));
+          // Let the browser toggle; sync on `change`.
+          if (mustHaveOneSelected && directToggle.checked) return;
           return;
         }
 
+        e.preventDefault();
         const cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
         if (cb instanceof HTMLInputElement) {
           const isSelected = cb.checked;
@@ -184,7 +203,7 @@
           const next = enforceSingle ? true : !isSelected;
           debug('addon row toggle (global)', { next, id: item.dataset.addonVariantId });
           setSelected(item, next);
-          if (next) deselectSiblings();
+          if (enforceSingle && next) deselectSiblings(addonRoot, item);
           cb.dispatchEvent(new Event('change', { bubbles: true }));
         }
         return;
@@ -215,6 +234,14 @@
         if (action === 'restart') return goTo(0);
         if (action === 'next' && currentIdx >= 0 && currentIdx < steps.length - 1) return goTo(currentIdx + 1);
       }
+    },
+    true
+  );
+
+  document.addEventListener(
+    'change',
+    (e) => {
+      handleAddonToggleChange(e.target);
     },
     true
   );

@@ -60,14 +60,16 @@
           >
             <div class="flow-addon__item-toggle">
               {%- if activation == 'checkbox' -%}
-                <input
-                  type="checkbox"
-                  class="flow-addon__checkbox"
-                  id="addon-{{ block.id }}-{{ addon_variant.id }}"
-                  data-flow-addon-toggle
-                  {% if is_preselected %}checked{% endif %}
-                  aria-label="{{ addon_product.title | escape }}"
-                >
+                <label class="flow-addon__checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="flow-addon__checkbox"
+                    id="addon-{{ block.id }}-{{ addon_variant.id }}"
+                    data-flow-addon-toggle
+                    {% if is_preselected %}checked{% endif %}
+                    aria-label="{{ addon_product.title | escape }}"
+                  >
+                </label>
               {%- else -%}
                 <button
                   type="button"
@@ -296,8 +298,21 @@
   .flow-addon__item-toggle {
     flex-shrink: 0;
     position: relative;
-    z-index: 10;
-    pointer-events: auto;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+  }
+
+  .flow-addon__checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    position: relative;
+    z-index: 12 !important;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .flow-addon__checkbox {
@@ -306,8 +321,8 @@
     accent-color: var(--color-primary);
     cursor: pointer;
     position: relative;
-    z-index: 11;
-    pointer-events: auto;
+    z-index: 13 !important;
+    pointer-events: auto !important;
   }
 
   /* Fallback visual state: if some theme layer prevents native checkbox UI updates,

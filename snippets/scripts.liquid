@@ -94,6 +94,14 @@
       if (!inToggleArea) return;
 
       var item = closestItem(t);
+      if (isDebug() && window.console && console.warn) {
+        // eslint-disable-next-line no-console
+        console.warn('[flow_addon_headfix]', e.type, {
+          tag: t && t.tagName,
+          inToggleArea: !!inToggleArea,
+          hasItem: !!item
+        });
+      }
       if (!item) return;
       if (!item.closest('[data-flow-addon]')) return;
 
@@ -118,6 +126,11 @@
     // Some themes still swallow pointerdown but let click through (or vice-versa).
     // Capture both and make the toggle authoritative.
     document.addEventListener('click', handleToggleEvent, true);
+
+    if (isDebug() && window.console && console.warn) {
+      // eslint-disable-next-line no-console
+      console.warn('[flow_addon_headfix] installed');
+    }
   })();
 </script>
 

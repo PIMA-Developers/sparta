@@ -27,6 +27,61 @@
 {%- endcomment -%}
 <script src="{{ 'flow-engine-runtime.js' | asset_url }}" defer></script>
 
+{%- comment -%}
+  HOTFIX: Some theme listeners cancel clicks on inputs before our blocks see them.
+  Register a tiny capture-phase pointer handler in the HEAD so checkbox taps always toggle.
+{%- endcomment -%}
+<script>
+  (function () {
+    if (window.__flowAddonHeadFixInstalled) return;
+    window.__flowAddonHeadFixInstalled = true;
+
+    function closestItem(el) {
+      return el && el.closest ? el.closest('[data-addon-variant-id]') : null;
+    }
+
+    function findCheckbox(item) {
+      if (!item) return null;
+      var cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+      return cb && cb.tagName === 'INPUT' ? cb : null;
+    }
+
+    function setSelected(item, selected) {
+      item.dataset.addonSelected = String(!!selected);
+      var cb = findCheckbox(item);
+      if (cb) cb.checked = !!selected;
+    }
+
+    document.addEventListener(
+      'pointerdown',
+      function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+
+        // Only handle taps inside addon checkbox UI (wrapper or input).
+        var inToggle = t.closest('[data-flow-addon-toggle-area]') || t.closest('input[type="checkbox"][data-flow-addon-toggle]');
+        if (!inToggle) return;
+
+        var item = closestItem(t);
+        if (!item) return;
+
+        // Hard stop: run before theme handlers and block them from cancelling the toggle.
+        e.preventDefault();
+        e.stopPropagation();
+        if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+        var isSelected = item.dataset.addonSelected === 'true';
+        var next = !isSelected;
+        setSelected(item, next);
+
+        var cb = findCheckbox(item);
+        if (cb) cb.dispatchEvent(new Event('change', { bubbles: true }));
+      },
+      true
+    );
+  })();
+</script>
+
 {% if settings.transition_to_main_product %}
   {% # theme-check-disable ParserBlockingScript %}
   <script

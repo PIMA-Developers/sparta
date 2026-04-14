@@ -171,6 +171,93 @@
   </div>
 </div>
 
+<script>
+  (() => {
+    const root = document.currentScript?.previousElementSibling;
+    const block = (root && root.matches && root.matches('[data-flow-addon]')) ? root : document.currentScript.closest('[data-flow-addon]');
+    if (!block) return;
+
+    const selectionMode = block.dataset.selectionMode || 'multiple';
+    const enforceSingle = selectionMode === 'single';
+    const preselectMode = block.dataset.preselectMode || 'none';
+    const mustHaveOneSelected = enforceSingle && preselectMode !== 'none';
+
+    const resolveItem = (eventTarget) => {
+      if (!eventTarget || !eventTarget.closest) return null;
+      let item = eventTarget.closest('[data-addon-variant-id]');
+      if (!item) item = eventTarget.closest('.flow-addon__item');
+      if (item && !item.hasAttribute('data-addon-variant-id')) {
+        const owned = item.querySelector('[data-addon-variant-id]');
+        if (owned instanceof HTMLElement) item = owned;
+      }
+      return item && item.hasAttribute('data-addon-variant-id') ? item : null;
+    };
+
+    const setSelected = (item, selected) => {
+      item.dataset.addonSelected = String(Boolean(selected));
+      const cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+      if (cb) cb.checked = Boolean(selected);
+      const btn = item.querySelector('button.flow-addon__toggle-btn[data-flow-addon-toggle]');
+      if (btn) btn.setAttribute('aria-pressed', String(Boolean(selected)));
+    };
+
+    const deselectSiblings = (keepItem) => {
+      if (!enforceSingle) return;
+      block.querySelectorAll('[data-addon-variant-id]').forEach((el) => {
+        if (el !== keepItem) setSelected(el, false);
+      });
+    };
+
+    // Capture click early to survive stopPropagation in theme blocks.
+    block.addEventListener(
+      'click',
+      (e) => {
+        const target = e.target;
+        if (target && target.closest && target.closest('[data-flow-addon-quantity]')) return;
+
+        const item = resolveItem(target);
+        if (!item) return;
+
+        const toggle = target.closest ? target.closest('[data-flow-addon-toggle]') : null;
+
+        // Always prevent native default and toggle ourselves so UI updates even when theme cancels clicks.
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (toggle && toggle.tagName === 'BUTTON') {
+          const pressed = toggle.getAttribute('aria-pressed') === 'true';
+          if (mustHaveOneSelected && pressed) return;
+          const next = enforceSingle ? true : !pressed;
+          setSelected(item, next);
+          if (next) deselectSiblings(item);
+          return;
+        }
+
+        const cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+        if (cb) {
+          const isSelected = cb.checked;
+          if (mustHaveOneSelected && isSelected) return;
+          const next = enforceSingle ? true : !isSelected;
+          setSelected(item, next);
+          if (next) deselectSiblings(item);
+          cb.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      },
+      true
+    );
+
+    block.addEventListener('change', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      if (target.matches('[data-flow-addon-quantity]')) {
+        const item = resolveItem(target);
+        if (item) item.dataset.addonQuantity = target.value || '1';
+      }
+    });
+  })();
+</script>
+
 {% stylesheet %}
   .flow-addon {
     width: 100%;

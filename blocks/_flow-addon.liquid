@@ -222,6 +222,10 @@
 
         const toggle = target.closest ? target.closest('[data-flow-addon-toggle]') : null;
 
+        // If the user clicked the native checkbox, let the browser toggle `checked`.
+        // We'll sync selection from the `change` handler to avoid double-toggling.
+        if (toggle instanceof HTMLInputElement && toggle.type === 'checkbox') return;
+
         // Always prevent native default and toggle ourselves so UI updates even when theme cancels clicks.
         e.preventDefault();
         e.stopPropagation();
@@ -237,7 +241,7 @@
 
         const cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
         if (cb) {
-          const isSelected = cb.checked;
+          const isSelected = item.dataset.addonSelected === 'true';
           if (mustHaveOneSelected && isSelected) return;
           const next = enforceSingle ? true : !isSelected;
           setSelected(item, next);
@@ -251,6 +255,25 @@
     block.addEventListener('change', (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
+
+      // Sync selection from the checkbox change event.
+      if (target.matches('input[type="checkbox"][data-flow-addon-toggle]')) {
+        const item = resolveItem(target);
+        if (!item) return;
+
+        const next = target.checked;
+
+        // In "single + preselect" modes, disallow clearing the only selected item.
+        if (mustHaveOneSelected && !next) {
+          target.checked = true;
+          setSelected(item, true);
+          return;
+        }
+
+        setSelected(item, enforceSingle ? true : next);
+        if (enforceSingle) deselectSiblings(item);
+        return;
+      }
 
       if (target.matches('[data-flow-addon-quantity]')) {
         const item = resolveItem(target);

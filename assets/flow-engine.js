@@ -24,6 +24,12 @@ function isCartDebugEnabled() {
   }
 }
 
+function cartDebug(...args) {
+  if (!isCartDebugEnabled()) return;
+  // eslint-disable-next-line no-console
+  console.debug('[cart_debug]', ...args);
+}
+
 /**
  * Whether an addon row is selected (reads live DOM — dataset can be stale).
  * @param {HTMLElement} item
@@ -227,6 +233,12 @@ class FlowEngine extends HTMLElement {
     const target = /** @type {any} */ (e.target);
     const inAddon = target?.closest ? target.closest('[data-flow-addon]') : null;
     if (!inAddon || !(inAddon instanceof HTMLElement)) return false;
+    cartDebug('addon click captured', {
+      tag: target?.tagName,
+      className: target?.className,
+      selectionMode: inAddon.dataset.selectionMode,
+      addonType: inAddon.dataset.addonType,
+    });
 
     // Don't toggle when editing quantity.
     if (target?.closest && target.closest('[data-flow-addon-quantity]')) return false;
@@ -278,6 +290,7 @@ class FlowEngine extends HTMLElement {
           return true;
         }
         const next = enforceSingle ? true : !directToggle.checked;
+        cartDebug('direct checkbox toggle', { next, disabled: directToggle.disabled, readOnly: directToggle.readOnly });
         directToggle.checked = next;
         setSelected(item, next);
         if (next) deselectSiblings();
@@ -289,6 +302,7 @@ class FlowEngine extends HTMLElement {
           return true;
         }
         const next = enforceSingle ? true : !pressed;
+        cartDebug('direct button toggle', { next });
         directToggle.setAttribute('aria-pressed', String(next));
         setSelected(item, next);
         if (next) deselectSiblings();

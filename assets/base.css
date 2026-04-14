@@ -4298,8 +4298,8 @@ text-component {
   gap: 8px;
 }
 
-/* TAP flow: prevent media column overlay from stealing clicks */
-body[data-template*="page"] .flow-product-form__media {
+/* Flow purchase forms: prevent media column overlay from stealing clicks */
+.flow-product-form__media {
   display: none !important;
   pointer-events: none !important;
 }

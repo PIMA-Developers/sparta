@@ -58,12 +58,13 @@
         var t = e.target;
         if (!t || !t.closest) return;
 
-        // Only handle taps inside addon checkbox UI (wrapper or input).
-        var inToggle = t.closest('[data-flow-addon-toggle-area]') || t.closest('input[type="checkbox"][data-flow-addon-toggle]');
-        if (!inToggle) return;
+        // Only handle taps inside an addon item (works for checkbox area and card taps).
+        // Avoid interfering with quantity inputs.
+        if (t.closest('[data-flow-addon-quantity]')) return;
 
         var item = closestItem(t);
         if (!item) return;
+        if (!item.closest('[data-flow-addon]')) return;
 
         // Hard stop: run before theme handlers and block them from cancelling the toggle.
         e.preventDefault();
@@ -76,11 +77,26 @@
 
         var cb = findCheckbox(item);
         if (cb) cb.dispatchEvent(new Event('change', { bubbles: true }));
+
+        // Debug pulse visible when cart_debug=1
+        try {
+          var url = new URL(window.location.href);
+          var debug = url.searchParams.has('cart_debug') || (window.localStorage && window.localStorage.getItem('cart_debug') === '1');
+          if (debug) {
+            item.setAttribute('data-headfix-pulse', '1');
+            window.setTimeout(function () { item.removeAttribute('data-headfix-pulse'); }, 200);
+          }
+        } catch (_) {}
       },
       true
     );
   })();
 </script>
+
+<style>
+  /* Visual debug: confirms HEAD hotfix fired */
+  [data-headfix-pulse="1"] { outline: 2px solid #ff3b30 !important; outline-offset: 2px !important; }
+</style>
 
 {% if settings.transition_to_main_product %}
   {% # theme-check-disable ParserBlockingScript %}

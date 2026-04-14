@@ -280,6 +280,44 @@
       true
     );
 
+    // Some theme scripts preventDefault() on click for inputs.
+    // Use pointerdown capture to make the toggle authoritative.
+    block.addEventListener(
+      'pointerdown',
+      (e) => {
+        const target = e.target;
+        if (target && target.closest && target.closest('[data-flow-addon-quantity]')) return;
+
+        const item = resolveItem(target);
+        if (!item) return;
+
+        const toggle = target.closest ? target.closest('[data-flow-addon-toggle]') : null;
+        if (!toggle) return;
+
+        // Only act when user pressed the toggle area itself (checkbox UI).
+        // For checkbox mode we want the box to always toggle selection.
+        if (toggle instanceof HTMLInputElement && toggle.type !== 'checkbox') return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const isSelected = item.dataset.addonSelected === 'true';
+        if (mustHaveOneSelected && isSelected) return;
+        const next = enforceSingle ? true : !isSelected;
+        setSelected(item, next);
+
+        // Keep input state aligned when present (even if click is prevented by theme).
+        const cb = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+        if (cb instanceof HTMLInputElement) {
+          cb.checked = next;
+          cb.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        if (next) deselectSiblings(item);
+      },
+      true
+    );
+
     block.addEventListener('change', (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;

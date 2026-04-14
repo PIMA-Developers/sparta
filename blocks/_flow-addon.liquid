@@ -192,6 +192,7 @@
       console.warn('[flow_addon]', ...args);
     };
     dbg('mounted');
+    if (isDebug) block.classList.add('flow-addon--debug');
 
     const selectionMode = block.dataset.selectionMode || 'multiple';
     const enforceSingle = selectionMode === 'single';
@@ -300,6 +301,7 @@
         const isSelected = item.dataset.addonSelected === 'true';
         if (mustHaveOneSelected && isSelected) return;
         const next = enforceSingle ? true : !isSelected;
+        dbg('pointerdown toggle', { next, variantId: item.dataset.addonVariantId, target: target?.tagName, inToggleArea: inToggleArea?.className || inToggleArea?.tagName });
         setSelected(item, next);
 
         // Keep input state aligned when present (even if click is prevented by theme).
@@ -310,6 +312,12 @@
         }
 
         if (next) deselectSiblings(item);
+
+        if (isDebug) {
+          const v = item.getAttribute('data-debug-pulse') === '1' ? '0' : '1';
+          item.setAttribute('data-debug-pulse', v);
+          window.setTimeout(() => item.removeAttribute('data-debug-pulse'), 250);
+        }
       },
       true
     );
@@ -384,8 +392,13 @@
   .flow-addon__item-toggle {
     flex-shrink: 0;
     position: relative;
-    z-index: 10 !important;
+    z-index: 50 !important;
     pointer-events: auto !important;
+  }
+
+  .flow-addon--debug .flow-addon__item[data-debug-pulse] {
+    outline: 2px solid #ff3b30;
+    outline-offset: 2px;
   }
 
   .flow-addon__checkbox-label {

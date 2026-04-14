@@ -141,11 +141,11 @@
   html[data-flow-addon-headfix="1"] body:has([data-flow-addon]) [data-flow-addon-toggle-area] { -webkit-tap-highlight-color: transparent; }
 </style>
 
-{%- if request.query_string contains 'cart_debug' -%}
+{%- if request.path contains 'preview-tap' -%}
   <style>
     /* Debug badge: confirms snippets/scripts.liquid rendered */
     body::before {
-      content: "scripts.liquid OK";
+      content: "scripts.liquid OK (preview-tap)";
       position: fixed;
       left: 10px;
       bottom: 10px;

@@ -179,6 +179,20 @@
     const block = (root && root.matches && root.matches('[data-flow-addon]')) ? root : document.currentScript.closest('[data-flow-addon]');
     if (!block) return;
 
+    const isDebug = (() => {
+      try {
+        return new URL(window.location.href).searchParams.has('cart_debug') || window.localStorage?.getItem('cart_debug') === '1';
+      } catch {
+        return false;
+      }
+    })();
+    const dbg = (...args) => {
+      if (!isDebug) return;
+      // eslint-disable-next-line no-console
+      console.warn('[flow_addon]', ...args);
+    };
+    dbg('mounted');
+
     const selectionMode = block.dataset.selectionMode || 'multiple';
     const enforceSingle = selectionMode === 'single';
     const preselectMode = block.dataset.preselectMode || 'none';
@@ -222,9 +236,22 @@
 
         const toggle = target.closest ? target.closest('[data-flow-addon-toggle]') : null;
 
-        // If the user clicked the native checkbox, let the browser toggle `checked`.
-        // We'll sync selection from the `change` handler to avoid double-toggling.
-        if (toggle instanceof HTMLInputElement && toggle.type === 'checkbox') return;
+        // If the user clicked the native checkbox, do an authoritative toggle here.
+        // Some theme listeners can preventDefault and block native checked updates.
+        if (toggle instanceof HTMLInputElement && toggle.type === 'checkbox') {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const isSelected = item.dataset.addonSelected === 'true';
+          if (mustHaveOneSelected && isSelected) return;
+          const next = enforceSingle ? true : !isSelected;
+          dbg('checkbox click', { next, variantId: item.dataset.addonVariantId, inputId: toggle.id });
+          setSelected(item, next);
+          toggle.checked = next;
+          if (next) deselectSiblings(item);
+          toggle.dispatchEvent(new Event('change', { bubbles: true }));
+          return;
+        }
 
         // Always prevent native default and toggle ourselves so UI updates even when theme cancels clicks.
         e.preventDefault();
@@ -244,6 +271,7 @@
           const isSelected = item.dataset.addonSelected === 'true';
           if (mustHaveOneSelected && isSelected) return;
           const next = enforceSingle ? true : !isSelected;
+          dbg('row click', { next, variantId: item.dataset.addonVariantId });
           setSelected(item, next);
           if (next) deselectSiblings(item);
           cb.dispatchEvent(new Event('change', { bubbles: true }));
@@ -262,6 +290,7 @@
         if (!item) return;
 
         const next = target.checked;
+        dbg('checkbox change', { next, variantId: item.dataset.addonVariantId, inputId: target.id });
 
         // In "single + preselect" modes, disallow clearing the only selected item.
         if (mustHaveOneSelected && !next) {

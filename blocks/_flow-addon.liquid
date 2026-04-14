@@ -315,6 +315,39 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  .flow-addon__checkbox-label::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgb(from var(--color-foreground) r g b / 0.45);
+    border-radius: 3px;
+    background: #fff;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .flow-addon__item[data-addon-selected="true"] .flow-addon__checkbox-label::before {
+    border-color: var(--color-primary);
+    background: rgb(from var(--color-primary) r g b / 0.12);
+  }
+
+  .flow-addon__checkbox-label::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    border-right: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    transform: rotate(45deg);
+    opacity: 0;
+    top: 8px;
+    left: 11px;
+  }
+
+  .flow-addon__item[data-addon-selected="true"] .flow-addon__checkbox-label::after {
+    opacity: 1;
+  }
+
   .flow-addon__checkbox {
     width: 18px;
     height: 18px;
@@ -326,6 +359,16 @@
     appearance: auto !important;
     -webkit-appearance: checkbox !important;
     opacity: 1 !important;
+  }
+
+  /* The visible checkbox UI is rendered by the label pseudo-elements above. */
+  .flow-addon__checkbox {
+    position: absolute;
+    inset: 0;
+    width: 28px;
+    height: 28px;
+    opacity: 0 !important;
+    margin: 0;
   }
 
   /* Fallback visual state: if some theme layer prevents native checkbox UI updates,

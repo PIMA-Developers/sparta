@@ -24,6 +24,16 @@ import { cartPerformance } from '@theme/performance';
  */
 class CartItemsComponent extends Component {
   #debouncedOnChange = debounce(this.#onQuantityChange, 300).bind(this);
+  #cartDebugEnabled =
+    (() => {
+      try {
+        const urlFlag = new URL(window.location.href).searchParams.has('cart_debug');
+        const storageFlag = window.localStorage?.getItem('cart_debug') === '1';
+        return urlFlag || storageFlag;
+      } catch {
+        return false;
+      }
+    })();
 
   connectedCallback() {
     super.connectedCallback();
@@ -211,7 +221,18 @@ class CartItemsComponent extends Component {
     }
     if (event.target === this) return;
 
-    const cartItemsHtml = event.detail.data.sections?.[this.sectionId];
+    if (event.detail.data?.skipSectionMorph) return;
+
+    const cartItemsHtml = event.detail.data?.sections?.[this.sectionId];
+    if (this.#cartDebugEnabled) {
+      // eslint-disable-next-line no-console
+      console.debug('[cart_debug] cart-items update', {
+        sectionId: this.sectionId,
+        hasBundledSectionHtml: Boolean(cartItemsHtml),
+        source: event.detail.data?.source,
+        itemCount: event.detail.data?.itemCount,
+      });
+    }
     if (cartItemsHtml) {
       morphSection(this.sectionId, cartItemsHtml);
     } else {

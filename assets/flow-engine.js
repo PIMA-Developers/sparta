@@ -1,19 +1,108 @@
 /**
  * Flow Engine – Guided purchase flow for TAP.
- *
- * Custom element <flow-engine> manages:
- *   - Step navigation (show/hide via stack)
- *   - Cart attribute persistence (POST cart/update.js)
- *   - Multi-product add-to-cart (POST cart/add.js)
- *   - Progress bar (estimated percentage)
- *   - URL state (hash-based)
- *   - Transition animations (fade / slide / none)
- *   - Dynamic price summary
+ * Add-to-cart matches theme behavior (product-form.js): sections in request,
+ * CartAddEvent / CartErrorEvent, variant id from variant-picker JSON (not stale Liquid default).
+ * Multi-item JSON responses often omit or partially omit `sections`; we then refresh cart sections from the
+ * current page URL (Section Rendering API) before opening the drawer so markup matches the updated cart.
  */
 
-const ROUTES = () => window.Shopify?.routes?.root || '/';
+import { CartAddEvent, CartErrorEvent, ThemeEvents } from '@theme/events';
+import { cartPerformance } from '@theme/performance';
+import { morphSection, sectionRenderer } from '@theme/section-renderer';
+import { fetchConfig } from '@theme/utilities';
 
+const cartAddUrl = () => window.Theme?.routes?.cart_add_url || `${window.Shopify?.routes?.root || '/'}cart/add.js`;
+const CART_DEBUG_FLAG = 'cart_debug';
 
+function isCartDebugEnabled() {
+  try {
+    const urlFlag = new URL(window.location.href).searchParams.has(CART_DEBUG_FLAG);
+    const storageFlag = window.localStorage?.getItem(CART_DEBUG_FLAG) === '1';
+    return urlFlag || storageFlag;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Whether an addon row is selected (reads live DOM — dataset can be stale).
+ * @param {HTMLElement} item
+ */
+function isAddonRowSelected(item) {
+  const checkbox = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+  if (checkbox instanceof HTMLInputElement) return checkbox.checked;
+  const toggleBtn = item.querySelector('button.flow-addon__toggle-btn[data-flow-addon-toggle]');
+  if (toggleBtn) return toggleBtn.getAttribute('aria-pressed') === 'true';
+  return item.dataset.addonSelected === 'true';
+}
+
+/**
+ * Quantity for an addon row (live input, then dataset).
+ * @param {HTMLElement} item
+ */
+function getAddonRowQuantity(item) {
+  const qtyInput = item.querySelector('[data-flow-addon-quantity]');
+  if (qtyInput instanceof HTMLInputElement) {
+    const n = parseInt(qtyInput.value, 10);
+    return Number.isFinite(n) && n >= 1 ? n : 1;
+  }
+  const fromData = parseInt(item.dataset.addonQuantity, 10);
+  return Number.isFinite(fromData) && fromData >= 1 ? fromData : 1;
+}
+const cartUpdateUrl = () => `${window.Shopify?.routes?.root || '/'}cart/update.js`;
+
+/** @returns {string[]} */
+function getCartSectionIds() {
+  const ids = [];
+  document.querySelectorAll('cart-items-component[data-section-id]').forEach((el) => {
+    if (el instanceof HTMLElement && el.dataset.sectionId) ids.push(el.dataset.sectionId);
+  });
+  return ids;
+}
+
+/**
+ * Normalizes bundled `sections` from cart/add.js (strings or { html }).
+ * @param {unknown} sections
+ * @returns {Record<string, string> | undefined}
+ */
+function normalizeSectionsResponse(sections) {
+  if (!sections || typeof sections !== 'object' || Array.isArray(sections)) return undefined;
+  /** @type {Record<string, string>} */
+  const out = {};
+  for (const [key, val] of Object.entries(sections)) {
+    if (typeof val === 'string') {
+      out[key] = val;
+    } else if (val && typeof val === 'object' && 'html' in val && typeof val.html === 'string') {
+      out[key] = val.html;
+    }
+  }
+  return Object.keys(out).length > 0 ? out : undefined;
+}
+
+/**
+ * Re-renders cart-related sections using the current page URL (not /cart) so the header drawer markup matches session cart.
+ * @param {string[]} sectionIds
+ */
+async function refreshCartSectionsFromCurrentPage(sectionIds) {
+  const unique = [...new Set(sectionIds)].filter(Boolean);
+  if (!unique.length) return;
+  /* `renderSection` does not await `morphSection`; we must await morph so the drawer opens with updated HTML. */
+  await Promise.all(
+    unique.map(async (id) => {
+      const html = await sectionRenderer.getSectionHTML(id, false);
+      await morphSection(id, html);
+    })
+  );
+}
+
+/**
+ * @param {Record<string, string> | undefined} sections
+ * @param {string[]} sectionIds
+ */
+function cartAddSectionsAreComplete(sections, sectionIds) {
+  if (!sections || !sectionIds.length) return false;
+  return sectionIds.every((id) => typeof sections[id] === 'string');
+}
 
 class FlowEngine extends HTMLElement {
   constructor() {
@@ -23,9 +112,14 @@ class FlowEngine extends HTMLElement {
     this._stepMap = new Map();
     this._pendingAttributes = {};
     this._isNavigating = false;
+    /** @type {AbortController | undefined} */
+    this._flowAbort;
   }
 
   connectedCallback() {
+    this._flowAbort = new AbortController();
+    const { signal } = this._flowAbort;
+
     this._sectionId = this.dataset.sectionId;
     this._transition = this.dataset.transition || 'fade';
     this._transitionSpeed = parseInt(this.dataset.transitionSpeed, 10) || 300;
@@ -40,13 +134,31 @@ class FlowEngine extends HTMLElement {
     this._errorEl = this.querySelector('[data-flow-error]');
     this._errorText = this.querySelector('[data-flow-error-text]');
 
+    document.addEventListener(ThemeEvents.variantUpdate, this.#onVariantUpdateDocument, { signal });
+
     this._collectSteps();
     this._bindEvents();
     this._applyTransitionVars();
     this._restoreFromURL();
   }
 
-  /* ── Step collection ────────────────────────────────────── */
+  disconnectedCallback() {
+    this._flowAbort?.abort();
+  }
+
+  /** @param {Event} event */
+  #onVariantUpdateDocument = (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement) || !this.contains(target)) return;
+    const form = target.closest('[data-flow-product-form]');
+    if (!form || !this.contains(form)) return;
+    const detail = /** @type {CustomEvent} */ (event).detail;
+    const resource = detail?.resource;
+    if (resource && typeof resource.price === 'number') {
+      form.dataset.price = String(resource.price);
+    }
+    this._updatePriceSummary();
+  };
 
   _collectSteps() {
     const stepEls = this._stepsContainer?.querySelectorAll(':scope > [data-flow-step]') || [];
@@ -58,10 +170,22 @@ class FlowEngine extends HTMLElement {
     });
   }
 
-  /* ── Event binding ──────────────────────────────────────── */
-
   _bindEvents() {
+    // Capture-phase handler for addons: robust against stopPropagation inside blocks/layout.
+    this.addEventListener(
+      'click',
+      (e) => {
+        if (this._handleAddonInteraction(e)) {
+          e.stopPropagation();
+        }
+      },
+      true
+    );
+
     this.addEventListener('click', (e) => {
+      // Addon selection (delegated): do not depend on inline block scripts.
+      if (this._handleAddonInteraction(e)) return;
+
       const btn = e.target.closest('[data-flow-button]');
       if (btn) {
         e.preventDefault();
@@ -82,208 +206,147 @@ class FlowEngine extends HTMLElement {
         this._handleAddToCart(addToCartBtn);
         return;
       }
-
-      // --- Addons: delegação (funciona mesmo após re-render do variant-picker) ---
-
-      const variantOption = e.target.closest('[data-flow-addon-variant-option]');
-      if (variantOption) {
-        e.preventDefault();
-        const item = variantOption.closest('.flow-addon__item');
-        if (!item) return;
-
-        const variantId = variantOption.dataset.variantId;
-        const variantPrice = variantOption.dataset.variantPrice;
-        const variantTitle = variantOption.dataset.variantTitle;
-        const variantPriceMoney = variantOption.dataset.variantPriceMoney;
-
-        item.dataset.addonSelected = 'true';
-        if (variantId) item.dataset.addonVariantId = variantId;
-        if (variantPrice) item.dataset.price = variantPrice;
-
-        item.querySelectorAll('[data-flow-addon-variant-option]').forEach((optionEl) => {
-          optionEl.setAttribute('aria-pressed', String(optionEl === variantOption));
-        });
-
-        const priceTarget = item.querySelector('.flow-addon__item-price');
-        if (priceTarget && variantPriceMoney) priceTarget.textContent = variantPriceMoney;
-
-        this._enforceSingleSelection(item);
-        this._updatePriceSummary();
-        return;
-      }
-
-      // Toggle button
-      const toggleBtn = e.target.closest('button[data-flow-addon-toggle]');
-      if (toggleBtn) {
-        e.preventDefault();
-        const item = toggleBtn.closest('.flow-addon__item');
-        if (!item) return;
-
-        const isPressed = toggleBtn.getAttribute('aria-pressed') === 'true';
-        const next = !isPressed;
-
-        toggleBtn.setAttribute('aria-pressed', String(next));
-        item.dataset.addonSelected = String(next);
-
-        if (next) this._enforceSingleSelection(item);
-
-        this._updatePriceSummary();
-        return;
-      }
-
-      // Clique no card inteiro alterna checkbox/toggle
-      const addonItem = e.target.closest('.flow-addon__item');
-      if (addonItem && addonItem.closest('[data-flow-addon]')) {
-        if (e.target.closest('[data-flow-addon-variant-option], [data-flow-addon-collapsible-panel]')) {
-          return;
-        }
-
-        const collapsiblePanelInItem = addonItem.querySelector('[data-flow-addon-collapsible-panel]');
-        if (collapsiblePanelInItem) {
-          e.preventDefault();
-          addonItem.dataset.addonSelected = 'true';
-          this._enforceSingleSelection(addonItem);
-          this._setAddonCollapsibleState(collapsiblePanelInItem, true, addonItem);
-          this._updatePriceSummary();
-          return;
-        }
-
-        const checkbox = addonItem.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
-        const btn = addonItem.querySelector('button[data-flow-addon-toggle]');
-
-        // Se clicou direto no input, deixa o change cuidar
-        if (checkbox && e.target === checkbox) return;
-
-        if (btn) {
-          e.preventDefault();
-          const isPressed = btn.getAttribute('aria-pressed') === 'true';
-          const next = !isPressed;
-          btn.setAttribute('aria-pressed', String(next));
-          addonItem.dataset.addonSelected = String(next);
-
-          if (next) this._enforceSingleSelection(addonItem);
-
-          this._updatePriceSummary();
-          return;
-        }
-
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          addonItem.dataset.addonSelected = String(checkbox.checked);
-
-          if (checkbox.checked) this._enforceSingleSelection(addonItem);
-
-          this._updatePriceSummary();
-          return;
-        }
-      }
-    });
-
-    this.addEventListener('flow:recalc', () => {
-      this._updatePriceSummary();
     });
 
     this.addEventListener('change', (e) => {
-      // Checkbox addon: refletir estado no dataset e recalcular
-      const addonCheckbox = e.target.closest('input[type="checkbox"][data-flow-addon-toggle]');
-      if (addonCheckbox) {
-        const item = addonCheckbox.closest('.flow-addon__item');
-          if (item) {
-            item.dataset.addonSelected = String(addonCheckbox.checked);
-            if (addonCheckbox.checked) this._enforceSingleSelection(item);
-          }
-          this._updatePriceSummary();
-          return;
-      }
+      // Sync addon dataset when underlying controls change.
+      this._handleAddonControlChange(e);
 
-      // Quantidade addon: refletir qty e recalcular
-      const qtyInput = e.target.closest('[data-flow-addon-quantity]');
-      if (qtyInput) {
-        const item = qtyInput.closest('.flow-addon__item');
-        if (item) item.dataset.addonQuantity = qtyInput.value || '1';
-        this._updatePriceSummary();
-        return;
-      }
-
-      // (Opcional) Se você ainda usar algum input legado de variante
-      const variantInput = e.target.closest('[data-flow-variant-change]');
-      if (variantInput) {
-        this._updatePriceSummary();
-        return;
-      }
+      if (e.target.closest('[data-flow-addon]')) this._updatePriceSummary();
+      if (e.target.closest('[data-flow-variant-change]')) this._updatePriceSummary();
     });
+  }
 
-    this.addEventListener('variant:update', (e) => {
-      const variant = e?.detail?.resource;
-      if (!variant) return;
+  /**
+   * Delegated click handler for addon cards/toggles.
+   * Returns true when it handled the click (and prevented default).
+   * @param {MouseEvent} e
+   * @returns {boolean}
+   */
+  _handleAddonInteraction(e) {
+    const target = /** @type {any} */ (e.target);
+    const inAddon = target?.closest ? target.closest('[data-flow-addon]') : null;
+    if (!inAddon || !(inAddon instanceof HTMLElement)) return false;
 
-      // pega o form do flow da forma mais robusta
-      const form = (e.target instanceof Element)
-        ? e.target.closest('[data-flow-product-form]')
-        : null;
+    // Don't toggle when editing quantity.
+    if (target?.closest && target.closest('[data-flow-addon-quantity]')) return false;
 
-      // fallback: se o target não estiver dentro, tenta achar o primeiro form no step atual
-      const resolvedForm = form || this.querySelector('[data-flow-product-form]');
-      if (!resolvedForm) return;
-
-      // price pode vir como number, string, ou em estruturas diferentes dependendo do componente
-      let priceCents = 0;
-
-      if (variant.price != null) {
-        priceCents = parseInt(variant.price, 10);
-      } else if (variant.price?.amount != null) {
-        priceCents = parseInt(variant.price.amount, 10);
-      } else if (variant.compare_at_price != null) {
-        // não é o ideal, mas evita NaN em casos estranhos
-        priceCents = parseInt(variant.compare_at_price, 10);
+    /** @type {HTMLElement | null} */
+    let item = target?.closest ? target.closest('[data-addon-variant-id], .flow-addon__item') : null;
+    if (!item && typeof e.composedPath === 'function') {
+      for (const el of e.composedPath()) {
+        if (
+          el instanceof HTMLElement &&
+          (el.classList.contains('flow-addon__item') || el.hasAttribute('data-addon-variant-id'))
+        ) {
+          item = el;
+          break;
+        }
       }
+    }
+    if (!item) return false;
 
-      if (!Number.isFinite(priceCents)) priceCents = 0;
+    const selectionMode = inAddon.dataset.selectionMode || 'multiple';
+    const enforceSingle = selectionMode === 'single';
+    const preselectMode = inAddon.dataset.preselectMode || 'none';
+    const mustHaveOneSelected = enforceSingle && preselectMode !== 'none';
 
-      resolvedForm.dataset.price = String(priceCents);
+    const setSelected = (it, selected) => {
+      if (!(it instanceof HTMLElement)) return;
+      it.dataset.addonSelected = String(Boolean(selected));
+      const cb = it.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+      if (cb instanceof HTMLInputElement) cb.checked = Boolean(selected);
+      const btn = it.querySelector('button.flow-addon__toggle-btn[data-flow-addon-toggle]');
+      if (btn instanceof HTMLElement) btn.setAttribute('aria-pressed', String(Boolean(selected)));
+    };
 
-      // opcional (ajuda outros fluxos que leem defaultVariantId)
-      if (variant.id != null) {
-        resolvedForm.dataset.defaultVariantId = String(variant.id);
+    const deselectSiblings = () => {
+      if (!enforceSingle) return;
+      inAddon.querySelectorAll('.flow-addon__item').forEach((other) => {
+        if (other !== item) setSelected(other, false);
+      });
+    };
+
+    // If click is directly on a toggle control (button/checkbox or inside), handle it ourselves.
+    const directToggle = target?.closest ? target.closest('[data-flow-addon-toggle]') : null;
+    if (directToggle) {
+      e.preventDefault();
+      if (directToggle instanceof HTMLInputElement && directToggle.type === 'checkbox') {
+        const isCurrentlySelected = directToggle.checked;
+        if (mustHaveOneSelected && isCurrentlySelected) {
+          // Can't deselect the only/active option in single-select mode.
+          return true;
+        }
+        const next = enforceSingle ? true : !directToggle.checked;
+        directToggle.checked = next;
+        setSelected(item, next);
+        if (next) deselectSiblings();
+        directToggle.dispatchEvent(new Event('change', { bubbles: true }));
+      } else if (directToggle instanceof HTMLElement) {
+        const pressed = directToggle.getAttribute('aria-pressed') === 'true';
+        if (mustHaveOneSelected && pressed) {
+          // Can't deselect the only/active option in single-select mode.
+          return true;
+        }
+        const next = enforceSingle ? true : !pressed;
+        directToggle.setAttribute('aria-pressed', String(next));
+        setSelected(item, next);
+        if (next) deselectSiblings();
+        this._updatePriceSummary();
       }
+      return true;
+    }
 
+    const checkbox = item.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
+    if (checkbox instanceof HTMLInputElement) {
+      e.preventDefault();
+      const isCurrentlySelected = checkbox.checked;
+      if (mustHaveOneSelected && isCurrentlySelected) return true;
+      const next = enforceSingle ? true : !checkbox.checked;
+      checkbox.checked = next;
+      setSelected(item, next);
+      if (next) deselectSiblings();
+      checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    }
+
+    const toggleBtn = item.querySelector('button.flow-addon__toggle-btn[data-flow-addon-toggle]');
+    if (toggleBtn instanceof HTMLElement) {
+      e.preventDefault();
+      const pressed = toggleBtn.getAttribute('aria-pressed') === 'true';
+      if (mustHaveOneSelected && pressed) return true;
+      const next = enforceSingle ? true : !pressed;
+      toggleBtn.setAttribute('aria-pressed', String(next));
+      setSelected(item, next);
+      if (next) deselectSiblings();
       this._updatePriceSummary();
-    });
-  }
-
-
-  _setAddonCollapsibleState(panel, isOpen, item = null, trigger = null) {
-    if (!panel) return;
-
-    if (trigger) {
-      trigger.setAttribute('aria-expanded', String(isOpen));
+      return true;
     }
 
-    const resolvedItem = item || panel.closest('.flow-addon__item');
-
-    if (isOpen) {
-      panel.classList.add('is-open');
-      if (resolvedItem) resolvedItem.classList.add('flow-addon__item--collapsible-open');
-      panel.style.maxHeight = `${panel.scrollHeight}px`;
-      const onOpenTransitionEnd = (event) => {
-        if (event.propertyName !== 'max-height') return;
-        panel.style.maxHeight = 'none';
-        panel.removeEventListener('transitionend', onOpenTransitionEnd);
-      };
-      panel.addEventListener('transitionend', onOpenTransitionEnd);
-      return;
-    }
-
-    panel.style.maxHeight = `${panel.scrollHeight}px`;
-
-    window.requestAnimationFrame(() => {
-      panel.classList.remove('is-open');
-      if (resolvedItem) resolvedItem.classList.remove('flow-addon__item--collapsible-open');
-      panel.style.maxHeight = '0px';
-    });
+    return false;
   }
 
-  /* ── Navigation ─────────────────────────────────────────── */
+  /**
+   * Delegated change handler to keep dataset in sync with controls.
+   * @param {Event} e
+   */
+  _handleAddonControlChange(e) {
+    const target = /** @type {any} */ (e.target);
+    const inAddon = target?.closest ? target.closest('[data-flow-addon]') : null;
+    if (!inAddon || !(inAddon instanceof HTMLElement)) return;
+
+    const toggleEl = target?.closest ? target.closest('[data-flow-addon-toggle]') : null;
+    if (!toggleEl) return;
+
+    const item = toggleEl.closest('.flow-addon__item');
+    if (!item) return;
+
+    if (toggleEl instanceof HTMLInputElement && toggleEl.type === 'checkbox') {
+      item.dataset.addonSelected = String(toggleEl.checked);
+    } else if (toggleEl instanceof HTMLElement) {
+      item.dataset.addonSelected = String(toggleEl.getAttribute('aria-pressed') === 'true');
+    }
+  }
 
   async _handleNavButton(btn) {
     if (this._isNavigating) return;
@@ -356,7 +419,7 @@ class FlowEngine extends HTMLElement {
     const idx = this._stepMap.get(stepId);
     if (idx === undefined) {
       console.error(`[flow-engine] Step ID "${stepId}" not found.`);
-      if (Shopify?.designMode) {
+      if (window.Shopify?.designMode) {
         this._showError(`Step ID "${stepId}" não encontrado.`);
       }
       return;
@@ -379,20 +442,14 @@ class FlowEngine extends HTMLElement {
     this._isNavigating = false;
   }
 
-  /* ── Step display ───────────────────────────────────────── */
-
   async _showStep(index, direction = 'forward') {
     const targetStep = this._steps[index];
     if (!targetStep) return;
 
-    const currentStep = this._steps.find(
-      (s) => !s.hidden && s !== targetStep
-    );
+    const currentStep = this._steps.find((s) => !s.hidden && s !== targetStep);
 
     if (currentStep && this._transition !== 'none') {
-      currentStep.classList.add(
-        direction === 'back' ? 'flow-step--exit-back' : 'flow-step--exit-forward'
-      );
+      currentStep.classList.add(direction === 'back' ? 'flow-step--exit-back' : 'flow-step--exit-forward');
       currentStep.classList.remove('flow-step--active');
       await this._wait(this._transitionSpeed);
       currentStep.classList.remove('flow-step--exit-back', 'flow-step--exit-forward');
@@ -418,11 +475,9 @@ class FlowEngine extends HTMLElement {
     targetStep.hidden = false;
     targetStep.removeAttribute('inert');
     targetStep.setAttribute('aria-hidden', 'false');
-    this._normalizeSingleSelection(targetStep);
 
     if (this._transition !== 'none') {
       targetStep.classList.add(`flow-step--transition-${this._transition}`);
-      // Force reflow for transition
       void targetStep.offsetHeight;
       requestAnimationFrame(() => {
         targetStep.classList.add('flow-step--active');
@@ -433,10 +488,7 @@ class FlowEngine extends HTMLElement {
     this._updateURL();
     this._updatePriceSummary();
 
-    const rect = targetStep.getBoundingClientRect();
-    if (rect.top < 0) {
-      targetStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    targetStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   _showSuccess() {
@@ -461,29 +513,50 @@ class FlowEngine extends HTMLElement {
     return false;
   }
 
-  /* ── Academy option ─────────────────────────────────────── */
-
   async _handleAcademyOption(el) {
     if (this._isNavigating) return;
 
-    const attrValue = el?.dataset?.attributeValue;
+    const attrValue = el.dataset.attributeValue;
     if (attrValue) {
-      this._pendingAttributes["fluxo_academia"] = attrValue;
-    }
-
-    const targetStepId = el?.dataset?.targetStepId;
-
-    // If a target step is defined, go directly to that step.
-    // Otherwise keep current behavior: go to next.
-    if (targetStepId) {
-      await this._goToStepById(targetStepId);
-      return;
+      this._pendingAttributes['fluxo_academia'] = attrValue;
     }
 
     await this._goNext();
   }
 
-  /* ── Add to cart (multi-product) ────────────────────────── */
+  /**
+   * Current variant id from Horizon variant-picker (authoritative) or hidden input / default.
+   * @param {HTMLElement} form
+   * @returns {string}
+   */
+  _resolveMainVariantId(form) {
+    const picker = form.querySelector('variant-picker');
+    if (picker) {
+      const jsonEl = picker.querySelector('script[type="application/json"]');
+      if (jsonEl?.textContent) {
+        try {
+          const v = JSON.parse(jsonEl.textContent.trim());
+          if (v?.id != null) return String(v.id);
+        } catch {
+          /* ignore */
+        }
+      }
+      const checked = picker.querySelector('fieldset input[type="radio"]:checked');
+      if (checked instanceof HTMLInputElement && checked.dataset.variantId) {
+        return checked.dataset.variantId;
+      }
+      const select = picker.querySelector('select');
+      if (select) {
+        const opt = select.options[select.selectedIndex];
+        if (opt?.dataset?.variantId) return opt.dataset.variantId;
+      }
+    }
+
+    const hidden = form.querySelector('input[name="id"]');
+    if (hidden instanceof HTMLInputElement && hidden.value) return hidden.value;
+
+    return form.dataset.defaultVariantId || '';
+  }
 
   async _handleAddToCart(btn) {
     if (this._isNavigating) return;
@@ -516,38 +589,98 @@ class FlowEngine extends HTMLElement {
       return;
     }
 
+    const sectionIds = getCartSectionIds();
+    /** @type {Record<string, unknown>} */
+    const payload = { items };
+    if (sectionIds.length > 0) {
+      payload.sections = sectionIds.join(',');
+    }
+    /* No sections_url: same as product-form.js — Shopify uses Referer. Never use /cart here:
+       header-actions.liquid omits cart-drawer on template cart, so bundled HTML would be wrong. */
+
     btn.disabled = true;
     btn.classList.add('flow-button--loading');
 
+    const perfMarker = cartPerformance.createStartingMarker('add:user-action');
+
     try {
-      const res = await fetch(`${ROUTES()}cart/add.js`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items }),
+      const fetchCfg = fetchConfig('json', {
+        body: JSON.stringify(payload),
+        headers: { Accept: 'text/html' },
       });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        const msg = data.description || data.message || 'Erro ao adicionar ao carrinho.';
+      const addUrl = window.Theme?.routes?.cart_add_url || cartAddUrl();
+      const debug = isCartDebugEnabled();
+      if (debug) {
+        // eslint-disable-next-line no-console
+        console.groupCollapsed('[cart_debug] flow-engine add-to-cart');
+        // eslint-disable-next-line no-console
+        console.log('addUrl', addUrl);
+        // eslint-disable-next-line no-console
+        console.log('payload.items', payload.items);
+        // eslint-disable-next-line no-console
+        console.log('payload.sections', payload.sections);
+      }
+      const res = await fetch(addUrl, { ...fetchCfg, credentials: 'same-origin' });
+      const data = await res.json().catch(() => ({}));
+      if (debug) {
+        // eslint-disable-next-line no-console
+        console.log('response.ok', res.ok, 'status', res.status);
+        // eslint-disable-next-line no-console
+        console.log('response.keys', data && typeof data === 'object' ? Object.keys(data) : data);
+        // eslint-disable-next-line no-console
+        console.log('response.sections.keys', data?.sections && typeof data.sections === 'object' ? Object.keys(data.sections) : data?.sections);
+      }
+
+      if (data.status || !res.ok) {
+        const msg =
+          (typeof data.message === 'string' && data.message) ||
+          (typeof data.description === 'string' && data.description) ||
+          (typeof data.errors === 'string' && data.errors) ||
+          'Erro ao adicionar ao carrinho.';
+        window.dispatchEvent(new CartErrorEvent(this._sectionId || 'flow-engine', msg));
         this._showError(msg);
         return;
       }
 
-      const shown = this._showSuccess();
+      const mainVariantId = this._resolveMainVariantId(form);
+      const itemCount = items.reduce((acc, line) => acc + (line.quantity || 1), 0);
+      const sectionsResponse = normalizeSectionsResponse(data.sections);
+      const idsForCartUi = getCartSectionIds();
+      const sectionsComplete = cartAddSectionsAreComplete(sectionsResponse, idsForCartUi);
 
-      this._dispatchCartAdd();
-
-      if (!shown) {
-        this._openCartDrawer();
-      } else {
-        setTimeout(() => this._openCartDrawer(), 2000);
+      if (!sectionsComplete) {
+        if (debug) {
+          // eslint-disable-next-line no-console
+          console.log('sections incomplete; refreshing via Section Rendering API', idsForCartUi);
+        }
+        await refreshCartSectionsFromCurrentPage(idsForCartUi);
       }
+
+      this.dispatchEvent(
+        new CartAddEvent({}, mainVariantId || 'flow-engine', {
+          source: 'product-form-component',
+          itemCount,
+          productId: form.dataset.productId,
+          sections: sectionsComplete ? sectionsResponse : undefined,
+          skipSectionMorph: !sectionsComplete,
+        })
+      );
+      if (debug) {
+        // eslint-disable-next-line no-console
+        console.log('dispatched CartAddEvent', { itemCount, mainVariantId, sectionsComplete, idsForCartUi });
+        // eslint-disable-next-line no-console
+        console.groupEnd();
+      }
+
+      this._showSuccess();
     } catch {
       this._showError('Erro de conexão. Tente novamente.');
     } finally {
       btn.disabled = false;
       btn.classList.remove('flow-button--loading');
       this._isNavigating = false;
+      cartPerformance.measureFromMarker(perfMarker);
     }
   }
 
@@ -564,20 +697,18 @@ class FlowEngine extends HTMLElement {
     return null;
   }
 
+  /**
+   * @param {HTMLElement} form
+   * @returns {Array<{ id: number, quantity: number, properties?: Record<string, string> }>}
+   */
   _collectCartItems(form) {
     const items = [];
 
-    // Main product variant
-    const variantInput = form.querySelector('input[name="id"], [ref="variantId"]');
-    const defaultVariantId = form.dataset.defaultVariantId;
-    const variantId = variantInput?.value || defaultVariantId;
-
+    const variantId = this._resolveMainVariantId(form);
     if (!variantId) return items;
 
-    // Collect properties from _flow-property-field blocks
     const properties = {};
-    const propertyFields = form.querySelectorAll('[data-flow-property]');
-    propertyFields.forEach((field) => {
+    form.querySelectorAll('[data-flow-property]').forEach((field) => {
       const name = field.dataset.propertyName;
       const input = field.querySelector('input, textarea, select');
       if (name && input && input.value.trim()) {
@@ -585,67 +716,58 @@ class FlowEngine extends HTMLElement {
       }
     });
 
-    // Main product
     const quantityInput = form.querySelector('[data-flow-main-quantity]');
     const mainQty = quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1;
 
-    items.push({
-      id: parseInt(variantId, 10),
-      quantity: mainQty,
-      properties: Object.keys(properties).length > 0 ? properties : undefined,
-    });
+    const mainId = parseInt(variantId, 10);
+    if (!Number.isFinite(mainId)) return items;
 
-    // Addons (type: product)
-    const addonEls = form.querySelectorAll('[data-flow-addon][data-addon-type="product"]');
-    addonEls.forEach((addon) => {
-      const selected = addon.querySelectorAll('[data-addon-selected="true"]');
-      selected.forEach((item) => {
+    const mainLine = {
+      id: mainId,
+      quantity: mainQty,
+    };
+    if (Object.keys(properties).length > 0) {
+      mainLine.properties = properties;
+    }
+    items.push(mainLine);
+
+    form.querySelectorAll('[data-flow-addon][data-addon-type="product"]').forEach((addon) => {
+      addon.querySelectorAll('.flow-addon__item').forEach((item) => {
+        if (!isAddonRowSelected(item)) return;
         const vid = item.dataset.addonVariantId;
-        const qty = parseInt(item.dataset.addonQuantity, 10) || 1;
-        if (vid) {
-          items.push({ id: parseInt(vid, 10), quantity: qty });
-        }
+        const addonId = parseInt(vid, 10);
+        if (!Number.isFinite(addonId)) return;
+        items.push({ id: addonId, quantity: getAddonRowQuantity(item) });
       });
     });
 
-    // Services
-    const serviceEls = form.querySelectorAll('[data-flow-addon][data-addon-type="service"]');
-    serviceEls.forEach((addon) => {
-      const selected = addon.querySelectorAll('[data-addon-selected="true"]');
-      selected.forEach((item) => {
+    form.querySelectorAll('[data-flow-addon][data-addon-type="service"]').forEach((addon) => {
+      addon.querySelectorAll('.flow-addon__item').forEach((item) => {
+        if (!isAddonRowSelected(item)) return;
         const vid = item.dataset.addonVariantId;
-        const addMetadata = item.dataset.serviceAddMetadata === 'true';
-        const propKey = item.dataset.servicePropertyKey || '';
-        const propValue = item.dataset.servicePropertyValue || '';
+        const addonId = parseInt(vid, 10);
+        if (!Number.isFinite(addonId)) return;
+        const propKey = item.dataset.servicePropertyKey || '_service_type';
+        const propValue = item.dataset.servicePropertyValue || 'service';
         const displayName = item.dataset.serviceDisplayName || '';
-        if (vid) {
-          const serviceProps = {};
-
-          if (addMetadata && propKey && propValue) {
-            serviceProps[propKey] = propValue;
-          }
-
-          if (displayName) serviceProps['_display_name'] = displayName;
-
-          items.push({
-            id: parseInt(vid, 10),
-            quantity: 1,
-            properties: Object.keys(serviceProps).length > 0 ? serviceProps : undefined,
-          });
-        }
+        const serviceProps = { [propKey]: propValue };
+        if (displayName) serviceProps['_display_name'] = displayName;
+        items.push({
+          id: addonId,
+          quantity: 1,
+          properties: serviceProps,
+        });
       });
     });
 
     return items;
   }
 
-  /* ── Cart attributes persistence ────────────────────────── */
-
   async _persistAttributes() {
     if (Object.keys(this._pendingAttributes).length === 0) return true;
 
     try {
-      const res = await fetch(`${ROUTES()}cart/update.js`, {
+      const res = await fetch(cartUpdateUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ attributes: this._pendingAttributes }),
@@ -664,15 +786,8 @@ class FlowEngine extends HTMLElement {
     }
   }
 
-  /* ── Cart note (fluxo_resumo) ───────────────────────────── */
-
   async _buildAndSaveNote() {
     const parts = [];
-
-    const currentStep = this._steps[this._getCurrentIndex()];
-    if (!currentStep) return;
-
-    // Walk the stack to build the summary
     this._stack.forEach((idx) => {
       const step = this._steps[idx];
       if (!step) return;
@@ -683,62 +798,15 @@ class FlowEngine extends HTMLElement {
     const note = parts.join(' > ');
 
     try {
-      await fetch(`${ROUTES()}cart/update.js`, {
+      await fetch(cartUpdateUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ note }),
       });
     } catch {
-      // Non-blocking; note is informational
+      /* non-blocking */
     }
   }
-
-  /* ── Addon checkbox control ──────────────────────────────────────── */
-
-  _enforceSingleSelection(itemEl) {
-    const addonBlock = itemEl?.closest?.('[data-flow-addon]');
-    if (!addonBlock) return;
-
-    if ((addonBlock.dataset.selectionMode || 'any') !== 'single') return;
-
-    const items = addonBlock.querySelectorAll('.flow-addon__item');
-    items.forEach((el) => {
-      if (el === itemEl) return;
-
-      el.dataset.addonSelected = 'false';
-
-      const cb = el.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
-      if (cb) cb.checked = false;
-
-      const btn = el.querySelector('button[data-flow-addon-toggle]');
-      if (btn) btn.setAttribute('aria-pressed', 'false');
-
-      const panel = el.querySelector('[data-flow-addon-collapsible-panel]');
-      if (panel) {
-        this._setAddonCollapsibleState(panel, false, el);
-      }
-    });
-  }
-  _normalizeSingleSelection(stepEl) {
-  const blocks = stepEl.querySelectorAll('[data-flow-addon][data-selection-mode="single"]');
-  blocks.forEach((block) => {
-    const selected = Array.from(block.querySelectorAll('.flow-addon__item[data-addon-selected="true"]'));
-    if (selected.length <= 1) return;
-
-    // mantém o primeiro e desmarca o resto
-    selected.slice(1).forEach((el) => {
-      el.dataset.addonSelected = 'false';
-
-      const cb = el.querySelector('input[type="checkbox"][data-flow-addon-toggle]');
-      if (cb) cb.checked = false;
-
-      const btn = el.querySelector('button[data-flow-addon-toggle]');
-      if (btn) btn.setAttribute('aria-pressed', 'false');
-    });
-  });
-}
-
-  /* ── Price summary ──────────────────────────────────────── */
 
   _updatePriceSummary() {
     const currentIdx = this._getCurrentIndex();
@@ -750,35 +818,23 @@ class FlowEngine extends HTMLElement {
     const form = step.querySelector('[data-flow-product-form]');
     if (!form) return;
 
-    // Se o resumo estiver desligado no bloco, não tem o que atualizar
-    const summaryEl = form.querySelector('[data-flow-price-summary]');
-    if (!summaryEl) return;
+    let total = parseInt(form.dataset.price, 10) || 0;
 
-    let total = 0;
+    const mainQtyInput = form.querySelector('[data-flow-main-quantity]');
+    const mainQty = mainQtyInput ? parseInt(mainQtyInput.value, 10) || 1 : 1;
+    total *= mainQty;
 
-    // Main product (preço * quantidade)
-    const mainPrice = parseInt(form.dataset.price, 10) || 0;
-    const mainQtyEl = form.querySelector('[data-flow-main-quantity]');
-    const mainQty = mainQtyEl ? (parseInt(mainQtyEl.value, 10) || 1) : 1;
-    total += mainPrice * mainQty;
-
-    // Addons selecionados (preço * quantidade)
-    const selectedAddons = step.querySelectorAll('[data-addon-selected="true"][data-price]');
-    selectedAddons.forEach((el) => {
-      const price = parseInt(el.dataset.price, 10) || 0;
-      const qty = parseInt(el.dataset.addonQuantity, 10) || 1;
-      total += price * qty;
+    form.querySelectorAll('.flow-addon__item[data-price]').forEach((el) => {
+      if (!isAddonRowSelected(el)) return;
+      const unit = parseInt(el.dataset.price, 10) || 0;
+      const qty = getAddonRowQuantity(el);
+      total += unit * qty;
     });
 
-    const safeFormat =
-      (typeof this._formatMoney === 'function' && this._formatMoney.bind(this)) ||
-      (window.Shopify?.formatMoney && ((c) => window.Shopify.formatMoney(c))) ||
-      ((c) => {
-        const amount = (c / 100).toFixed(2);
-        return `R$ ${amount.replace('.', ',')}`;
-      });
-
-    summaryEl.textContent = safeFormat(total);
+    const summaryEl = form.querySelector('[data-flow-price-summary]');
+    if (summaryEl) {
+      summaryEl.textContent = this._formatMoney(total);
+    }
   }
 
   _formatMoney(cents) {
@@ -788,8 +844,6 @@ class FlowEngine extends HTMLElement {
     const amount = (cents / 100).toFixed(2);
     return `R$ ${amount.replace('.', ',')}`;
   }
-
-  /* ── Progress ───────────────────────────────────────────── */
 
   _updateProgress() {
     if (!this._progressEl) return;
@@ -803,38 +857,31 @@ class FlowEngine extends HTMLElement {
     }
 
     if (this._progressSteps) {
-      this._renderStepDots(depth);
+      const totalDots = Math.max(this._steps.length, 3);
+      let html = '';
+      for (let i = 0; i < totalDots; i++) {
+        let cls = 'flow-progress__step-dot';
+        if (i < depth) cls += ' flow-progress__step-dot--visited';
+        if (i === depth - 1) cls += ' flow-progress__step-dot--active';
+        html += `<span class="${cls}"></span>`;
+      }
+      this._progressSteps.innerHTML = html;
     }
   }
-
-  _renderStepDots(currentDepth) {
-    if (!this._progressSteps) return;
-    const totalDots = Math.max(this._steps.length, 3);
-    let html = '';
-    for (let i = 0; i < totalDots; i++) {
-      let cls = 'flow-progress__step-dot';
-      if (i < currentDepth) cls += ' flow-progress__step-dot--visited';
-      if (i === currentDepth - 1) cls += ' flow-progress__step-dot--active';
-      html += `<span class="${cls}"></span>`;
-    }
-    this._progressSteps.innerHTML = html;
-  }
-
-  /* ── URL state ──────────────────────────────────────────── */
 
   _updateURL() {
     const idx = this._getCurrentIndex();
     const step = this._steps[idx];
     if (!step) return;
 
-    const stepId = step.dataset.stepId || idx;
-    const url = new URL(window.location);
+    const stepId = step.dataset.stepId || String(idx);
+    const url = new URL(window.location.href);
     url.searchParams.set('flow_step', stepId);
     window.history.replaceState(null, '', url);
   }
 
   _restoreFromURL() {
-    const url = new URL(window.location);
+    const url = new URL(window.location.href);
     const stepParam = url.searchParams.get('flow_step');
 
     if (stepParam) {
@@ -845,52 +892,18 @@ class FlowEngine extends HTMLElement {
         return;
       }
       const numIdx = parseInt(stepParam, 10);
-      if (!isNaN(numIdx) && numIdx >= 0 && numIdx < this._steps.length) {
+      if (!Number.isNaN(numIdx) && numIdx >= 0 && numIdx < this._steps.length) {
         this._stack.push(numIdx);
         this._showStep(numIdx, 'forward');
         return;
       }
     }
 
-    // Default: show first step
     if (this._steps.length > 0) {
       this._stack.push(0);
       this._showStep(0, 'forward');
     }
   }
-
-  /* ── Cart drawer ────────────────────────────────────────── */
-
-  _dispatchCartAdd() {
-    document.dispatchEvent(
-      new CustomEvent('cart:add', { bubbles: true })
-    );
-
-    // Theme-specific: dispatch CartAddEvent for cart-drawer auto-open
-    try {
-      const CartAddEvent = customElements.get('cart-drawer-component')
-        ?.prototype?.constructor?.CartAddEvent;
-      if (CartAddEvent) {
-        document.dispatchEvent(new CartAddEvent());
-      }
-    } catch {
-      // Fallback: try generic approach
-    }
-  }
-
-  _openCartDrawer() {
-    const drawer = document.querySelector('cart-drawer-component');
-    if (drawer) {
-      const dialog = drawer.querySelector('dialog');
-      if (dialog && typeof dialog.showModal === 'function' && !dialog.open) {
-        dialog.showModal();
-      } else if (drawer.showDialog) {
-        drawer.showDialog();
-      }
-    }
-  }
-
-  /* ── Error display ──────────────────────────────────────── */
 
   _showError(msg) {
     if (this._errorEl && this._errorText) {
@@ -902,14 +915,10 @@ class FlowEngine extends HTMLElement {
     }
   }
 
-  /* ── Transition vars ────────────────────────────────────── */
-
   _applyTransitionVars() {
     this.style.setProperty('--flow-transition-speed', `${this._transitionSpeed}ms`);
     this.style.setProperty('--flow-transition-easing', this._transitionEasing);
   }
-
-  /* ── Helpers ────────────────────────────────────────────── */
 
   _wait(ms) {
     return new Promise((r) => setTimeout(r, ms));

@@ -14,6 +14,16 @@ import { ThemeEvents, CartUpdateEvent } from '@theme/events';
  */
 class CartIcon extends Component {
   requiredRefs = ['cartBubble', 'cartBubbleText', 'cartBubbleCount'];
+  #cartDebugEnabled =
+    (() => {
+      try {
+        const urlFlag = new URL(window.location.href).searchParams.has('cart_debug');
+        const storageFlag = window.localStorage?.getItem('cart_debug') === '1';
+        return urlFlag || storageFlag;
+      } catch {
+        return false;
+      }
+    })();
 
   /** @type {number} */
   get currentCartCount() {
@@ -45,6 +55,15 @@ class CartIcon extends Component {
     const itemCount = event.detail.data?.itemCount ?? 0;
     const comingFromProductForm = event.detail.data?.source === 'product-form-component';
 
+    if (this.#cartDebugEnabled) {
+      // eslint-disable-next-line no-console
+      console.debug('[cart_debug] cart-icon update', {
+        itemCount,
+        comingFromProductForm,
+        source: event.detail.data?.source,
+        sourceId: event.detail.sourceId,
+      });
+    }
     this.renderCartBubble(itemCount, comingFromProductForm);
   };
 

@@ -1,4 +1,7 @@
 (() => {
+  // Lightweight boot signal (helps verify asset is actually running).
+  // eslint-disable-next-line no-console
+  console.log('[flow_engine] runtime loaded');
   const CART_DEBUG_FLAG = 'cart_debug';
   const isCartDebugEnabled = () => {
     try {

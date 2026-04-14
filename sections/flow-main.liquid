@@ -6,10 +6,7 @@
   @see assets/flow-engine.js
 {%- enddoc -%}
 
-<script
-  src="{{ 'flow-engine.js' | asset_url }}"
-  type="module"
-></script>
+<script src="{{ 'flow-engine-runtime.js' | asset_url }}" defer></script>
 
 <flow-engine
   class="flow-main section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"

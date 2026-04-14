@@ -40,7 +40,15 @@
     try { document.documentElement.setAttribute('data-flow-addon-headfix', '1'); } catch (_) {}
 
     function closestItem(el) {
-      return el && el.closest ? el.closest('[data-addon-variant-id]') : null;
+      if (!el || !el.closest) return null;
+      var item = el.closest('[data-addon-variant-id]');
+      if (item) return item;
+      // Fallback: some markup variations wrap the dataset on a nested element.
+      item = el.closest('.flow-addon__item');
+      if (!item) return null;
+      if (item.hasAttribute && item.hasAttribute('data-addon-variant-id')) return item;
+      var owned = item.querySelector && item.querySelector('[data-addon-variant-id]');
+      return owned && owned.hasAttribute && owned.hasAttribute('data-addon-variant-id') ? owned : null;
     }
 
     function findCheckbox(item) {

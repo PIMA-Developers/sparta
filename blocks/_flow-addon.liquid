@@ -214,6 +214,13 @@
     cursor: pointer;
   }
 
+  /* Fallback visual state: if some theme layer prevents native checkbox UI updates,
+     still reflect selection via dataset on the row. */
+  .flow-addon__item[data-addon-selected="true"] .flow-addon__checkbox {
+    outline: 2px solid rgb(from var(--color-primary) r g b / 0.35);
+    outline-offset: 2px;
+  }
+
   /* Toggle button (switch style) */
   .flow-addon__toggle-btn {
     background: none;

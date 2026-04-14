@@ -243,8 +243,13 @@ class FlowEngine extends HTMLElement {
     // Don't toggle when editing quantity.
     if (target?.closest && target.closest('[data-flow-addon-quantity]')) return false;
 
-    /** @type {HTMLElement | null} */
-    let item = target?.closest ? target.closest('[data-addon-variant-id], .flow-addon__item') : null;
+    /**
+     * Some theme/layout wrappers may introduce nested `.flow-addon__item` elements.
+     * We must resolve the *real* row element that owns `data-addon-variant-id`.
+     * @type {HTMLElement | null}
+     */
+    let item = target?.closest ? target.closest('[data-addon-variant-id]') : null;
+    if (!item && target?.closest) item = target.closest('.flow-addon__item');
     if (!item && typeof e.composedPath === 'function') {
       for (const el of e.composedPath()) {
         if (
@@ -257,6 +262,11 @@ class FlowEngine extends HTMLElement {
       }
     }
     if (!item) return false;
+    if (!item.hasAttribute('data-addon-variant-id')) {
+      const owned = item.querySelector('[data-addon-variant-id]');
+      if (owned instanceof HTMLElement) item = owned;
+    }
+    if (!item.hasAttribute('data-addon-variant-id')) return false;
 
     const selectionMode = inAddon.dataset.selectionMode || 'multiple';
     const enforceSingle = selectionMode === 'single';
@@ -274,7 +284,7 @@ class FlowEngine extends HTMLElement {
 
     const deselectSiblings = () => {
       if (!enforceSingle) return;
-      inAddon.querySelectorAll('.flow-addon__item').forEach((other) => {
+      inAddon.querySelectorAll('[data-addon-variant-id]').forEach((other) => {
         if (other !== item) setSelected(other, false);
       });
     };

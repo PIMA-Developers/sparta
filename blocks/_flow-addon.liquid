@@ -58,7 +58,7 @@
             data-addon-selected="{% if is_preselected %}true{% else %}false{% endif %}"
             data-price="{{ addon_variant.price }}"
           >
-            <div class="flow-addon__item-toggle">
+            <div class="flow-addon__item-toggle" data-flow-addon-toggle-area>
               {%- if activation == 'checkbox' -%}
                 <label class="flow-addon__checkbox-label">
                   <input
@@ -136,7 +136,7 @@
             data-service-property-value="{{ block.settings.service_property_value | default: 'service' }}"
             data-service-display-name="{{ display_name | escape }}"
           >
-            <div class="flow-addon__item-toggle">
+            <div class="flow-addon__item-toggle" data-flow-addon-toggle-area>
               {%- if activation == 'checkbox' -%}
                 <input
                   type="checkbox"
@@ -291,12 +291,8 @@
         const item = resolveItem(target);
         if (!item) return;
 
-        const toggle = target.closest ? target.closest('[data-flow-addon-toggle]') : null;
-        if (!toggle) return;
-
-        // Only act when user pressed the toggle area itself (checkbox UI).
-        // For checkbox mode we want the box to always toggle selection.
-        if (toggle instanceof HTMLInputElement && toggle.type !== 'checkbox') return;
+        const inToggleArea = target?.closest?.('[data-flow-addon-toggle-area]') || target?.closest?.('[data-flow-addon-toggle]');
+        if (!inToggleArea) return;
 
         e.preventDefault();
         e.stopPropagation();

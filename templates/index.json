@@ -1310,7 +1310,7 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/BANNER_PRODUTOS_2.png",
+                    "image": "shopify://shop_images/BANNER_PRODUTOS.png",
                     "link": "",
                     "image_ratio": "square",
                     "width": "fill",

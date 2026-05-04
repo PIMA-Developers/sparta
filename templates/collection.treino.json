@@ -9,89 +9,6 @@
  */
 {
   "sections": {
-    "slideshow_qztJ3e": {
-      "type": "slideshow",
-      "blocks": {
-        "slide_7chRJp": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/WhatsApp_Image_2025-04-19_at_21.32.11.jpg",
-            "mobile_banner_alt": "",
-            "custom_loading_settings": true,
-            "fetchpriority": "high",
-            "lazyloading": "lazy",
-            "content_direction": "row",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-end",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "flex-end",
-            "gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": true,
-            "overlay_color": "#0000002e",
-            "overlay_style": "gradient",
-            "gradient_direction": "to top",
-            "padding-block-start": 20,
-            "padding-block-end": 20,
-            "padding-inline-start": 20,
-            "padding-inline-end": 20
-          },
-          "blocks": {
-            "text_iqXbwG": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h1>{{ closest.collection.title }}</h1>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_iqXbwG"
-          ]
-        }
-      },
-      "block_order": [
-        "slide_7chRJp"
-      ],
-      "name": "t:names.slideshow",
-      "settings": {
-        "enable_mobile_banner": true,
-        "enable_custom_vh": false,
-        "custom_vh": 40,
-        "icons_style": "arrows_large",
-        "slideshow_controls_style": "dots",
-        "color_scheme": "scheme-2b39fdab-8f06-4053-a03e-e1f311aaa4dd",
-        "autoplay": true,
-        "autoplay_speed": 6,
-        "section_width": "full-width",
-        "slide_height": "medium",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "collection_list_3cpHfh": {
       "type": "collection-list",
       "blocks": {
@@ -2429,7 +2346,6 @@
     }
   },
   "order": [
-    "slideshow_qztJ3e",
     "collection_list_3cpHfh",
     "main",
     "divider_Bx34xX",

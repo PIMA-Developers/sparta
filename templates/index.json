@@ -998,7 +998,7 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/Foto_bela_310_thierry_mica.jpg",
+                    "image": "shopify://shop_images/BANNER_ACADEMIA.png",
                     "link": "",
                     "image_ratio": "square",
                     "width": "fill",
@@ -1072,7 +1072,7 @@
                 "button_8kQayb": {
                   "type": "button",
                   "settings": {
-                    "label": "Quero me inscrever",
+                    "label": "Se inscreva",
                     "link": "https://wa.me/5521996131992",
                     "open_in_new_tab": true,
                     "style_class": "button",

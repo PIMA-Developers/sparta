@@ -207,10 +207,9 @@
         "slide_ziD4Y9": {
           "type": "_slide",
           "settings": {
-            "media_type_1": "video",
-            "image_1": "shopify://shop_images/GraduacaoSpartaJJjulho-26.jpg",
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/BANNER_SPRT_PRODUTOS_01.png",
             "mobile_banner_alt": "",
-            "video_1": "shopify://files/videos/IMG_3966.mov",
             "custom_loading_settings": true,
             "fetchpriority": "high",
             "lazyloading": "lazy",
@@ -302,7 +301,7 @@
                 "text_M7qHpc": {
                   "type": "text",
                   "settings": {
-                    "text": "<h1><strong>Sua transformação começa no tatame</strong></h1>",
+                    "text": "",
                     "width": "fit-content",
                     "max_width": "narrow",
                     "alignment": "left",
@@ -327,7 +326,7 @@
                 "text_jARMTn": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Aulas de artes marciais com método, comunidade e propósito</p>",
+                    "text": "",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -352,8 +351,8 @@
                 "button_JGKkhU": {
                   "type": "button",
                   "settings": {
-                    "label": "Conheça a Sparta",
-                    "link": "shopify://pages/aula-experimental",
+                    "label": "",
+                    "link": "shopify://collections/all",
                     "open_in_new_tab": false,
                     "style_class": "button",
                     "width": "fit-content",
@@ -399,10 +398,9 @@
         "slide_Y4ngnz": {
           "type": "_slide",
           "settings": {
-            "media_type_1": "video",
-            "image_1": "shopify://shop_images/GraduacaoSpartaJJjulho-26.jpg",
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/BANNER_SPRT_01.png",
             "mobile_banner_alt": "",
-            "video_1": "shopify://files/videos/7072150-uhd_3840_2160_30fps.mp4",
             "custom_loading_settings": true,
             "fetchpriority": "high",
             "lazyloading": "lazy",
@@ -494,7 +492,7 @@
                 "text_piP4MQ": {
                   "type": "text",
                   "settings": {
-                    "text": "<h1><strong>Sua transformação começa no tatame</strong></h1>",
+                    "text": "",
                     "width": "fit-content",
                     "max_width": "narrow",
                     "alignment": "left",
@@ -519,7 +517,7 @@
                 "text_4XqNfq": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Aulas de artes marciais com método, comunidade e propósito</p>",
+                    "text": "",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -544,8 +542,8 @@
                 "button_xjmRmP": {
                   "type": "button",
                   "settings": {
-                    "label": "Conheça a Sparta",
-                    "link": "shopify://pages/aula-experimental",
+                    "label": "",
+                    "link": "shopify://pages/em-breve",
                     "open_in_new_tab": false,
                     "style_class": "button",
                     "width": "fit-content",
@@ -757,9 +755,6 @@
         "slide_ziD4Y9",
         "slide_Y4ngnz",
         "slide_ipbbVD"
-      ],
-      "custom_css": [
-        "@media (max-width: 600px) {h1 {font-size: 24px; } slideshow-slide {height: 540px; }}"
       ],
       "name": "t:names.slideshow",
       "settings": {

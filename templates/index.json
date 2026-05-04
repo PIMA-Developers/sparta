@@ -351,7 +351,7 @@
                 "button_JGKkhU": {
                   "type": "button",
                   "settings": {
-                    "label": "",
+                    "label": "COMPRE AQUI",
                     "link": "shopify://collections/all",
                     "open_in_new_tab": false,
                     "style_class": "button",
@@ -360,7 +360,7 @@
                     "width_mobile": "fit-content",
                     "custom_width_mobile": 100,
                     "custom_button_style": true,
-                    "custom_bg_color": "#ffffff33",
+                    "custom_bg_color": "#000000",
                     "custom_text_color": "#ffffff",
                     "enable_custom_padding": true,
                     "padding_top": 12,

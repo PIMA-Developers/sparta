@@ -208,8 +208,8 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/BANNER_SPRT_PRODUTOS_01_8735ee17-a67b-4d04-83e6-b8e0fe8b4b22.png",
-            "mobile_banner_image": "shopify://shop_images/BANNER_SPRT_PRODUTOS_02.png",
+            "image_1": "shopify://shop_images/BANNER_SPRT_PRODUTOS_01_38dbf82a-8c8e-4c26-8b37-981e6e8a1e75.png",
+            "mobile_banner_image": "shopify://shop_images/BANNER_SPRT_PRODUTOS_02_54c5275b-8691-4dea-8d2c-775699c59bd0.png",
             "mobile_banner_alt": "",
             "custom_loading_settings": true,
             "fetchpriority": "high",

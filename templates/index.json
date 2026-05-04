@@ -1154,7 +1154,7 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/Photoroom_20251103_133635.png",
+                    "image": "shopify://shop_images/BANNER_SPRT_LOGO.png",
                     "link": "",
                     "image_ratio": "square",
                     "width": "fill",
@@ -1177,7 +1177,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Performance Gear</h2>",
+                    "text": "<h2>SPRT+</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1228,8 +1228,8 @@
                 "button_9DfgjY": {
                   "type": "button",
                   "settings": {
-                    "label": "Quero comprar",
-                    "link": "shopify://collections/treino",
+                    "label": "Assine agora",
+                    "link": "shopify://pages/em-breve",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "custom",

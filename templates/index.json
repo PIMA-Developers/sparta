@@ -1310,7 +1310,7 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/RoupasSparta-35_1.jpg",
+                    "image": "shopify://shop_images/BANNER_PRODUTOS.png",
                     "link": "",
                     "image_ratio": "square",
                     "width": "fill",
@@ -1333,7 +1333,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2><strong>Casual collection</strong></h2>",
+                    "text": "<h2><strong>Produtos SPRT</strong></h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1358,8 +1358,8 @@
                 "button_nT3jmk": {
                   "type": "button",
                   "settings": {
-                    "label": "Quero comprar",
-                    "link": "shopify://collections/casual",
+                    "label": "Comprar agora",
+                    "link": "shopify://collections",
                     "open_in_new_tab": false,
                     "style_class": "button",
                     "width": "custom",

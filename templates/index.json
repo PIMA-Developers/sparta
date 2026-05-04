@@ -399,7 +399,7 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/BANNER_SPRT_01_5b086ba0-179d-4fcb-8d73-4a3d8e5e9e27.png",
+            "image_1": "shopify://shop_images/BANNER_SPRT_01_f1265cc8-5bdd-4595-8904-5fc0fb82fd08.png",
             "mobile_banner_alt": "",
             "custom_loading_settings": true,
             "fetchpriority": "high",
@@ -542,7 +542,7 @@
                 "button_xjmRmP": {
                   "type": "button",
                   "settings": {
-                    "label": "",
+                    "label": "ASSINAR SPRT+",
                     "link": "shopify://pages/em-breve",
                     "open_in_new_tab": false,
                     "style_class": "button",

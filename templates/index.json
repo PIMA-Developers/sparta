@@ -400,7 +400,7 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/BANNER_SPRT__01_2560_5e6323d1-56c5-4d52-8b21-33fd095c9ca3.png",
+            "image_1": "shopify://shop_images/BANNER_SPRT_01_mac.png",
             "mobile_banner_image": "shopify://shop_images/BANNER_SPRT_02_11fb406b-e73a-478b-a47e-4483e761f2c0.png",
             "mobile_banner_alt": "",
             "custom_loading_settings": true,

@@ -761,7 +761,7 @@
       "name": "t:names.slideshow",
       "settings": {
         "enable_mobile_banner": true,
-        "enable_custom_vh": false,
+        "enable_custom_vh": true,
         "custom_vh": 100,
         "icons_style": "arrows_large",
         "slideshow_controls_style": "dots",

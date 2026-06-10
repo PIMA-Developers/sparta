@@ -1229,7 +1229,7 @@
                   "type": "button",
                   "settings": {
                     "label": "Assine agora",
-                    "link": "shopify://pages/em-breve",
+                    "link": "https://checkout.thebank.com.br/7453831313133166592",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "custom",

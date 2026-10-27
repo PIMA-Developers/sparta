@@ -1,0 +1,21 @@
+{%- comment -%}
+  Proteção do carrinho para os kimonos personalizados da Tap (ferramenta "Monte seu kimono").
+  Carregado em layout/theme.liquid. A lógica está em assets/tap-cart-guard.js.
+{%- endcomment -%}
+<script>
+  window.TAP_CART_GUARD_HANDLES = [
+    "kimono-xtralite-2-0-personalizado",
+    "kimono-brazil-combat-personalizado",
+    "personalizacao-no-seu-kimono",
+    "tap-personalizacao-costas",
+    "tap-personalizacao-adicional",
+    "tap-personalizacao-adicional-10x10",
+    "tap-personalizacao-prazo"
+  ];
+</script>
+<script src="{{ 'tap-cart-guard.js' | asset_url }}" defer></script>
+<style>
+  .tap-qtd-fixa{display:inline-flex;align-items:center;justify-content:center;min-width:2.75rem;min-height:2.75rem;padding:0 .75rem;border:1px solid rgb(var(--color-foreground-rgb, 0 0 0) / .15);border-radius:var(--style-border-radius-inputs, 4px);font-variant-numeric:tabular-nums}
+  .tap-cart-aviso{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:2147483000;max-width:min(560px,calc(100% - 32px));background:#12131b;color:#fff;padding:14px 16px;border-radius:10px;font:500 15px/1.4 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .tap-cart-aviso a{color:#fff;text-decoration:underline}
+</style>

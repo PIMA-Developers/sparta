@@ -1,0 +1,25 @@
+{%- comment -%}
+  Página dos produtos ocultos de cobrança da Tap (costas, adicionais, prazo).
+  Esses itens só entram no carrinho pela ferramenta "Monte seu kimono".
+{%- endcomment -%}
+<div class="page-width" style="padding-block:64px;text-align:center;max-width:640px;margin:0 auto">
+  <h1>{{ section.settings.titulo | escape }}</h1>
+  <p>{{ section.settings.texto | escape }}</p>
+  {%- if section.settings.produto != blank -%}
+    <p><a class="button" href="{{ section.settings.produto.url }}">{{ section.settings.botao | escape }}</a></p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Item da Tap (oculto)",
+  "tag": "section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Este item faz parte do kimono personalizado" },
+    { "type": "text", "id": "texto", "label": "Texto", "default": "A personalização entra no carrinho automaticamente quando você monta o seu kimono na ferramenta da Tap." },
+    { "type": "product", "id": "produto", "label": "Produto da ferramenta" },
+    { "type": "text", "id": "botao", "label": "Texto do botão", "default": "Monte seu kimono" }
+  ]
+}
+{% endschema %}

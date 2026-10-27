@@ -1,0 +1,370 @@
+{%- liquid
+  assign produto_kimono = section.settings.produto_kimono
+  if produto_kimono == blank
+    assign produto_kimono = all_products['kimono-xtralite-2-0-personalizado']
+  endif
+  assign produto_proprio = section.settings.produto_proprio
+  if produto_proprio == blank
+    assign produto_proprio = all_products['personalizacao-no-seu-kimono']
+  endif
+  assign produto_costas = section.settings.produto_costas
+  if produto_costas == blank
+    assign produto_costas = all_products['tap-personalizacao-costas']
+  endif
+  assign produto_adicional = section.settings.produto_adicional
+  if produto_adicional == blank
+    assign produto_adicional = all_products['tap-personalizacao-adicional']
+  endif
+  assign produto_prazo = section.settings.produto_prazo
+  if produto_prazo == blank
+    assign produto_prazo = all_products['tap-personalizacao-prazo']
+  endif
+-%}
+{%- comment -%} Gerado por build_shopify.py a partir de src/tool.html. Não edite à mão. {%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=Bebas+Neue&family=Graduate&family=Montserrat:wght@600;700;800&family=Oswald:wght@500;600&family=Permanent+Marker&display=swap">
+{{ 'tap-mockup.css' | asset_url | stylesheet_tag }}
+<div class="tapmk{% if section.settings.esquema == 'escuro' %} tapmk--dark{% endif %}" data-tapmk style="--tapmk-top: {{ section.settings.topo }}px">
+<script type="application/json" data-tapmk-config>{"whatsapp": {{ section.settings.whatsapp | json }}, "kimonoNome": {{ section.settings.kimono_nome | json }}, "expressoGratisAcima": {{ section.settings.expresso_gratis | default: 0 }}, "bases": {"branco_front":{{ "tap-kimono-branco_front.webp" | asset_url | json }},"branco_back":{{ "tap-kimono-branco_back.webp" | asset_url | json }},"azul_front":{{ "tap-kimono-azul_front.webp" | asset_url | json }},"azul_back":{{ "tap-kimono-azul_back.webp" | asset_url | json }},"preto_front":{{ "tap-kimono-preto_front.webp" | asset_url | json }},"preto_back":{{ "tap-kimono-preto_back.webp" | asset_url | json }}}, "lib": {"sprt_wordmark":{{ "tap-logo-sprt_wordmark.webp" | asset_url | json }},"sprt_martial":{{ "tap-logo-sprt_martial.webp" | asset_url | json }},"sprt_escola":{{ "tap-logo-sprt_escola.webp" | asset_url | json }},"sprt_badge":{{ "tap-logo-sprt_badge.webp" | asset_url | json }},"sprt_helmet":{{ "tap-logo-sprt_helmet.webp" | asset_url | json }},"thierry_reis":{{ "tap-logo-thierry_reis.webp" | asset_url | json }},"thierry_tr":{{ "tap-logo-thierry_tr.webp" | asset_url | json }}}, "regras": {"basico":{"logos":{{ section.settings.basico_logos | default: 1 }},"adic":{{ section.settings.basico_adic | default: 1 }}},"intermediario":{"logos":{{ section.settings.intermediario_logos | default: 3 }},"adic":{{ section.settings.intermediario_adic | default: 2 }}},"completo":{"logos":{{ section.settings.completo_logos | default: 6 }},"adic":{{ section.settings.completo_adic | default: 6 }}}}, "upload": {"cloud": {{ section.settings.cloudinary_cloud | strip | json }}, "preset": {{ section.settings.cloudinary_preset | strip | json }}, "folder": {{ section.settings.cloudinary_pasta | strip | json }}}, "shop": {"atual": {{ product.handle | json }}, "rotas": {"add": {{ routes.cart_add_url | append: '.js' | json }}, "cart": {{ routes.cart_url | json }}}, "kimono": {% render 'tap-variantes', produto: produto_kimono, chave: '12' %}, "proprio": {% render 'tap-variantes', produto: produto_proprio, chave: '1' %}, "faixas": {% render 'tap-variantes', produto: produto_costas, chave: 'sku', prefixo: 'TAPF-' %}, "adicional": {% render 'tap-variantes', produto: produto_adicional, chave: 'sku', prefixo: 'TAPA-' %}, "prazo": {% render 'tap-variantes', produto: produto_prazo, chave: 'sku', prefixo: 'TAPP-' %}}}</script>
+<div class="app">
+  <header class="top">
+    <div class="brand"><img class="brand-logo" src="{{ 'tap-print.webp' | asset_url }}" alt="TAP"><h1>{% if section.settings.titulo != blank %}{{ section.settings.titulo | escape }}{% else %}{{ product.title | escape }}{% endif %}</h1></div>
+    {% if section.settings.subtitulo != blank %}<p>{{ section.settings.subtitulo | escape }}</p>{% endif %}
+  </header>
+
+  <main class="tm-grid">
+    <section class="stage" aria-label="Mockup do kimono">
+      <div class="bench">
+        <div class="views" role="group" aria-label="Visualização">
+          <button type="button" data-view="todo" aria-pressed="true">Tudo</button>
+          <button type="button" data-view="frente" aria-pressed="false">Frente</button>
+          <button type="button" data-view="costas" aria-pressed="false">Costas</button>
+        </div>
+        <div class="cv-wrap" id="cvWrap">
+          <canvas id="cv" aria-label="Pré-visualização do kimono personalizado"></canvas>
+          <span class="tag-example" id="tagExample" hidden>Exemplo</span>
+        </div>
+      </div>
+      <p class="hint" id="hint">Toque numa arte para selecionar. Arraste para mover e puxe a bolinha do canto para mudar o tamanho.</p>
+    </section>
+
+    <div class="panel">
+      <section class="step" id="stepKimono">
+        <div class="step-h"><span>1</span><h2>Kimono</h2></div>
+        <div class="field">
+          <span class="lbl">Cor</span>
+          <div class="swatches" role="group" aria-label="Cor do kimono">
+            <button type="button" class="sw" data-color="branco" aria-pressed="true"><i style="background:#eef0f2"></i>Branco</button>
+            <button type="button" class="sw" data-color="azul" aria-pressed="false"><i style="background:#25259c"></i>Azul</button>
+            <button type="button" class="sw" data-color="preto" aria-pressed="false"><i style="background:#161616"></i>Preto</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">O que você quer</span>
+          <div class="choice">
+            <label class="opt"><input type="radio" name="tipo" id="tipoBC" value="brazil" checked><span><b><span data-kimono-nome>Kimono Xtralite 2.0</span> + personalização</b><small>A Tap fornece o kimono já personalizado. Adulto <span data-preco="kimono.adulto">R$ 550,00</span> · infantil <span data-preco="kimono.infantil">R$ 390,00</span>, mais a personalização.</small></span></label>
+            <label class="opt"><input type="radio" name="tipo" id="tipoProprio" value="proprio"><span><b>Só a personalização</b><small>Você traz ou envia o seu kimono para a Tap.</small></span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl" id="modoLbl">Quantos kimonos</span>
+          <div class="seg" role="group" aria-labelledby="modoLbl">
+            <button type="button" data-modo="um" aria-pressed="true">Só um</button>
+            <button type="button" data-modo="equipe" aria-pressed="false">Vários (equipe)</button>
+          </div>
+        </div>
+        <div class="field" id="sizeField">
+          <label class="lbl" for="tamanho">Tamanho</label>
+          <select id="tamanho">
+            <option value="">Escolha o tamanho</option>
+            <optgroup label="Adulto" data-preco-label="kimono.adulto"><option>A0</option><option>A1</option><option>A2</option><option>A3</option><option>A4</option></optgroup>
+            <optgroup label="Infantil" data-preco-label="kimono.infantil"><option>M000</option><option>M00</option><option>M0</option><option>M1</option><option>M2</option><option>M3</option><option>M4</option></optgroup>
+            <option value="ajuda">Não sei, quero ajuda</option>
+          </select>
+        </div>
+        <div class="team" id="equipeBox" hidden>
+          <p class="muted">Você monta um kimono só: a arte é a mesma para todos. Coloque o nome e o tamanho de cada pessoa e, no final, veja o mockup de cada kimono.</p>
+          <ol class="team-list" id="equipeList"></ol>
+          <button type="button" class="btn" id="addPessoa">+ Adicionar pessoa</button>
+        </div>
+      </section>
+
+      <section class="step" id="stepArtes">
+        <div class="step-h"><span>2</span><h2>Artes</h2></div>
+        <div class="add">
+          <button type="button" class="btn primary" id="addLogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>Enviar logo</button>
+          <button type="button" class="btn" id="addText"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg>Nome ou texto</button>
+          <button type="button" class="btn" id="openLib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.3-4.3"/></svg>Logo já na Tap</button>
+        </div>
+        <p class="muted m-hint" style="display:none">Toque na arte no kimono e arraste para mover. A bolinha do canto muda o tamanho.</p>
+        <p class="muted">Aceita PNG, JPG, SVG ou PDF. Pode mandar até a versão feita no celular: a Tap revisa e redesenha a arte antes de produzir.</p>
+        <div class="lib" id="libBox" hidden>
+          <label class="lbl" for="libQ">Nome da sua equipe</label>
+          <input type="text" id="libQ" placeholder="Ex.: Sparta" autocomplete="off">
+          <div class="lib-res" id="libRes"></div>
+          <p class="muted" id="libMsg">Digite pelo menos 2 letras. Se a sua equipe não aparecer, use "Enviar logo".</p>
+        </div>
+        <div class="items" id="items"></div>
+        <p class="muted">Ver um <button type="button" class="linkbtn" id="loadExample">exemplo pronto</button> · <button type="button" class="linkbtn" id="resetAll">começar do zero</button></p>
+      </section>
+
+      <section class="step" id="stepDados">
+        <div class="step-h"><span>3</span><h2>Seus dados</h2></div>
+        <p class="muted" data-shop hidden>Usamos o seu nome e WhatsApp para mandar a arte para aprovação antes de produzir.</p>
+        <div class="row">
+          <div class="field"><label class="lbl" for="dNome">Seu nome</label><input type="text" id="dNome" autocomplete="name"></div>
+          <div class="field"><label class="lbl" for="dZap">WhatsApp</label><input type="tel" id="dZap" autocomplete="tel" placeholder="(21) 99999-9999"></div>
+        </div>
+        <div class="field"><label class="lbl" for="dEquipe">Equipe</label><input type="text" id="dEquipe" autocomplete="organization"></div>
+        <div class="field"><label class="lbl" for="dObs">Observações</label><textarea id="dObs" placeholder="Prazo, data do campeonato, detalhes da arte…"></textarea></div>
+      </section>
+
+      <section class="step" id="stepEnviar">
+        <div class="step-h"><span>4</span><h2 id="step4Title">Enviar para a Tap</h2></div>
+        <div class="field">
+          <span class="lbl">Prazo de produção</span>
+          <div class="choice">
+            <label class="opt"><input type="radio" name="prazo" value="padrao" checked><span><b>Padrão · até 14 dias úteis</b><small>Sem custo adicional.</small></span></label>
+            <label class="opt"><input type="radio" name="prazo" value="expresso"><span><b>Expresso · até 7 dias úteis</b><small>+ <span data-preco="prazo.expresso">R$ 40,00</span>. Sujeito à disponibilidade.<span class="gratis-hint" data-expresso-gratis></span></small></span></label>
+            <label class="opt"><input type="radio" name="prazo" value="turbo"><span><b>Turbo · até 48 horas</b><small>+ <span data-preco="prazo.turbo">R$ 140,00</span>, com opção de atendimento presencial. Sujeito à disponibilidade.</small></span></label>
+          </div>
+          <p class="muted" data-solo>O prazo começa a contar a partir do pagamento do sinal, mesmo que o kimono chegue depois.</p>
+          <p class="muted" data-shop hidden>Na compra pelo site, o prazo começa a contar a partir da confirmação do pagamento.</p>
+        </div>
+        <div class="summary" id="summary"></div>
+        <div class="tm-price" id="price"></div>
+        <p class="warn" id="cartWarn" hidden></p>
+        <div class="actions">
+          <button type="button" class="btn primary big" id="addCart" data-shop hidden>Adicionar ao carrinho</button>
+          <button type="button" class="btn big" id="generate">Gerar mockup</button>
+        </div>
+        <p class="muted" data-solo>Valor estimado pela tabela da Tap, já com a criação da arte e a estampa. A Tap revisa a arte e confirma valor e prazo pelo WhatsApp.</p>
+        <p class="muted" data-shop hidden>Valor pela tabela da Tap, já com a criação da arte e a estampa. Pagamento integral no site, no checkout. Depois da compra, a Tap revisa e vetoriza a arte e manda a aprovação no seu WhatsApp antes de produzir.</p>
+        <p class="muted" data-shop hidden>Prefere falar com a gente? <button type="button" class="linkbtn" id="goWhats">Fechar o pedido pelo WhatsApp</button>. Bom para equipes grandes, 7 ou mais logos nas costas, pedido só com nome e dúvidas.</p>
+      </section>
+    </div>
+  </main>
+</div>
+
+<input type="file" id="fileIn" accept="image/png,image/jpeg,image/webp,image/svg+xml,application/pdf,.pdf,.svg" hidden>
+
+<div class="sheet" id="pdfSheet" hidden role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
+  <div class="sheet-in">
+    <div class="sheet-h"><h2 id="pdfTitle">Qual página tem o logo?</h2><button type="button" class="icon-btn" data-close="pdfSheet" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="muted" id="pdfMsg">Carregando o PDF…</p>
+    <div class="pages" id="pdfPages"></div>
+  </div>
+</div>
+
+<div class="sheet" id="resSheet" hidden role="dialog" aria-modal="true" aria-labelledby="resTitle">
+  <div class="sheet-in">
+    <div class="sheet-h"><h2 id="resTitle">Seu mockup está pronto</h2><button type="button" class="icon-btn" data-close="resSheet" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <img class="result-img" id="resImg" alt="Mockup do kimono personalizado">
+    <p class="muted" id="resSel" hidden></p>
+    <div class="team-mocks" id="teamMocks" hidden></div>
+    <div class="actions" data-shop hidden>
+      <button type="button" class="btn primary big" id="addCart2">Adicionar ao carrinho</button>
+      <p class="muted">Pagamento integral no site, no checkout (Pix, cartão ou boleto).</p>
+    </div>
+    <h3 class="sub-h" data-shop hidden>Prefere fechar pelo WhatsApp?</h3>
+    <p class="muted" id="resHint">Salve a imagem e mande no WhatsApp da Tap junto com os arquivos dos logos.</p>
+    <div class="actions">
+      <button type="button" class="btn primary big" id="shareBtn" hidden>Enviar mockup e artes no WhatsApp</button>
+      <button type="button" class="btn big" id="saveBtn">Salvar imagem</button>
+      <a class="btn big" id="waLink" href="https://wa.me/" target="_blank" rel="noopener">Abrir conversa com a Tap no WhatsApp</a>
+      <button type="button" class="btn ghost" id="copyBtn">Copiar resumo do pedido</button>
+    </div>
+    <div class="pay">
+      <b>Pagamento</b>
+      <span>50% no ato do pedido e 50% na entrega. Aceitamos Pix, cartão ou boleto.</span>
+      <span>Chave Pix (CNPJ): <code id="pixKey">56.151.834/0001-52</code> · TAP Comércio e Design LTDA</span>
+      <button type="button" class="btn ghost" id="copyPix">Copiar chave Pix</button>
+    </div>
+    <textarea id="resText" readonly aria-label="Resumo do pedido" style="min-height:150px;font-size:14px"></textarea>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+</div>
+<script src="{{ 'tap-mockup.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Kimono personalizado",
+  "tag": "section",
+  "class": "tapmk-section",
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Textos"
+    },
+    {
+      "type": "text",
+      "id": "titulo",
+      "label": "Título",
+      "info": "Em branco, usa o nome do produto."
+    },
+    {
+      "type": "text",
+      "id": "subtitulo",
+      "label": "Subtítulo",
+      "default": "Escolha a cor, mande o logo e veja o mockup na hora. Fecha a compra aqui mesmo, sem esperar orçamento."
+    },
+    {
+      "type": "select",
+      "id": "esquema",
+      "label": "Cores da ferramenta",
+      "options": [
+        {
+          "value": "claro",
+          "label": "Claro"
+        },
+        {
+          "value": "escuro",
+          "label": "Escuro"
+        }
+      ],
+      "default": "claro"
+    },
+    {
+      "type": "range",
+      "id": "topo",
+      "label": "Espaço para o cabeçalho fixo",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "info": "Se o cabeçalho da loja cobrir o kimono quando você rola a página, aumente este valor."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "WhatsApp da Tap",
+      "default": "5521995888183",
+      "info": "Só números, com 55 e DDD."
+    },
+    {
+      "type": "text",
+      "id": "kimono_nome",
+      "label": "Nome do kimono da Tap",
+      "default": "Kimono Xtralite 2.0"
+    },
+    {
+      "type": "number",
+      "id": "expresso_gratis",
+      "label": "Expresso grátis a partir de (R$)",
+      "default": 850,
+      "info": "Soma do kimono e da personalização, sem a taxa de prazo. Use 0 para desligar."
+    },
+    {
+      "type": "header",
+      "content": "Produtos",
+      "info": "Os preços vêm das variantes destes produtos. Em branco, a ferramenta procura pelos nomes padrão (handles)."
+    },
+    {
+      "type": "product",
+      "id": "produto_kimono",
+      "label": "Kimono Xtralite 2.0 personalizado",
+      "info": "Variantes: Cor × Tamanho."
+    },
+    {
+      "type": "product",
+      "id": "produto_proprio",
+      "label": "Personalização no seu kimono (R$ 0)",
+      "info": "Variantes: Cor."
+    },
+    {
+      "type": "product",
+      "id": "produto_costas",
+      "label": "Personalização · faixas (oculto)",
+      "info": "SKU: TAPF-basico|1, TAPF-basico|2+ … TAPF-completo|2+. O preço \"2+\" já tem o desconto de equipe."
+    },
+    {
+      "type": "product",
+      "id": "produto_adicional",
+      "label": "Adicionais avulsos (oculto)",
+      "info": "SKU: TAPA-1|1, TAPA-2+|1 (1 kimono) e TAPA-1|2+, TAPA-2+|2+ (2+ kimonos, com desconto)."
+    },
+    {
+      "type": "product",
+      "id": "produto_prazo",
+      "label": "Prazo de produção (oculto)",
+      "info": "SKU: TAPP-expresso, TAPP-expresso-gratis (R$ 0) e TAPP-turbo."
+    },
+    {
+      "type": "header",
+      "content": "Upload dos arquivos (Cloudinary)",
+      "info": "Sem isso, o pedido vai sem os links do mockup e das artes."
+    },
+    {
+      "type": "text",
+      "id": "cloudinary_cloud",
+      "label": "Cloud name"
+    },
+    {
+      "type": "text",
+      "id": "cloudinary_preset",
+      "label": "Upload preset (não assinado)"
+    },
+    {
+      "type": "text",
+      "id": "cloudinary_pasta",
+      "label": "Pasta",
+      "default": "pedidos"
+    },
+    {
+      "type": "header",
+      "content": "O que cada faixa inclui",
+      "info": "O nome nas costas está incluso em todas. Com mais logos do que a última faixa, vira \"a orçar\" (WhatsApp)."
+    },
+    {
+      "type": "number",
+      "id": "basico_logos",
+      "label": "Básico: logos nas costas",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "basico_adic",
+      "label": "Básico: adicionais inclusos",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "intermediario_logos",
+      "label": "Intermediário: logos nas costas",
+      "default": 3
+    },
+    {
+      "type": "number",
+      "id": "intermediario_adic",
+      "label": "Intermediário: adicionais inclusos",
+      "default": 2
+    },
+    {
+      "type": "number",
+      "id": "completo_logos",
+      "label": "Completo: logos nas costas",
+      "default": 6
+    },
+    {
+      "type": "number",
+      "id": "completo_adic",
+      "label": "Completo: adicionais inclusos",
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kimono personalizado (ferramenta)"
+    }
+  ]
+}
+{% endschema %}

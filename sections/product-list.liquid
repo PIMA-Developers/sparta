@@ -52,13 +52,25 @@
   </div>
 
   {% capture list_items %}
+    {%- if section_products.size > 0 -%}
+      {%- comment -%} Tap: produtos ocultos (seo.hidden), como os itens de cobrança da personalização, não aparecem na lista. {%- endcomment -%}
+      {%- assign shown = 0 -%}
+      {% for product in section_products %}
+        {%- if product.metafields.seo.hidden == 1 -%}{%- continue -%}{%- endif -%}
+        {%- if shown >= max_items -%}{%- break -%}{%- endif -%}
+        {% if shown > 0 %}
+          <!--@list/split-->
+        {% endif %}
+        <div
+          class="resource-list__item"
+        >
+          {% content_for 'block', type: 'product-card', id: 'static-product-card', closest.product: product %}
+        </div>
+        {%- assign shown = shown | plus: 1 -%}
+      {% endfor %}
+    {%- else -%}
     {% for i in (1..max_items) %}
-      {% if section_products.size > 0 %}
-        {% assign index = forloop.index0 %}
-        {% assign product = section_products[index] %}
-      {% else %}
-        {% assign product = null %}
-      {% endif %}
+      {% assign product = null %}
       <div
         class="resource-list__item"
       >
@@ -70,6 +82,7 @@
       {% endunless %}
 
     {% endfor %}
+    {%- endif -%}
   {% endcapture %}
 
   {% liquid

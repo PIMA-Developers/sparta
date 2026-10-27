@@ -198,7 +198,7 @@
                           <div class="cart-items__properties">
                             <dt>{{ property.first }}:</dt>
                             <dd>
-                              {%- if property.last contains '/uploads/' -%}
+                              {%- if property.last contains '/uploads/' or property.last contains 'https://res.cloudinary.com/' -%}
                                 <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
                               {%- else -%}
                                 {{ property.last }}
@@ -259,6 +259,10 @@
                   headers="quantity"
                 >
                   {% # Here I want to pass some arguments to the quantity block so it knows which value should the input be set to. Though quantity block could be a snippet instead %}
+                  {%- comment -%} Tap: linhas do kimono personalizado têm quantidade fixa; só o kimono pode ser removido (leva o grupo junto). {%- endcomment -%}
+                  {%- if item.properties._tap != blank -%}
+                    <span class="tap-qtd-fixa cart-primary-typography" aria-label="{{ 'content.quantity' | t }}: {{ item.quantity }}">{{ item.quantity }}</span>
+                  {%- else -%}
                   {% render 'quantity-selector',
                     product: item.product,
                     in_cart_quantity: item.quantity,
@@ -266,7 +270,9 @@
                     min: 0,
                     class: 'cart-primary-typography'
                   %}
+                  {%- endif -%}
 
+                  {%- unless item.properties._tap == 'cobranca' -%}
                   <button
                     class="button button--tertiary cart-items__remove"
                     type="button"
@@ -276,6 +282,7 @@
                     {{- 'icon-delete.svg' | inline_asset_content -}}
                     <span class="visually-hidden">Remove</span>
                   </button>
+                  {%- endunless -%}
                 </td>
                 <td
                   class="cart-items__error hidden"

@@ -1,0 +1,13 @@
+{%- comment -%}
+  Mapa de variantes de um produto em JSON para a ferramenta "Monte seu kimono".
+  chave '12' = "Opção1|Opção2" (ex.: "Branco|A2"); chave '1' = "Opção1"; chave 'sku' = SKU sem o prefixo (ex.: TAPC-3|2+ → "3|2+").
+  Preço em centavos. "ok" = pode ser comprado.
+{%- endcomment -%}
+{%- if produto != blank -%}
+{"handle":{{ produto.handle | json }},"variantes":{
+{%- for v in produto.variants -%}
+  {%- if chave == '12' -%}{%- assign k = v.option1 | append: '|' | append: v.option2 -%}{%- elsif chave == 'sku' -%}{%- assign k = v.sku | remove_first: prefixo -%}{%- else -%}{%- assign k = v.option1 -%}{%- endif -%}
+  {{ k | json }}:{"id":{{ v.id }},"preco":{{ v.price }},"ok":{{ v.available | json }}}{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
+}}
+{%- else -%}null{%- endif -%}

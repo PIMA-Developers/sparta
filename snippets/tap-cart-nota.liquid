@@ -1,0 +1,11 @@
+{%- comment -%} Aviso no resumo do carrinho quando há um kimono personalizado da Tap (ferramenta "Monte seu kimono"). {%- endcomment -%}
+{%- assign tem_tap = false -%}
+{%- for item in cart.items -%}
+  {%- if item.properties._tap == 'kimono' -%}{%- assign tem_tap = true -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+{%- if tem_tap -%}
+  <div class="tap-cart-nota" style="margin-block:12px;padding:12px 14px;border-radius:8px;background:rgb(var(--color-foreground-rgb, 0 0 0) / .05);font-size:.9em;line-height:1.45">
+    <p style="margin:0 0 4px"><strong>Kimono personalizado: pagamento integral no site.</strong></p>
+    <p style="margin:0">Depois da compra, a Tap revisa e vetoriza a arte e manda a aprovação no seu WhatsApp antes de produzir. O prazo conta a partir da confirmação do pagamento.</p>
+  </div>
+{%- endif -%}

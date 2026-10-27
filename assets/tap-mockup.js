@@ -224,8 +224,8 @@ function textBitmap(it){
 }
 
 /* ================== ITEMS ================== */
-function inkFor(it){ return it.autoInk ? COLORS[state.color].ink : it.ink; }
-// Equipe: um texto marcado como "nome de cada pessoa" mostra no mockup o nome da primeira pessoa da lista.
+function inkFor(it,cor=state.color){ return it.autoInk ? (COLORS[cor]||COLORS[state.color]).ink : it.ink; }
+// Equipe: um texto marcado como "nome do dono de cada kimono" mostra no mockup o nome da primeira pessoa da lista.
 const isEquipe = () => state.modo==="equipe";
 function perPersonOn(it){ return it.kind==="text" && it.perPerson && isEquipe(); }
 // nomeOverride: nome da pessoa usado ao gerar o mockup de cada kimono da equipe
@@ -236,6 +236,8 @@ function textOf(it){
   return (state.pessoas.find(p=>p.nome.trim())||{}).nome || it.text;
 }
 const temNomePorPessoa = () => isEquipe() && state.items.some(perPersonOn);
+// Vale gerar um mockup por kimono quando muda o nome ou a cor de um para outro
+const mockupPorKimono = () => isEquipe() && (temNomePorPessoa() || new Set(kimonos().map(k=>k.cor)).size>1);
 function bitmap(it){
   const ink=inkFor(it), text=it.kind==="text" ? textOf(it) : "";
   const key = it.kind==="text" ? [text,it.font,it.style,ink].join("|") : [it.mode,ink].join("|");
@@ -376,7 +378,7 @@ cv.addEventListener("pointerup",endDrag); cv.addEventListener("pointercancel",en
 /* ================== VIEW / COLOR ================== */
 function setView(v){ state.view=v; $$(".views button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===v)); dirty(); }
 $$(".views button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
-function setColor(c){ state.color=c; $$(".sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.color===c));
+function setColor(c){ if(isEquipe()){ state.pessoas.forEach(p=>p.cor=c); renderEquipe(); } state.color=c; $$(".sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.color===c));
   ensureColor(c).then(dirty).catch(()=>toast("Não consegui carregar a foto dessa cor. Confira a internet."));
   renderList(); renderSummary(); dirty(); save(); syncVariantUrl(); }
 $$(".sw").forEach(b=>b.addEventListener("click",()=>setColor(b.dataset.color)));
@@ -388,10 +390,10 @@ const MAX_PESSOAS = 40;
 function setModo(m){
   state.modo=m;
   if(m==="equipe" && state.pessoas.length<2){
-    const p0={nome:"",tamanho:state.tamanho==="ajuda"?"":state.tamanho};
+    const p0={nome:"",cor:state.color,tamanho:state.tamanho==="ajuda"?"":state.tamanho};
     state.pessoas = state.pessoas.length ? state.pessoas : [p0];
-    while(state.pessoas.length<2) state.pessoas.push({nome:"",tamanho:""});
-    // o texto do topo das costas passa a ser o nome de cada pessoa
+    while(state.pessoas.length<2) state.pessoas.push({nome:"",cor:state.color,tamanho:""});
+    // se a arte tem nome no topo das costas, cada mockup usa o nome do dono do kimono
     const nome=state.items.find(i=>i.kind==="text" && i.slot==="costas_nome");
     if(nome && nome.perPerson===undefined) nome.perPerson=true;
   }
@@ -400,25 +402,28 @@ function setModo(m){
 function syncQtd(){ state.qtd = isEquipe() ? Math.max(1,state.pessoas.length) : 1; }
 $$("[data-modo]").forEach(b=>b.addEventListener("click",()=>setModo(b.dataset.modo)));
 function renderEquipe(){
-  const ol=$("#equipeList"), opts=$("#tamanho").innerHTML;
-  ol.classList.toggle("sem-tamanho", state.tipo!=="brazil");
+  const ol=$("#equipeList"), opts=$("#tamanho").innerHTML.replace('<option value="">Escolha o tamanho</option>','<option value="">Tamanho</option>');
+  const cores=Object.entries(COLORS).map(([k,c])=>`<option value="${k}">${c.label}</option>`).join("");
   ol.innerHTML=state.pessoas.map((p,i)=>`<li data-i="${i}">
-    <input type="text" data-p="nome" value="${esc(p.nome)}" placeholder="Nome nas costas" aria-label="Nome da pessoa ${i+1}" maxlength="40" autocomplete="off">
-    <select data-p="tamanho" aria-label="Tamanho da pessoa ${i+1}">${opts}</select>
-    <button type="button" class="icon-btn" data-p="del" aria-label="Tirar a pessoa ${i+1} da lista">${ICON_TRASH}</button></li>`).join("");
-  ol.querySelectorAll("li").forEach((li,i)=>{ li.querySelector("select").value=state.pessoas[i].tamanho; });
+    <input type="text" data-p="nome" value="${esc(p.nome)}" placeholder="Nome do dono" aria-label="Nome do dono do kimono ${i+1}" maxlength="40" autocomplete="off">
+    <button type="button" class="icon-btn" data-p="del" aria-label="Tirar o kimono ${i+1} da lista">${ICON_TRASH}</button>
+    <select data-p="cor" aria-label="Cor do kimono ${i+1}">${cores}</select>
+    <select data-p="tamanho" aria-label="Tamanho do kimono ${i+1}">${opts}</select></li>`).join("");
+  ol.querySelectorAll("li").forEach((li,i)=>{ const p=state.pessoas[i]; if(!COLORS[p.cor]) p.cor=state.color;
+    li.querySelector('[data-p="cor"]').value=p.cor; li.querySelector('[data-p="tamanho"]').value=p.tamanho; });
   $("#addPessoa").hidden = state.pessoas.length>=MAX_PESSOAS;
 }
 function refitPerPerson(){ state.items.forEach(it=>{ if(it.kind==="text" && it.perPerson) refit(it); }); }
-$("#addPessoa").addEventListener("click",()=>{ if(state.pessoas.length>=MAX_PESSOAS) return; state.pessoas.push({nome:"",tamanho:""}); syncQtd(); renderEquipe(); renderSummary(); save();
+$("#addPessoa").addEventListener("click",()=>{ if(state.pessoas.length>=MAX_PESSOAS) return; state.pessoas.push({nome:"",cor:state.color,tamanho:""}); syncQtd(); renderEquipe(); renderSummary(); save();
   const ins=$("#equipeList").querySelectorAll('input[data-p="nome"]'); ins[ins.length-1]?.focus(); });
 $("#equipeList").addEventListener("input",e=>{ const li=e.target.closest("li"); if(!li||e.target.dataset.p!=="nome") return; state.pessoas[+li.dataset.i].nome=e.target.value; refitPerPerson(); renderSummary(); dirty(); save(); });
-$("#equipeList").addEventListener("change",e=>{ const li=e.target.closest("li"); if(!li||e.target.dataset.p!=="tamanho") return; state.pessoas[+li.dataset.i].tamanho=e.target.value; renderSummary(); save(); });
+$("#equipeList").addEventListener("change",e=>{ const li=e.target.closest("li"), k=e.target.dataset.p; if(!li||(k!=="tamanho"&&k!=="cor")) return;
+  state.pessoas[+li.dataset.i][k]=e.target.value; renderSummary(); save(); syncVariantUrl(); });
 $("#equipeList").addEventListener("click",e=>{ const b=e.target.closest('[data-p="del"]'); if(!b) return; const i=+b.closest("li").dataset.i;
   state.pessoas.splice(i,1); if(state.pessoas.length<2){ state.tamanho=(state.pessoas[0]||{}).tamanho||state.tamanho; state.pessoas=[]; return setModo("um"); }
   syncQtd(); renderEquipe(); refitPerPerson(); renderSummary(); dirty(); save(); });
-// Lista de kimonos do pedido: [{nome, tamanho}] (um item no modo "só um")
-function kimonos(){ return isEquipe() ? state.pessoas : [{nome:"", tamanho:state.tamanho}]; }
+// Lista de kimonos do pedido: [{nome, cor, tamanho}] (um item no modo "só um")
+function kimonos(){ return isEquipe() ? state.pessoas.map(p=>({...p, cor:COLORS[p.cor]?p.cor:state.color})) : [{nome:"", cor:state.color, tamanho:state.tamanho}]; }
 $$('input[name=prazo]').forEach(r=>r.addEventListener("change",()=>{ state.prazo=r.value; state.prazoManual=true; renderSummary(); save(); }));
 // Expresso grátis: enquanto o cliente não escolher o prazo, a ferramenta marca Expresso quando o pedido passa do valor e volta ao Padrão quando não passa
 function autoPrazo(){
@@ -436,7 +441,7 @@ function slotOptions(cur){
   const grp=(side,lab)=>`<optgroup label="${lab}">`+SLOTS.filter(s=>s.side===side).map(s=>`<option value="${s.id}"${s.id===cur?" selected":""}>${esc(s.label)}</option>`).join("")+"</optgroup>";
   return grp("front","Frente")+grp("back","Costas");
 }
-function itemTitle(it){ return it.kind==="text" ? (perPersonOn(it) ? "Texto · nome de cada pessoa" : `Texto · ${it.text||""}`) : `Logo · ${it.name}`; }
+function itemTitle(it){ return it.kind==="text" ? (perPersonOn(it) ? "Texto · nome do dono" : `Texto · ${it.text||""}`) : `Logo · ${it.name}`; }
 function itemPos(it){ return SLOT[it.slot].label + (it.moved?" (ajustado)":""); }
 function inkChips(it){
   const cur=inkFor(it).toLowerCase(); const auto=it.autoInk;
@@ -455,7 +460,7 @@ function renderList(){
     if(sel){
       body+=`<label class="field"><span class="lbl">Posição</span><select data-act="slot">${slotOptions(it.slot)}</select></label>`;
       if(it.kind==="text"){
-        if(isEquipe()) body+=`<label class="check"><input type="checkbox" data-act="perPerson"${it.perPerson?" checked":""}><span>Trocar pelo nome de cada pessoa da equipe</span></label>`;
+        if(isEquipe()) body+=`<label class="check"><input type="checkbox" data-act="perPerson"${it.perPerson?" checked":""}><span>Usar o nome do dono de cada kimono</span></label>`;
         if(!perPersonOn(it)) body+=`<label class="field"><span class="lbl">Texto</span><input type="text" data-act="text" value="${esc(it.text)}" maxlength="40"></label>`;
         body+=`
         <div class="row"><label class="field"><span class="lbl">Fonte</span><select data-act="font">${FONTS.map(f=>`<option value="${f.id}"${f.id===it.font?" selected":""}>${f.label}</option>`).join("")}</select></label></div>
@@ -591,18 +596,21 @@ async function usePdfPage(doc,n,file){
 }
 
 /* ================== SUMMARY / EXPORT ================== */
-function corLabel(){ return COLORS[state.color].label; }
+function corLabel(c=state.color){ return COLORS[c]?.label || COLORS[state.color].label; }
 function tamTxt(t){ return !t ? "tamanho a escolher" : t==="ajuda" ? "quero ajuda com o tamanho" : "tamanho "+t; }
 function summaryLines(){
   const L=[]; const c=corLabel().toLowerCase(), N=state.qtd;
+  if(isEquipe()){ const n={}; kimonos().forEach(k=>n[k.cor]=(n[k.cor]||0)+1);
+    const cs=Object.entries(n).map(([k,q])=>`${q} ${corLabel(k).toLowerCase()}${q>1?"s":""}`).join(", ");
+    L.push(state.tipo==="brazil" ? `${N} × ${KIMONO_NOME} (${cs}), com personalização` : `Só a personalização em ${N} kimonos (${cs})`); return L; }
   if(state.tipo==="brazil") L.push(isEquipe() ? `${N} × ${KIMONO_NOME} ${c}, com personalização` : `${KIMONO_NOME} ${c}, ${tamTxt(state.tamanho)}, com personalização`);
   else L.push(`Só a personalização${N>1?` em ${N} kimonos`:""}, no meu kimono ${c}`);
   return L;
 }
-function itemLine(it,nomePessoa){
-  const pos=SLOT[it.slot].label; const ink = (it.kind==="text"||it.mode==="umacor") ? " · "+inkName(inkFor(it)) : "";
+function itemLine(it,nomePessoa,cor){
+  const pos=SLOT[it.slot].label; const ink = (it.kind==="text"||it.mode==="umacor") ? " · "+inkName(inkFor(it,cor)) : "";
   if(it.kind==="text"){
-    const t = perPersonOn(it) ? (nomePessoa!=null ? `texto "${nomePessoa||"(sem nome)"}"` : "nome de cada pessoa") : `texto "${it.text}"`;
+    const t = perPersonOn(it) ? (nomePessoa!=null ? `texto "${nomePessoa||"(sem nome)"}"` : "nome do dono de cada kimono") : `texto "${it.text}"`;
     return `${pos}: ${t} (${(FONTS.find(f=>f.id===it.font)||FONTS[0]).label}${it.style!=="simples"?", "+(it.style==="linha"?"com linha":"em tarja"):""})${ink}`;
   }
   return `${pos}: logo ${it.lib? `"${it.name}" (banco da Tap)` : `"${it.name}"`}${ink}`;
@@ -614,8 +622,8 @@ const brl=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 function isBack(it){ return it.x>1200 && it.y<1100; }
 const isInfantil = t => /^M/.test(t||"");
 // Preço de 1 kimono (R$). Na loja vem da variante (cor × tamanho); sem tamanho, usa o adulto como estimativa.
-function kimonoPreco(tam){
-  if(SHOP && SHOP.kimono){ const v=SHOP.kimono.variantes[corLabel()+"|"+tam]; if(v) return v.preco/100; }
+function kimonoPreco(tam,cor){
+  if(SHOP && SHOP.kimono){ const v=SHOP.kimono.variantes[corLabel(cor)+"|"+tam]; if(v) return v.preco/100; }
   return isInfantil(tam) ? PRECOS.kimono.infantil : PRECOS.kimono.adulto;
 }
 // Pedido só com nome (sem logo nem adicional) não tem preço público: é combinado pelo WhatsApp.
@@ -666,7 +674,7 @@ function calcPreco(){
   if(state.tipo==="brazil"){
     const grupos={};
     kimonos().forEach(k=>{ const cat=isInfantil(k.tamanho)?"infantil":"adulto", g=grupos[cat] ||= {n:0,v:0,units:new Set(),semTam:0};
-      const u=kimonoPreco(k.tamanho); g.n++; g.v+=u; g.units.add(u); if(!k.tamanho||k.tamanho==="ajuda") g.semTam++; });
+      const u=kimonoPreco(k.tamanho,k.cor); g.n++; g.v+=u; g.units.add(u); if(!k.tamanho||k.tamanho==="ajuda") g.semTam++; });
     for(const cat of ["adulto","infantil"]){ const g=grupos[cat]; if(!g) continue; total+=g.v;
       const parts=[]; if(g.n>1) parts.push(g.units.size===1 ? `${g.n} × ${brl([...g.units][0])}` : `${g.n} kimonos`); if(g.semTam) parts.push("Escolha o tamanho");
       L.push({t:`${KIMONO_NOME} ${cat}`, s:parts.join(" · "), v:g.v}); }
@@ -693,7 +701,7 @@ function renderSummary(){
 }
 function orderText(){
   const d=state.dados; const parts=["Olá, Tap! Montei meu kimono no site:", "", "• "+summaryLines()[0]];
-  if(isEquipe()){ parts.push(`• Kimonos (${state.pessoas.length}):`); state.pessoas.forEach((p,i)=>parts.push(`   ${i+1}. ${p.nome||"(sem nome)"}${state.tipo==="brazil"?" · "+tamTxt(p.tamanho):""}`)); }
+  if(isEquipe()){ parts.push(`• Kimonos (${state.pessoas.length}):`); kimonos().forEach((p,i)=>parts.push(`   ${i+1}. ${p.nome||"(sem nome)"} · ${corLabel(p.cor).toLowerCase()}${p.tamanho||state.tipo==="brazil"?" · "+tamTxt(p.tamanho):""}`)); }
   parts.push(`• Personalização (${state.items.length} ${state.items.length===1?"elemento":"elementos"}):`);
   state.items.forEach(it=>parts.push("   – "+itemLine(it)));
   if(d.nome) parts.push("• Nome: "+d.nome); if(d.zap) parts.push("• WhatsApp: "+d.zap); if(d.equipe) parts.push("• Equipe: "+d.equipe);
@@ -719,12 +727,15 @@ async function mockupBlob(nome=null, legenda=""){
   g.fillText("Mockup ilustrativo · Tap · cores e tamanhos finais confirmados na produção", S/2, S-90);
   return new Promise(r=>c.toBlob(r,"image/png"));
 }
-function legendaPessoa(p,i){ return `${i+1}. ${p.nome.trim()||"(sem nome)"}${state.tipo==="brazil" && p.tamanho && p.tamanho!=="ajuda" ? " · "+p.tamanho : ""}`; }
-// Um mockup por pessoa da equipe (só quando há texto com o nome de cada pessoa)
+function legendaPessoa(p,i){ return `${i+1}. ${p.nome.trim()||"(sem nome)"} · ${corLabel(p.cor)}${p.tamanho && p.tamanho!=="ajuda" ? " · "+p.tamanho : ""}`; }
+// Um mockup por kimono da equipe: cada um na cor dele, e com o nome do dono só se a arte tiver um nome marcado
 let teamBlobs=[];
 async function mockupsEquipe(say){
   const out=[];
-  for(const [i,p] of state.pessoas.entries()){ say && say(`Gerando os mockups (${i+1} de ${state.pessoas.length})…`); out.push({pessoa:p, legenda:legendaPessoa(p,i), blob:await mockupBlob(p.nome, legendaPessoa(p,i))}); }
+  const lista=kimonos(), cor0=state.color;
+  try{ for(const [i,p] of lista.entries()){ say && say(`Gerando os mockups (${i+1} de ${lista.length})…`);
+    state.color=p.cor; out.push({pessoa:p, legenda:legendaPessoa(p,i), blob:await mockupBlob(p.nome, legendaPessoa(p,i))}); } }
+  finally{ state.color=cor0; }
   return out;
 }
 let teamUrls=[];
@@ -744,7 +755,7 @@ $("#generate").addEventListener("click",async()=>{
   if(!state.items.length){ toast("Adicione pelo menos uma arte antes de gerar o mockup."); return; }
   const btn=$("#generate"), label=btn.textContent; btn.disabled=true;
   try{
-    if(temNomePorPessoa()){ teamBlobs=await mockupsEquipe(t=>btn.textContent=t); lastBlob=teamBlobs[0].blob; }
+    if(mockupPorKimono()){ teamBlobs=await mockupsEquipe(t=>btn.textContent=t); lastBlob=teamBlobs[0].blob; }
     else { teamBlobs=[]; lastBlob=await mockupBlob(); }
   } finally{ btn.disabled=false; btn.textContent=label; }
   track("mockup_gerado",{elementos:state.items.length, kimonos:state.qtd});
@@ -827,10 +838,10 @@ function applyShop(){
 function syncVariantUrl(){
   if(!SHOP) return;
   try{ const prod = state.tipo==="brazil" ? SHOP.kimono : SHOP.proprio; if(!prod || prod.handle!==SHOP.atual) return;
-    const v=varKimono(state.tipo==="brazil" ? (isEquipe() ? (state.pessoas[0]||{}).tamanho : state.tamanho) : ""); if(!v) return;
+    const k0=kimonos()[0]||{}; const v=varKimono(state.tipo==="brazil" ? k0.tamanho : "", k0.cor); if(!v) return;
     const u=new URL(location.href); u.searchParams.set("variant",v.id); history.replaceState(history.state,"",u); }catch(e){}
 }
-function varKimono(tam){ return state.tipo==="brazil" ? SHOP.kimono?.variantes[corLabel()+"|"+tam] : SHOP.proprio?.variantes[corLabel()]; }
+function varKimono(tam,cor){ return state.tipo==="brazil" ? SHOP.kimono?.variantes[corLabel(cor)+"|"+tam] : SHOP.proprio?.variantes[corLabel(cor)]; }
 function linhasCobranca(c){
   const out=[];
   if(c.faixa) out.push({v:SHOP.faixas?.variantes[c.faixa.id+"|"+c.faixa.k], qty:c.faixa.qty});
@@ -846,14 +857,14 @@ function cartIssue(soft){
   if(soNome) return "Pedido só com o nome nas costas é combinado pelo WhatsApp. Toque em \"Falar com a gente no WhatsApp\".";
   if(isEquipe() && state.pessoas.length>MAX_PESSOAS) return `Pelo site dá para pedir até ${MAX_PESSOAS} kimonos. Para mais, fale com a gente no WhatsApp.`;
   if(linhasCobranca(cobr).some(l=>!l.v || !l.v.ok)) return "Essa combinação ainda não está disponível no site. Feche o pedido pelo WhatsApp.";
-  if(state.tipo!=="brazil" && !varKimono("")) return "A personalização no seu kimono ainda não está disponível no site. Feche o pedido pelo WhatsApp.";
-  for(const k of kimonos()){ if(state.tipo==="brazil" && k.tamanho && k.tamanho!=="ajuda"){ const v=varKimono(k.tamanho);
-    if(!v || !v.ok) return `O kimono ${corLabel().toLowerCase()} tamanho ${k.tamanho} está indisponível no site agora. Escolha outro tamanho ou fale com a gente no WhatsApp.`; } }
+  if(state.tipo!=="brazil" && kimonos().some(k=>!varKimono("",k.cor))) return "A personalização no seu kimono ainda não está disponível no site. Feche o pedido pelo WhatsApp.";
+  for(const k of kimonos()){ if(state.tipo==="brazil" && k.tamanho && k.tamanho!=="ajuda"){ const v=varKimono(k.tamanho,k.cor);
+    if(!v || !v.ok) return `O kimono ${corLabel(k.cor).toLowerCase()} tamanho ${k.tamanho} está indisponível no site agora. Escolha outro tamanho ou fale com a gente no WhatsApp.`; } }
   if(soft) return null;
   if(!state.items.length) return "Adicione pelo menos uma arte (logo ou nome).";
-  if(state.tipo==="brazil" && kimonos().some(k=>!k.tamanho)) return isEquipe() ? "Escolha o tamanho de cada pessoa da equipe." : "Escolha o tamanho do kimono.";
+  if(state.tipo==="brazil" && kimonos().some(k=>!k.tamanho)) return isEquipe() ? "Escolha o tamanho de cada kimono da lista." : "Escolha o tamanho do kimono.";
   if(state.tipo==="brazil" && kimonos().some(k=>k.tamanho==="ajuda")) return "Para comprar no site, escolha o tamanho. Se tiver dúvida, fale com a gente no WhatsApp.";
-  if(state.items.some(perPersonOn) && state.pessoas.some(p=>!p.nome.trim())) return "Coloque o nome de cada pessoa da equipe.";
+  if(state.items.some(perPersonOn) && state.pessoas.some(p=>!p.nome.trim())) return "A arte tem o nome do dono nas costas: coloque o nome de cada kimono da lista.";
   if(!state.dados.nome.trim() || !zapOk(state.dados.zap)) return "Preencha seu nome e WhatsApp (passo 3) para a Tap mandar a arte para aprovação.";
   return null;
 }
@@ -901,14 +912,15 @@ function montarLinhas(grupo,links,cobr){
   if(d.obs.trim()) comum["Observações"]=d.obs.trim();
   comum["Pedido Tap"]=cod;
   const linhas=kimonos().map((k,i)=>{
-    const props={"Cor":corLabel()};
+    const props={};
+    if(isEquipe() && k.nome.trim()) props["Dono"]=k.nome.trim();
+    props["Cor"]=corLabel(k.cor);
+    if(k.tamanho && k.tamanho!=="ajuda") props["Tamanho"]=k.tamanho;
     if(links.porPessoa[i]) props["Mockup"]=links.porPessoa[i];
-    if(state.tipo==="brazil") props["Tamanho"]=k.tamanho;
-    if(isEquipe() && k.nome.trim()) props["Nome"]=k.nome.trim();
-    state.items.forEach((it,i)=>props[`Arte ${i+1}`]=itemLine(it, isEquipe()? k.nome.trim() : null));
-    return {id:varKimono(k.tamanho).id, quantity:1, properties:{...props, ...comum, _grupo:grupo, _tap:"kimono"}};
+    state.items.forEach((it,j)=>props[`Arte ${j+1}`]=itemLine(it, isEquipe()? k.nome.trim() : null, k.cor));
+    return {id:varKimono(k.tamanho,k.cor).id, quantity:1, properties:{...props, ...comum, _grupo:grupo, _tap:"kimono"}};
   });
-  const para=`${N>1?N+" kimonos":"Kimono"} ${corLabel().toLowerCase()} · Pedido Tap ${cod}`;
+  const para=`${N>1?N+" kimonos":"Kimono "+corLabel().toLowerCase()} · Pedido Tap ${cod}`;
   linhasCobranca(cobr).forEach(l=>linhas.push({id:l.v.id, quantity:l.qty, properties:{"Para":para, _grupo:grupo, _tap:"cobranca"}}));
   // Plano do grupo (variante → quantidade): o carrinho confere e desfaz o grupo se alguém mexer nas linhas
   const plano={}; linhas.forEach(l=>plano[l.id]=(plano[l.id]||0)+l.quantity);
@@ -925,7 +937,7 @@ async function addToCart(){
   const grupo=novoGrupo();
   try{
     say("Gerando o mockup…");
-    const equipe = temNomePorPessoa() && UPLOAD ? await mockupsEquipe(say) : null;
+    const equipe = mockupPorKimono() && UPLOAD ? await mockupsEquipe(say) : null;
     const blob = equipe ? equipe[0].blob : await mockupBlob();
     const links=await enviarArquivos(blob,grupo,say,equipe);
     say("Adicionando ao carrinho…");
@@ -961,7 +973,7 @@ async function restore(){
   let d=null; try{ d=JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
   if(!d || !d.items) return false;
   state.color=COLORS[d.color]?d.color:"branco"; state.tipo=d.tipo||"brazil"; state.tamanho=d.tamanho||""; state.prazo=d.prazo||"padrao"; state.prazoManual=!!d.prazoManual; Object.assign(state.dados,d.dados||{});
-  if(d.modo==="equipe" && Array.isArray(d.pessoas) && d.pessoas.length>1){ state.modo="equipe"; state.pessoas=d.pessoas.slice(0,MAX_PESSOAS).map(p=>({nome:String(p.nome||""),tamanho:String(p.tamanho||"")})); }
+  if(d.modo==="equipe" && Array.isArray(d.pessoas) && d.pessoas.length>1){ state.modo="equipe"; state.pessoas=d.pessoas.slice(0,MAX_PESSOAS).map(p=>({nome:String(p.nome||""),cor:COLORS[p.cor]?p.cor:state.color,tamanho:String(p.tamanho||"")})); }
   syncQtd();
   for(const o of d.items){
     const it={...o}; delete it.src;
@@ -975,6 +987,7 @@ function syncForm(){
   $$(".sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.color===state.color));
   $("#tipoBC").checked=state.tipo==="brazil"; $("#tipoProprio").checked=state.tipo!=="brazil"; $("#sizeField").hidden=state.tipo!=="brazil";
   $$("[data-modo]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.modo===state.modo));
+  $("#corLbl").textContent = isEquipe() ? "Cor de todos os kimonos (dá para trocar um a um na lista)" : "Cor";
   $("#generate").textContent = isEquipe() ? "Ver os mockups da equipe" : (SHOP ? "Ver o mockup" : "Gerar mockup");
   $("#sizeField").hidden = state.tipo!=="brazil" || isEquipe(); $("#equipeBox").hidden=!isEquipe(); if(isEquipe()) renderEquipe();
   $("#tamanho").value=state.tamanho; $$("input[name=prazo]").forEach(r=>r.checked=r.value===state.prazo); $("#dNome").value=state.dados.nome; $("#dZap").value=state.dados.zap; $("#dEquipe").value=state.dados.equipe; $("#dObs").value=state.dados.obs;

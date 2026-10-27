@@ -1,7 +1,7 @@
 {%- liquid
   assign produto_kimono = section.settings.produto_kimono
   if produto_kimono == blank
-    assign produto_kimono = all_products['kimono-xtralite-2-0-personalizado']
+    assign produto_kimono = all_products['tap-studio']
   endif
   assign produto_proprio = section.settings.produto_proprio
   if produto_proprio == blank
@@ -53,7 +53,7 @@
       <section class="step" id="stepKimono">
         <div class="step-h"><span>1</span><h2>Kimono</h2></div>
         <div class="field">
-          <span class="lbl">Cor</span>
+          <span class="lbl" id="corLbl">Cor</span>
           <div class="swatches" role="group" aria-label="Cor do kimono">
             <button type="button" class="sw" data-color="branco" aria-pressed="true"><i style="background:#eef0f2"></i>Branco</button>
             <button type="button" class="sw" data-color="azul" aria-pressed="false"><i style="background:#25259c"></i>Azul</button>
@@ -84,9 +84,9 @@
           </select>
         </div>
         <div class="team" id="equipeBox" hidden>
-          <p class="muted">Você monta um kimono só: a arte é a mesma para todos. Coloque o nome e o tamanho de cada pessoa e, no final, veja o mockup de cada kimono.</p>
+          <p class="muted">Você monta a arte uma vez só: ela é a mesma para todos. Coloque o nome do dono, a cor e o tamanho de cada kimono. Se a arte tiver um nome nas costas, cada mockup sai com o nome do dono.</p>
           <ol class="team-list" id="equipeList"></ol>
-          <button type="button" class="btn" id="addPessoa">+ Adicionar pessoa</button>
+          <button type="button" class="btn" id="addPessoa">+ Adicionar kimono</button>
         </div>
       </section>
 
@@ -271,7 +271,7 @@
     {
       "type": "product",
       "id": "produto_kimono",
-      "label": "Kimono Xtralite 2.0 personalizado",
+      "label": "Tap Studio (kimono personalizado)",
       "info": "Variantes: Cor × Tamanho."
     },
     {

@@ -12,7 +12,10 @@
     "kimono": {
       "type": "tap-kimono-produto",
       "settings": {
-        "esquema": "claro"
+        "esquema": "claro",
+        "cloudinary_cloud": "wmktgrsm",
+        "cloudinary_preset": "tap-pedidos",
+        "cloudinary_pasta": "pedidos"
       }
     }
   },

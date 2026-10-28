@@ -93,8 +93,8 @@ const FONTS = [
   {id:"marker", label:"Permanent Marker", css:'400 {s}px "Permanent Marker", "Comic Sans MS", cursive', track:0}
 ];
 const INKS = [
-  {c:"#ffffff", n:"Branco"},{c:"#141414", n:"Preto"},{c:"#8b8f98", n:"Cinza"},
-  {c:"#c9a23a", n:"Dourado"},{c:"#c8202b", n:"Vermelho"},{c:"#2424b4", n:"Azul"}
+  {c:"#ffffff", n:"Branco", dura:true},{c:"#141414", n:"Preto", dura:true},{c:"#a7a9ac", n:"Prata", dura:true},
+  {c:"#c9a23a", n:"Dourado", dura:true},{c:"#8b8f98", n:"Cinza"},{c:"#c8202b", n:"Vermelho"},{c:"#2424b4", n:"Azul"}
 ];
 
 /* ================== STATE ================== */
@@ -251,6 +251,17 @@ function bitmap(it){
   }
   it._key=key; return it._bm;
 }
+// Nome do dono na equipe: todos com a mesma altura de letra do nome mostrado no editor (nome longo fica mais largo, até o limite da posição)
+function alturaRef(it){
+  const ink=inkFor(it), t=(state.pessoas.find(p=>p.nome.trim())||{}).nome || it.text;  // o mesmo que o editor mostra
+  const key=[t,it.font,it.style,ink].join("|");
+  if(!it._ref || it._refKey!==key){ it._ref=textBitmap({...it,text:t,ink}); it._refKey=key; }
+  return it.w*it._ref.height/it._ref.width;
+}
+function larguraNoMockup(it,bm){
+  if(!perPersonOn(it) || nomeOverride==null) return it.w;
+  return Math.min(alturaRef(it)*bm.width/bm.height, Math.max(it.w, SLOT[it.slot].bw));
+}
 function fitToSlot(it,slotId,keepScale){
   const s=SLOT[slotId]; const bm=bitmap(it); if(!bm) return;
   const ar=bm.width/bm.height; const w0=Math.min(s.bw, s.bh*ar);
@@ -295,8 +306,8 @@ function compose(c, size, viewKey, withUi){
   const a=A.getContext("2d"), b=B.getContext("2d"), shade=shadeFor(state.color);
   a.setTransform(1,0,0,1,0,0); a.globalCompositeOperation="source-over"; a.clearRect(0,0,size,size);
   a.setTransform(...T);
-  for(const it of state.items){ const bm=bitmap(it); if(!bm) continue; const h=it.w*bm.height/bm.width;
-    a.save(); a.translate(it.x,it.y); a.rotate(it.rot*Math.PI/180); a.drawImage(bm,-it.w/2,-h/2,it.w,h); a.restore(); }
+  for(const it of state.items){ const bm=bitmap(it); if(!bm) continue; const w=larguraNoMockup(it,bm), h=w*bm.height/bm.width;
+    a.save(); a.translate(it.x,it.y); a.rotate(it.rot*Math.PI/180); a.drawImage(bm,-w/2,-h/2,w,h); a.restore(); }
   b.setTransform(1,0,0,1,0,0); b.globalCompositeOperation="copy"; b.drawImage(A,0,0);
   a.globalCompositeOperation="multiply"; a.drawImage(shade,0,0,W,W);
   a.setTransform(1,0,0,1,0,0); a.globalCompositeOperation="destination-in"; a.drawImage(B,0,0);
@@ -449,7 +460,7 @@ function inkChips(it){
     <button type="button" class="chip auto" data-act="ink" data-ink="auto" aria-pressed="${auto}">Automática</button>
     ${INKS.map(k=>`<button type="button" class="chip" style="background:${k.c}" data-act="ink" data-ink="${k.c}" aria-pressed="${!auto&&cur===k.c}" aria-label="${k.n}" title="${k.n}"></button>`).join("")}
     <label class="chip custom" title="Outra cor" aria-label="Outra cor"><input type="color" data-act="inkc" value="${inkFor(it)}"></label>
-  </div>`;
+  </div>${!auto && !INKS.some(k=>k.dura && k.c===cur) ? `<p class="ink-note">Essa cor não tem garantia de durabilidade. Preto, branco, prata e dourado são as que mais duram.</p>` : ""}`;
 }
 function renderList(){
   const box=$("#items");
@@ -895,10 +906,25 @@ async function enviarArquivos(blob,grupo,say,equipe){
       say(`Enviando as artes (${i+1} de ${arts.length})…`);
       const f = it.file || await new Promise(r=>it._src.toBlob(r,"image/png"));
       const nome = it.file ? it.file.name : (it.name||"arte").replace(/\.\w+$/,"")+".png";
-      out.arquivos.push({nome, url:await uploadFile(f,nome,grupo)});
+      out.arquivos.push({nome, id:it.id, url:await uploadFile(f,nome,grupo)});
     }
   }catch(e){ out.falhou=true; }
   return out;
+}
+// Posição de produção: a posição do Tap Studio mais perto de onde a arte ficou
+function slotMaisPerto(it){
+  const lado=itemSide(it); let best=SLOT[it.slot], d0=Infinity;
+  SLOTS.forEach(s=>{ if(s.side!==lado) return; const d=Math.hypot(s.x-it.x,s.y-it.y); if(d<d0){ d0=d; best=s; } });
+  return it.moved ? best.id : it.slot;
+}
+function receita(k,links){
+  return JSON.stringify({v:1, tam:k.tamanho||"", cor:k.cor, dono:k.nome||"", itens:state.items.map(it=>{
+    const r={slot:slotMaisPerto(it), w:Math.round(it.w*10)/10, ink:inkFor(it,k.cor)};
+    if(it.kind==="text") return perPersonOn(it) ? {...r, k:"t", t:k.nome.trim()||it.text, f:it.font, st:it.style, h:Math.round(alturaRef(it)*10)/10}
+      : {...r, k:"t", t:it.text, f:it.font, st:it.style};
+    const arq=links.arquivos.find(a=>a.id===it.id);
+    return {...r, k:"i", nome:it.name||"", modo:it.mode, lib:it.lib||null, url:arq?arq.url:""};
+  })});
 }
 function novoGrupo(){ const a="ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s=""; const r=crypto.getRandomValues(new Uint8Array(6)); r.forEach(b=>s+=a[b%a.length]); return s; }
 function montarLinhas(grupo,links,cobr){
@@ -918,7 +944,7 @@ function montarLinhas(grupo,links,cobr){
     if(k.tamanho && k.tamanho!=="ajuda") props["Tamanho"]=k.tamanho;
     if(links.porPessoa[i]) props["Mockup"]=links.porPessoa[i];
     state.items.forEach((it,j)=>props[`Arte ${j+1}`]=itemLine(it, isEquipe()? k.nome.trim() : null, k.cor));
-    return {id:varKimono(k.tamanho,k.cor).id, quantity:1, properties:{...props, ...comum, _grupo:grupo, _tap:"kimono"}};
+    return {id:varKimono(k.tamanho,k.cor).id, quantity:1, properties:{...props, ...comum, _grupo:grupo, _tap:"kimono", _receita:receita(k,links)}};
   });
   const para=`${N>1?N+" kimonos":"Kimono "+corLabel().toLowerCase()} · Pedido Tap ${cod}`;
   linhasCobranca(cobr).forEach(l=>linhas.push({id:l.v.id, quantity:l.qty, properties:{"Para":para, _grupo:grupo, _tap:"cobranca"}}));
@@ -1008,13 +1034,52 @@ async function loadExample(){
 $("#loadExample").addEventListener("click",loadExample);
 $("#resetAll").addEventListener("click",()=>{ state.items=[]; state.sel=null; state.example=false; try{localStorage.removeItem(KEY);}catch(e){} addText("SEU NOME"); state.sel=null; renderList(); dirty(); });
 
+/* ================== LINK PRÉ-PREENCHIDO (bot do WhatsApp) ================== */
+// ?cor=preto&tipo=tap|seu&tam=A2&nome=LUCAS&fonte=bebas&cliente=Ana&zap=21999999999&equipe=SPRT
+// &pessoas=LUCAS:A2:preto,ANA:M1:branco&logo=<imagem no Cloudinary da Tap>
+const PRE_KEYS=["cor","tipo","tam","nome","fonte","cliente","zap","equipe","pessoas","logo"];
+function lerPrefill(){
+  const q=new URLSearchParams(location.search); if(!PRE_KEYS.some(k=>q.has(k))) return null;
+  const tams=[...$("#tamanho").options].map(o=>o.value).filter(Boolean);
+  const cor=c=>COLORS[(c||"").toLowerCase()] ? c.toLowerCase() : null, tam=t=>tams.includes((t||"").toUpperCase()) ? t.toUpperCase() : "";
+  const p={cor:cor(q.get("cor")), tipo:q.get("tipo")==="seu"?"proprio":(q.get("tipo")?"brazil":null), tam:tam(q.get("tam")),
+    nome:(q.get("nome")||"").slice(0,30), fonte:FONTS.some(f=>f.id===q.get("fonte"))?q.get("fonte"):"montserrat",
+    cliente:(q.get("cliente")||"").slice(0,60), zap:(q.get("zap")||"").replace(/[^\d+ ()-]/g,"").slice(0,20), equipe:(q.get("equipe")||"").slice(0,60), logo:null,
+    pessoas:(q.get("pessoas")||"").split(",").map(x=>x.split(":")).filter(x=>x[0]||x[1]).slice(0,MAX_PESSOAS)
+      .map(([n,t,c])=>({nome:(n||"").slice(0,30), tamanho:tam(t), cor:cor(c)||null}))};
+  p.logo=q.get("logo")||null;
+  return p;
+}
+async function aplicarPrefill(p){
+  if(p.cor) state.color=p.cor; if(p.tipo) state.tipo=p.tipo; if(p.tam) state.tamanho=p.tam;
+  if(p.cliente) state.dados.nome=p.cliente; if(p.zap) state.dados.zap=p.zap; if(p.equipe) state.dados.equipe=p.equipe;
+  state.items=[]; state.sel=null;
+  if(p.pessoas.length>=2){ state.modo="equipe"; state.pessoas=p.pessoas.map(x=>({...x, cor:x.cor||state.color})); }
+  syncQtd(); syncForm();
+  try{ await ensureColor(state.color); }catch(e){}
+  // Logo só do Cloudinary configurado da Tap
+  try{ const u=new URL(p.logo||""); p.logo = u.protocol==="https:" && u.hostname==="res.cloudinary.com" && UPLOAD && UPLOAD.cloud && u.pathname.startsWith("/"+UPLOAD.cloud+"/") ? u.href : null; }catch(e){ p.logo=null; }
+  if(p.logo){ try{ const img=await loadImg(p.logo); await addImageFromCanvas(img,{name:"logo-whatsapp.png", w:img.naturalWidth, h:img.naturalHeight, slot:"costas_centro"}); }
+    catch(e){ toast("Não consegui abrir o logo do link. Envie o arquivo no passo 2."); } }
+  if(p.nome || isEquipe()){ addText(p.nome||"SEU NOME"); const t=state.items[state.items.length-1]; t.font=p.fonte; t._bm=null; fitToSlot(t,t.slot);
+    if(isEquipe()) t.perPerson=true; }
+  if(isEquipe()){ renderEquipe(); refitPerPerson(); }
+  state.sel=null;
+  // Tira os parâmetros do endereço: recarregar a página não apaga o que o cliente mudou
+  const u=new URL(location.href); PRE_KEYS.forEach(k=>u.searchParams.delete(k)); history.replaceState(history.state,"",u);
+  track("abrir_link_whatsapp",{kimonos:state.qtd, logo:!!p.logo});
+  save();
+}
+
 /* ================== START ================== */
 (async function start(){
-  const restored = location.hash==="#exemplo" ? false : await restore();
+  const pre = lerPrefill();
+  const restored = (location.hash==="#exemplo" || pre) ? false : await restore();
   if(SHOP) applyShop();
   completaDesconto(); applyPriceTexts(); syncForm(); syncVariantUrl();
   try{ await ensureColor(state.color); }catch(e){ toast("Não consegui carregar a foto do kimono. Confira a internet e recarregue a página."); }
-  if(location.hash==="#exemplo") await loadExample();
+  if(pre) await aplicarPrefill(pre);
+  else if(location.hash==="#exemplo") await loadExample();
   else if(!restored){ addText("SEU NOME"); state.sel=null; }
   renderList(); sizeCanvas(); track("abrir",{loja:!!SHOP});
   // Fontes do Google: quando chegarem, refaz os textos

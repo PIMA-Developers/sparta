@@ -615,7 +615,7 @@ function summaryLines(){
     const cs=Object.entries(n).map(([k,q])=>`${q} ${corLabel(k).toLowerCase()}${q>1?"s":""}`).join(", ");
     L.push(state.tipo==="brazil" ? `${N} × ${KIMONO_NOME} (${cs}), com personalização` : `Só a personalização em ${N} kimonos (${cs})`); return L; }
   if(state.tipo==="brazil") L.push(isEquipe() ? `${N} × ${KIMONO_NOME} ${c}, com personalização` : `${KIMONO_NOME} ${c}, ${tamTxt(state.tamanho)}, com personalização`);
-  else L.push(`Só a personalização${N>1?` em ${N} kimonos`:""}, no meu kimono ${c}`);
+  else L.push(`Só a personalização${N>1?` em ${N} kimonos`:""}, no meu kimono ${c}${state.tamanho?", "+tamTxt(state.tamanho):""}`);
   return L;
 }
 function itemLine(it,nomePessoa,cor){
@@ -873,14 +873,15 @@ function cartIssue(soft){
     if(!v || !v.ok) return `O kimono ${corLabel(k.cor).toLowerCase()} tamanho ${k.tamanho} está indisponível no site agora. Escolha outro tamanho ou fale com a gente no WhatsApp.`; } }
   if(soft) return null;
   if(!state.items.length) return "Adicione pelo menos uma arte (logo ou nome).";
-  if(state.tipo==="brazil" && kimonos().some(k=>!k.tamanho)) return isEquipe() ? "Escolha o tamanho de cada kimono da lista." : "Escolha o tamanho do kimono.";
-  if(state.tipo==="brazil" && kimonos().some(k=>k.tamanho==="ajuda")) return "Para comprar no site, escolha o tamanho. Se tiver dúvida, fale com a gente no WhatsApp.";
+  // O tamanho também vale para o kimono do cliente: é ele que define o tamanho real da arte
+  if(kimonos().some(k=>!k.tamanho)) return isEquipe() ? "Escolha o tamanho de cada kimono da lista." : (state.tipo==="brazil" ? "Escolha o tamanho do kimono." : "Escolha o tamanho do seu kimono (está na etiqueta). Ele define o tamanho da arte.");
+  if(kimonos().some(k=>k.tamanho==="ajuda")) return "Para comprar no site, escolha o tamanho. Se tiver dúvida, fale com a gente no WhatsApp.";
   if(state.items.some(perPersonOn) && state.pessoas.some(p=>!p.nome.trim())) return "A arte tem o nome do dono nas costas: coloque o nome de cada kimono da lista.";
   if(!state.dados.nome.trim() || !zapOk(state.dados.zap)) return "Preencha seu nome e WhatsApp (passo 3) para a Tap mandar a arte para aprovação.";
   return null;
 }
 function focusIssue(){
-  const target = !state.items.length ? "#stepArtes" : (state.tipo==="brazil" && kimonos().some(k=>!k.tamanho||k.tamanho==="ajuda")) ? "#stepKimono"
+  const target = !state.items.length ? "#stepArtes" : kimonos().some(k=>!k.tamanho||k.tamanho==="ajuda") ? "#stepKimono"
     : (state.items.some(perPersonOn) && state.pessoas.some(p=>!p.nome.trim())) ? "#stepKimono" : (!state.dados.nome.trim()||!zapOk(state.dados.zap)) ? "#stepDados" : null;
   if(!target) return; $("#resSheet").hidden=true; const el=$(target); el.scrollIntoView({behavior:"smooth",block:"start"});
   const f = target==="#stepDados" ? (!state.dados.nome.trim() ? $("#dNome") : $("#dZap")) : null; if(f) setTimeout(()=>f.focus({preventScroll:true}),400);
@@ -1011,11 +1012,13 @@ async function restore(){
 }
 function syncForm(){
   $$(".sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.color===state.color));
-  $("#tipoBC").checked=state.tipo==="brazil"; $("#tipoProprio").checked=state.tipo!=="brazil"; $("#sizeField").hidden=state.tipo!=="brazil";
+  $("#tipoBC").checked=state.tipo==="brazil"; $("#tipoProprio").checked=state.tipo!=="brazil"; $("#sizeField").hidden=isEquipe();
   $$("[data-modo]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.modo===state.modo));
   $("#corLbl").textContent = isEquipe() ? "Cor de todos os kimonos (dá para trocar um a um na lista)" : "Cor";
   $("#generate").textContent = isEquipe() ? "Ver os mockups da equipe" : (SHOP ? "Ver o mockup" : "Gerar mockup");
-  $("#sizeField").hidden = state.tipo!=="brazil" || isEquipe(); $("#equipeBox").hidden=!isEquipe(); if(isEquipe()) renderEquipe();
+  $("#sizeField").hidden = isEquipe(); $("#sizeField .lbl").textContent = state.tipo==="brazil" ? "Tamanho" : "Tamanho do seu kimono";
+  // Kimono do cliente: sem o preço do kimono ao lado do tamanho
+  $$("#tamanho optgroup[data-preco-label]").forEach(el=>{ const v=getPath(PRECOS,el.dataset.precoLabel), base=el.label.split(" · ")[0]; el.label= state.tipo==="brazil" && typeof v==="number" ? `${base} · ${brl(v)}` : base; }); $("#equipeBox").hidden=!isEquipe(); if(isEquipe()) renderEquipe();
   $("#tamanho").value=state.tamanho; $$("input[name=prazo]").forEach(r=>r.checked=r.value===state.prazo); $("#dNome").value=state.dados.nome; $("#dZap").value=state.dados.zap; $("#dEquipe").value=state.dados.equipe; $("#dObs").value=state.dados.obs;
 }
 

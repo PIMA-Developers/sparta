@@ -213,12 +213,14 @@ function textBitmap(it){
   const tw=widths.reduce((a,b)=>a+b,0)+tr*Math.max(0,chars.length-1);
   const padX=it.style==="tarja"? s*.42 : s*.08, lineH=s*1.18;
   const lineGap=s*.16, lineT=Math.max(6,s*.075);
+  // "Com linha": a linha pode ser mais larga que o texto (lineEm × tamanho da fonte), com o texto centralizado sobre ela
+  const lw = it.style==="linha" ? Math.max(tw,(it.lineEm||0)*s) : tw;
   const H = it.style==="linha" ? lineH+lineGap+lineT : it.style==="tarja" ? s*1.42 : lineH;
-  const c=mk(tw+padX*2,H), x=c.getContext("2d");
+  const c=mk(lw+padX*2,H), x=c.getContext("2d");
   x.font=f.css.replace("{s}",s); x.textBaseline="middle"; x.fillStyle=it.ink;
-  const drawTxt=(cy)=>{ let cx=padX; chars.forEach((ch,i)=>{ x.fillText(ch,cx,cy); cx+=widths[i]+tr; }); };
+  const drawTxt=(cy)=>{ let cx=padX+(lw-tw)/2; chars.forEach((ch,i)=>{ x.fillText(ch,cx,cy); cx+=widths[i]+tr; }); };
   if(it.style==="tarja"){ x.fillRect(0,0,c.width,c.height); x.globalCompositeOperation="destination-out"; drawTxt(H/2+s*.04); }
-  else if(it.style==="linha"){ drawTxt(lineH/2+s*.04); x.fillRect(padX,lineH+lineGap,tw,lineT); }
+  else if(it.style==="linha"){ drawTxt(lineH/2+s*.04); x.fillRect(padX,lineH+lineGap,lw,lineT); }
   else drawTxt(H/2+s*.04);
   return c;
 }
@@ -240,7 +242,7 @@ const temNomePorPessoa = () => isEquipe() && state.items.some(perPersonOn);
 const mockupPorKimono = () => isEquipe() && (temNomePorPessoa() || new Set(kimonos().map(k=>k.cor)).size>1);
 function bitmap(it){
   const ink=inkFor(it), text=it.kind==="text" ? textOf(it) : "";
-  const key = it.kind==="text" ? [text,it.font,it.style,ink].join("|") : [it.mode,ink].join("|");
+  const key = it.kind==="text" ? [text,it.font,it.style,ink,it.lineEm||0].join("|") : [it.mode,ink].join("|");
   if(it._bm && it._key===key) return it._bm;
   if(it.kind==="text"){ it.ink=ink; it._bm=textBitmap({...it,text,ink}); }
   else {
@@ -254,7 +256,7 @@ function bitmap(it){
 // Nome do dono na equipe: todos com a mesma altura de letra do nome mostrado no editor (nome longo fica mais largo, até o limite da posição)
 function alturaRef(it){
   const ink=inkFor(it), t=(state.pessoas.find(p=>p.nome.trim())||{}).nome || it.text;  // o mesmo que o editor mostra
-  const key=[t,it.font,it.style,ink].join("|");
+  const key=[t,it.font,it.style,ink,it.lineEm||0].join("|");
   if(!it._ref || it._refKey!==key){ it._ref=textBitmap({...it,text:t,ink}); it._refKey=key; }
   return it.w*it._ref.height/it._ref.width;
 }
@@ -921,8 +923,8 @@ function slotMaisPerto(it){
 function receita(k,links){
   return JSON.stringify({v:1, tam:k.tamanho||"", cor:k.cor, dono:k.nome||"", itens:state.items.map(it=>{
     const r={slot:slotMaisPerto(it), w:Math.round(it.w*10)/10, ink:inkFor(it,k.cor)};
-    if(it.kind==="text") return perPersonOn(it) ? {...r, k:"t", t:k.nome.trim()||it.text, f:it.font, st:it.style, h:Math.round(alturaRef(it)*10)/10}
-      : {...r, k:"t", t:it.text, f:it.font, st:it.style};
+    if(it.kind==="text") return perPersonOn(it) ? {...r, k:"t", t:k.nome.trim()||it.text, f:it.font, st:it.style, h:Math.round(alturaRef(it)*10)/10, ...(it.style==="linha" && it.lineEm ? {le:Math.round(it.lineEm*1000)/1000} : {})}
+      : {...r, k:"t", t:it.text, f:it.font, st:it.style, ...(it.style==="linha" && it.lineEm ? {le:Math.round(it.lineEm*1000)/1000} : {})};
     const arq=links.arquivos.find(a=>a.id===it.id);
     return {...r, k:"i", nome:it.name||"", modo:it.mode, lib:it.lib||null, url:arq?arq.url:""};
   })});
@@ -1040,7 +1042,8 @@ $("#resetAll").addEventListener("click",()=>{ state.items=[]; state.sel=null; st
 /* ================== LINK PRÉ-PREENCHIDO (bot do WhatsApp) ================== */
 // ?cor=preto&tipo=tap|seu&tam=A2&nome=LUCAS&fonte=bebas&cliente=Ana&zap=21999999999&equipe=SPRT
 // &pessoas=LUCAS:A2:preto,ANA:M1:branco&logo=<imagem no Cloudinary da Tap>
-const PRE_KEYS=["cor","tipo","tam","nome","fonte","cliente","zap","equipe","pessoas","logo"];
+// &logopos=costas_grande (posição do logo) &tinta=dourado (cor de todas as artes) &textos=@equipe|costas_barra,RJ|manga_esq (texto|posição)
+const PRE_KEYS=["cor","tipo","tam","nome","fonte","cliente","zap","equipe","pessoas","logo","tinta","textos","logopos"];
 function lerPrefill(){
   const q=new URLSearchParams(location.search); if(!PRE_KEYS.some(k=>q.has(k))) return null;
   const tams=[...$("#tamanho").options].map(o=>o.value).filter(Boolean);
@@ -1050,8 +1053,27 @@ function lerPrefill(){
     cliente:(q.get("cliente")||"").slice(0,60), zap:(q.get("zap")||"").replace(/[^\d+ ()-]/g,"").slice(0,20), equipe:(q.get("equipe")||"").slice(0,60), logo:null,
     pessoas:(q.get("pessoas")||"").split(",").map(x=>x.split(":")).filter(x=>x[0]||x[1]).slice(0,MAX_PESSOAS)
       .map(([n,t,c])=>({nome:(n||"").slice(0,30), tamanho:tam(t), cor:cor(c)||null}))};
-  p.logo=q.get("logo")||null;
+  p.logo=q.get("logo")||null; p.logopos=SLOT[q.get("logopos")]?q.get("logopos"):"costas_centro";
+  const tinta=INKS.find(k=>k.n.toLowerCase()===(q.get("tinta")||"").toLowerCase()); p.tinta=tinta?tinta.c:null;
+  p.textos=(q.get("textos")||"").split(",").map(x=>x.split("|")).filter(([t])=>t&&t.trim()).slice(0,6)
+    .map(([t,sl])=>({texto:t.trim().slice(0,40), slot:SLOT[sl]?sl:"costas_barra"}));
   return p;
+}
+// Costas do link: logo o mais largo possível e o nome em cima, com a linha na largura do logo
+const COSTAS={x:1604, topo:535, logoW:320, logoH:300, letra:60, folga:22};
+function layoutCostas(logo,nome){
+  const pos=(it,w,cy)=>{ it.w=w; it.scale=w/it.base; it.x=COSTAS.x; it.y=cy; it.rot=0; it.moved=true; };
+  const lb=logo&&bitmap(logo), lw=logo ? Math.min(COSTAS.logoW, COSTAS.logoH*lb.width/lb.height) : 0;
+  let y=COSTAS.topo;
+  if(nome){
+    const s=200, padX=s*.08, tw=bitmap(nome).width-padX*2, larg=logo ? lw : COSTAS.logoW;
+    let f=(logo ? COSTAS.letra : COSTAS.letra*1.2)/s;            // mockup por px do bitmap (fonte em 200 px)
+    if(tw*f>larg) f=larg/tw;                                      // nome maior que o logo: encolhe para caber
+    if(logo){ nome.style="linha"; nome.lineEm=lw/f/s; }
+    nome._bm=null; const nb=bitmap(nome), w=nb.width*f, h=nb.height*f;
+    pos(nome,w,y+h/2); y+=h+COSTAS.folga;
+  }
+  if(logo) pos(logo,lw,y+lw*lb.height/lb.width/2);
 }
 async function aplicarPrefill(p){
   if(p.cor) state.color=p.cor; if(p.tipo) state.tipo=p.tipo; if(p.tam) state.tamanho=p.tam;
@@ -1062,10 +1084,14 @@ async function aplicarPrefill(p){
   try{ await ensureColor(state.color); }catch(e){}
   // Logo só do Cloudinary configurado da Tap
   try{ const u=new URL(p.logo||""); p.logo = u.protocol==="https:" && u.hostname==="res.cloudinary.com" && UPLOAD && UPLOAD.cloud && u.pathname.startsWith("/"+UPLOAD.cloud+"/") ? u.href : null; }catch(e){ p.logo=null; }
-  if(p.logo){ try{ const img=await loadImg(p.logo); await addImageFromCanvas(img,{name:"logo-whatsapp.png", w:img.naturalWidth, h:img.naturalHeight, slot:"costas_centro"}); }
+  let logo=null, nome=null;
+  if(p.logo){ try{ const img=await loadImg(p.logo); await addImageFromCanvas(img,{name:"logo-whatsapp.png", w:img.naturalWidth, h:img.naturalHeight, slot:p.logopos}); logo=state.items[state.items.length-1]; }
     catch(e){ toast("Não consegui abrir o logo do link. Envie o arquivo no passo 2."); } }
-  if(p.nome || isEquipe()){ addText(p.nome||"SEU NOME"); const t=state.items[state.items.length-1]; t.font=p.fonte; t._bm=null; fitToSlot(t,t.slot);
-    if(isEquipe()) t.perPerson=true; }
+  if(p.nome || isEquipe()){ addText(p.nome||"SEU NOME"); nome=state.items[state.items.length-1]; nome.font=p.fonte; nome._bm=null; fitToSlot(nome,nome.slot);
+    if(isEquipe()) nome.perPerson=true; }
+  if(p.logopos==="costas_centro") layoutCostas(logo,nome);
+  for(const x of p.textos){ addItem({kind:"text", text:x.texto, font:p.fonte, style:"simples", ink:COLORS[state.color].ink, autoInk:true}, x.slot); }
+  if(p.tinta) state.items.forEach(it=>{ it.autoInk=false; it.ink=p.tinta; if(it.kind==="img") it.mode="umacor"; it._bm=null; });
   if(isEquipe()){ renderEquipe(); refitPerPerson(); }
   state.sel=null;
   // Tira os parâmetros do endereço: recarregar a página não apaga o que o cliente mudou

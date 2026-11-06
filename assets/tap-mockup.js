@@ -152,15 +152,16 @@ function analyze(c){
   const hasAlpha = transp/tot>.5;
   const bgc=[med(br),med(bg),med(bb)];
   // saturação média da tinta (pixels diferentes do fundo)
-  let satSum=0, inkN=0, inkL=0;
+  let satSum=0, inkN=0, inkL=0, viva=0;
   for(let i=0;i<d.length;i+=16){
     const a=d[i+3]; if(a<128) continue;
     const r=d[i],g=d[i+1],b=d[i+2];
     if(!hasAlpha && Math.abs(r-bgc[0])+Math.abs(g-bgc[1])+Math.abs(b-bgc[2])<60) continue;
     const mx=Math.max(r,g,b), mn=Math.min(r,g,b); satSum+= mx? (mx-mn)/mx : 0; inkL+=lum(r,g,b); inkN++;
+    if(mx>60 && (mx-mn)/mx>.45) viva++;
   }
   const sat = inkN? satSum/inkN : 0;
-  return { hasAlpha, bg:bgc, mono: inkN>0 && sat<.16, inkDark: inkN? inkL/inkN<128 : true };
+  return { hasAlpha, bg:bgc, mono: inkN>0 && sat<.16 && viva/inkN<.02, inkDark: inkN? inkL/inkN<128 : true };
 }
 function trim(c,pad=4){
   const x=c.getContext("2d",{willReadFrequently:true}), {width:w,height:h}=c, d=x.getImageData(0,0,w,h).data;
@@ -1043,7 +1044,8 @@ $("#resetAll").addEventListener("click",()=>{ state.items=[]; state.sel=null; st
 // ?cor=preto&tipo=tap|seu&tam=A2&nome=LUCAS&fonte=bebas&cliente=Ana&zap=21999999999&equipe=SPRT
 // &pessoas=LUCAS:A2:preto,ANA:M1:branco&logo=<imagem no Cloudinary da Tap>
 // &logopos=costas_grande (posição do logo) &tinta=dourado (cor de todas as artes) &textos=@equipe|costas_barra,RJ|manga_esq (texto|posição)
-const PRE_KEYS=["cor","tipo","tam","nome","fonte","cliente","zap","equipe","pessoas","logo","tinta","textos","logopos"];
+// &artes=<imagem no Cloudinary>|peito_esq,... (logos extras, imagem|posição)
+const PRE_KEYS=["cor","tipo","tam","nome","fonte","cliente","zap","equipe","pessoas","logo","tinta","textos","logopos","artes"];
 function lerPrefill(){
   const q=new URLSearchParams(location.search); if(!PRE_KEYS.some(k=>q.has(k))) return null;
   const tams=[...$("#tamanho").options].map(o=>o.value).filter(Boolean);
@@ -1055,6 +1057,8 @@ function lerPrefill(){
       .map(([n,t,c])=>({nome:(n||"").slice(0,30), tamanho:tam(t), cor:cor(c)||null}))};
   p.logo=q.get("logo")||null; p.logopos=SLOT[q.get("logopos")]?q.get("logopos"):"costas_centro";
   const tinta=INKS.find(k=>k.n.toLowerCase()===(q.get("tinta")||"").toLowerCase()); p.tinta=tinta?tinta.c:null;
+  p.artes=(q.get("artes")||"").split(",").map(x=>x.split("|")).filter(([u])=>u&&u.trim()).slice(0,6)
+    .map(([u,sl])=>({url:u.trim(), slot:SLOT[sl]?sl:"peito_esq"}));
   p.textos=(q.get("textos")||"").split(",").map(x=>x.split("|")).filter(([t])=>t&&t.trim()).slice(0,6)
     .map(([t,sl])=>({texto:t.trim().slice(0,40), slot:SLOT[sl]?sl:"costas_barra"}));
   return p;
@@ -1083,10 +1087,14 @@ async function aplicarPrefill(p){
   syncQtd(); syncForm();
   try{ await ensureColor(state.color); }catch(e){}
   // Logo só do Cloudinary configurado da Tap
-  try{ const u=new URL(p.logo||""); p.logo = u.protocol==="https:" && u.hostname==="res.cloudinary.com" && UPLOAD && UPLOAD.cloud && u.pathname.startsWith("/"+UPLOAD.cloud+"/") ? u.href : null; }catch(e){ p.logo=null; }
+  const daTap=s=>{ try{ const u=new URL(s||""); return u.protocol==="https:" && u.hostname==="res.cloudinary.com" && UPLOAD && UPLOAD.cloud && u.pathname.startsWith("/"+UPLOAD.cloud+"/") ? u.href : null; }catch(e){ return null; } };
+  p.logo=daTap(p.logo);
   let logo=null, nome=null;
   if(p.logo){ try{ const img=await loadImg(p.logo); await addImageFromCanvas(img,{name:"logo-whatsapp.png", w:img.naturalWidth, h:img.naturalHeight, slot:p.logopos}); logo=state.items[state.items.length-1]; }
     catch(e){ toast("Não consegui abrir o logo do link. Envie o arquivo no passo 2."); } }
+  for(const a of p.artes){ const url=daTap(a.url); if(!url) continue;
+    try{ const img=await loadImg(url); await addImageFromCanvas(img,{name:"logo-whatsapp.png", w:img.naturalWidth, h:img.naturalHeight, slot:a.slot}); }
+    catch(e){ toast("Não consegui abrir um logo do link. Envie o arquivo no passo 2."); } }
   if(p.nome || isEquipe()){ addText(p.nome||"SEU NOME"); nome=state.items[state.items.length-1]; nome.font=p.fonte; nome._bm=null; fitToSlot(nome,nome.slot);
     if(isEquipe()) nome.perPerson=true; }
   if(p.logopos==="costas_centro") layoutCostas(logo,nome);

@@ -293,6 +293,17 @@ async function addImageFromCanvas(c,meta){
            lowres: !meta.vector && Math.max(meta.w,meta.h)<900, vector:!!meta.vector, lib:meta.lib||null, file:meta.file||null}, meta.slot);
 }
 
+/* ================== LOGO TAP ================== */
+// Todo kimono leva o logo da Tap no canto inferior direito das costas, na tinta da cor do kimono (o arquivo de corte usa medidas.json → logo_tap).
+const TAP_MARCA = {x:1762, y:1182, w:66};
+let tapMarca=null;
+{ const el=document.querySelector(".brand-logo");
+  if(el) loadImg(el.src).then(i=>{ const c=fitCanvas(i,600); tapMarca={src:c, info:analyze(c), bm:{}}; dirty(); }).catch(()=>{}); }
+function tapMarcaBm(){
+  if(!tapMarca) return null; const ink=COLORS[state.color].ink;
+  return tapMarca.bm[ink] ||= procUmaCor(tapMarca.src,tapMarca.info,ink);
+}
+
 /* ================== RENDER ================== */
 const cv=$("#cv"), ctx=cv.getContext("2d");
 let artA=null, artB=null;
@@ -311,6 +322,7 @@ function compose(c, size, viewKey, withUi){
   a.setTransform(...T);
   for(const it of state.items){ const bm=bitmap(it); if(!bm) continue; const w=larguraNoMockup(it,bm), h=w*bm.height/bm.width;
     a.save(); a.translate(it.x,it.y); a.rotate(it.rot*Math.PI/180); a.drawImage(bm,-w/2,-h/2,w,h); a.restore(); }
+  const tm=tapMarcaBm(); if(tm){ const h=TAP_MARCA.w*tm.height/tm.width; a.drawImage(tm,TAP_MARCA.x-TAP_MARCA.w/2,TAP_MARCA.y-h/2,TAP_MARCA.w,h); }
   b.setTransform(1,0,0,1,0,0); b.globalCompositeOperation="copy"; b.drawImage(A,0,0);
   a.globalCompositeOperation="multiply"; a.drawImage(shade,0,0,W,W);
   a.setTransform(1,0,0,1,0,0); a.globalCompositeOperation="destination-in"; a.drawImage(B,0,0);

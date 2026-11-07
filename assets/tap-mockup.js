@@ -297,11 +297,12 @@ async function addImageFromCanvas(c,meta){
 // Todo kimono leva o logo da Tap no canto inferior direito das costas, na tinta da cor do kimono (o arquivo de corte usa medidas.json → logo_tap).
 const TAP_MARCA = {x:1762, y:1182, w:66};
 let tapMarca=null;
-{ const el=document.querySelector(".brand-logo");
-  if(el) loadImg(el.src).then(i=>{ const c=fitCanvas(i,600); tapMarca={src:c, info:analyze(c), bm:{}}; dirty(); }).catch(()=>{}); }
+const tapMarcaEl=document.querySelector(".brand-logo");
+if(tapMarcaEl) loadImg(tapMarcaEl.src).then(i=>{ const c=fitCanvas(i,600); tapMarca={src:c, info:analyze(c), bm:{}}; dirty(); }).catch(()=>{});
 function tapMarcaBm(){
   if(!tapMarca) return null; const ink=COLORS[state.color].ink;
-  return tapMarca.bm[ink] ||= procUmaCor(tapMarca.src,tapMarca.info,ink);
+  if(!tapMarca.bm[ink]) tapMarca.bm[ink]=procUmaCor(tapMarca.src,tapMarca.info,ink);
+  return tapMarca.bm[ink];
 }
 
 /* ================== RENDER ================== */

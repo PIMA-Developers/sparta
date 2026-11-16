@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=Bebas+Neue&family=Graduate&family=Montserrat:wght@600;700;800&family=Oswald:wght@500;600&family=Permanent+Marker&display=swap">
 {{ 'tap-mockup.css' | asset_url | stylesheet_tag }}
 <div class="tapmk{% if section.settings.esquema == 'escuro' %} tapmk--dark{% endif %}" data-tapmk style="--tapmk-top: {{ section.settings.topo }}px">
-<script type="application/json" data-tapmk-config>{"whatsapp": {{ section.settings.whatsapp | json }}, "kimonoNome": {{ section.settings.kimono_nome | json }}, "expressoGratisAcima": {{ section.settings.expresso_gratis | default: 0 }}, "bases": {"branco_front":{{ "tap-kimono-branco_front.webp" | asset_url | json }},"branco_back":{{ "tap-kimono-branco_back.webp" | asset_url | json }},"azul_front":{{ "tap-kimono-azul_front.webp" | asset_url | json }},"azul_back":{{ "tap-kimono-azul_back.webp" | asset_url | json }},"preto_front":{{ "tap-kimono-preto_front.webp" | asset_url | json }},"preto_back":{{ "tap-kimono-preto_back.webp" | asset_url | json }}}, "lib": {"sprt_wordmark":{{ "tap-logo-sprt_wordmark.webp" | asset_url | json }},"sprt_martial":{{ "tap-logo-sprt_martial.webp" | asset_url | json }},"sprt_escola":{{ "tap-logo-sprt_escola.webp" | asset_url | json }},"sprt_badge":{{ "tap-logo-sprt_badge.webp" | asset_url | json }},"sprt_helmet":{{ "tap-logo-sprt_helmet.webp" | asset_url | json }},"thierry_reis":{{ "tap-logo-thierry_reis.webp" | asset_url | json }},"thierry_tr":{{ "tap-logo-thierry_tr.webp" | asset_url | json }}}, "regras": {"basico":{"logos":{{ section.settings.basico_logos | default: 1 }},"adic":{{ section.settings.basico_adic | default: 1 }}},"intermediario":{"logos":{{ section.settings.intermediario_logos | default: 3 }},"adic":{{ section.settings.intermediario_adic | default: 2 }}},"completo":{"logos":{{ section.settings.completo_logos | default: 6 }},"adic":{{ section.settings.completo_adic | default: 6 }}}}, "precos": {"faixas": {"basico":{{ section.settings.faixa_basico | default: 180 }},"intermediario":{{ section.settings.faixa_intermediario | default: 250 }},"completo":{{ section.settings.faixa_completo | default: 350 }}}, "adicional":[{{ section.settings.add_1 | default: 70 }},{{ section.settings.add_2 | default: 45 }}], "desconto":{{ section.settings.desconto | default: 10 }}, "kimono":{"adulto":{{ section.settings.kimono_adulto | default: 550 }},"infantil":{{ section.settings.kimono_infantil | default: 390 }}}, "prazo":{"expresso":{{ section.settings.prazo_expresso | default: 40 }},"turbo":{{ section.settings.prazo_turbo | default: 140 }}}}}</script>
+<script type="application/json" data-tapmk-config>{"whatsapp": {{ section.settings.whatsapp | json }}, "kimonoNome": {{ section.settings.kimono_nome | json }}, "expressoGratisAcima": {{ section.settings.expresso_gratis | default: 0 }}, "bases": {"branco_front":{{ "tap-kimono-branco_front.webp" | asset_url | json }},"branco_back":{{ "tap-kimono-branco_back.webp" | asset_url | json }},"azul_front":{{ "tap-kimono-azul_front.webp" | asset_url | json }},"azul_back":{{ "tap-kimono-azul_back.webp" | asset_url | json }},"preto_front":{{ "tap-kimono-preto_front.webp" | asset_url | json }},"preto_back":{{ "tap-kimono-preto_back.webp" | asset_url | json }}}, "lib": {"sprt_wordmark":{{ "tap-logo-sprt_wordmark.webp" | asset_url | json }},"sprt_martial":{{ "tap-logo-sprt_martial.webp" | asset_url | json }},"sprt_escola":{{ "tap-logo-sprt_escola.webp" | asset_url | json }},"sprt_badge":{{ "tap-logo-sprt_badge.webp" | asset_url | json }},"sprt_helmet":{{ "tap-logo-sprt_helmet.webp" | asset_url | json }},"thierry_reis":{{ "tap-logo-thierry_reis.webp" | asset_url | json }},"thierry_tr":{{ "tap-logo-thierry_tr.webp" | asset_url | json }}}, "regras": {"basico":{"logos":{{ section.settings.basico_logos | default: 1 }},"adic":{{ section.settings.basico_adic | default: 1 }}},"intermediario":{"logos":{{ section.settings.intermediario_logos | default: 2 }},"adic":{{ section.settings.intermediario_adic | default: 2 }}},"completo":{"logos":{{ section.settings.completo_logos | default: 5 }},"adic":{{ section.settings.completo_adic | default: 5 }}}}, "precos": {"faixas": {"basico":{{ section.settings.faixa_basico | default: 250 }},"intermediario":{{ section.settings.faixa_intermediario | default: 310 }},"completo":{{ section.settings.faixa_completo | default: 400 }}}, "adicional":[{{ section.settings.add_1 | default: 60 }},{{ section.settings.add_2 | default: 60 }}], "desconto":{{ section.settings.desconto | default: 10 }}, "kimono":{"adulto":{{ section.settings.kimono_adulto | default: 499 }},"infantil":{{ section.settings.kimono_infantil | default: 399 }}}, "prazo":{"expresso":{{ section.settings.prazo_expresso | default: 80 }},"turbo":{{ section.settings.prazo_turbo | default: 140 }}}}}</script>
 <div class="app">
   <header class="top">
     <div class="brand"><img class="brand-logo" src="{{ 'tap-print.webp' | asset_url }}" alt="TAP"><h1>{{ section.settings.titulo | escape }}</h1></div>
@@ -244,44 +244,44 @@
     {
       "type": "number",
       "id": "faixa_basico",
-      "label": "Faixa Básico (R$)",
-      "default": 180
-    },
-    {
-      "type": "number",
-      "id": "faixa_intermediario",
-      "label": "Faixa Intermediário (R$)",
+      "label": "Kit Básico (R$)",
       "default": 250
     },
     {
       "type": "number",
+      "id": "faixa_intermediario",
+      "label": "Kit Intermediário (R$)",
+      "default": 310
+    },
+    {
+      "type": "number",
       "id": "faixa_completo",
-      "label": "Faixa Completo (R$)",
-      "default": 350
+      "label": "Kit Completo (R$)",
+      "default": 400
     },
     {
       "type": "header",
       "content": "Adicionais avulsos (fora das costas)",
-      "info": "Além do que a faixa inclui."
+      "info": "Além do que o kit inclui."
     },
     {
       "type": "number",
       "id": "add_1",
       "label": "1 unidade (R$)",
-      "default": 70
+      "default": 60
     },
     {
       "type": "number",
       "id": "add_2",
       "label": "2 ou mais, cada (R$)",
-      "default": 45
+      "default": 60
     },
     {
       "type": "number",
       "id": "desconto",
       "label": "Desconto para 2+ kimonos com a mesma arte (%)",
       "default": 10,
-      "info": "Vale para faixa e adicionais. Não vale para o kimono nem para o prazo."
+      "info": "Vale para kit e adicionais. Não vale para o kimono nem para o prazo."
     },
     {
       "type": "header",
@@ -291,13 +291,13 @@
       "type": "number",
       "id": "kimono_adulto",
       "label": "Adulto (R$)",
-      "default": 550
+      "default": 499
     },
     {
       "type": "number",
       "id": "kimono_infantil",
       "label": "Infantil (R$)",
-      "default": 390
+      "default": 399
     },
     {
       "type": "header",
@@ -307,7 +307,7 @@
       "type": "number",
       "id": "prazo_expresso",
       "label": "Expresso, até 7 dias úteis (R$)",
-      "default": 40
+      "default": 80
     },
     {
       "type": "number",
@@ -317,8 +317,8 @@
     },
     {
       "type": "header",
-      "content": "O que cada faixa inclui",
-      "info": "O nome nas costas está incluso em todas. Com mais logos do que a última faixa, vira \"a orçar\" (WhatsApp)."
+      "content": "O que cada kit inclui",
+      "info": "O nome nas costas está incluso em todas. Com mais logos do que o último kit, vira \"a orçar\" (WhatsApp)."
     },
     {
       "type": "number",
@@ -336,7 +336,7 @@
       "type": "number",
       "id": "intermediario_logos",
       "label": "Intermediário: logos nas costas",
-      "default": 3
+      "default": 2
     },
     {
       "type": "number",
@@ -348,13 +348,13 @@
       "type": "number",
       "id": "completo_logos",
       "label": "Completo: logos nas costas",
-      "default": 6
+      "default": 5
     },
     {
       "type": "number",
       "id": "completo_adic",
       "label": "Completo: adicionais inclusos",
-      "default": 6
+      "default": 5
     }
   ],
   "presets": [

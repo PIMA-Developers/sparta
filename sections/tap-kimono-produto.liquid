@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=Bebas+Neue&family=Graduate&family=Montserrat:wght@600;700;800&family=Oswald:wght@500;600&family=Permanent+Marker&display=swap">
 {{ 'tap-mockup.css' | asset_url | stylesheet_tag }}
 <div class="tapmk{% if section.settings.esquema == 'escuro' %} tapmk--dark{% endif %}" data-tapmk style="--tapmk-top: {{ section.settings.topo }}px">
-<script type="application/json" data-tapmk-config>{"whatsapp": {{ section.settings.whatsapp | json }}, "kimonoNome": {{ section.settings.kimono_nome | json }}, "expressoGratisAcima": {{ section.settings.expresso_gratis | default: 0 }}, "bases": {"branco_front":{{ "tap-kimono-branco_front.webp" | asset_url | json }},"branco_back":{{ "tap-kimono-branco_back.webp" | asset_url | json }},"azul_front":{{ "tap-kimono-azul_front.webp" | asset_url | json }},"azul_back":{{ "tap-kimono-azul_back.webp" | asset_url | json }},"preto_front":{{ "tap-kimono-preto_front.webp" | asset_url | json }},"preto_back":{{ "tap-kimono-preto_back.webp" | asset_url | json }}}, "lib": {"sprt_wordmark":{{ "tap-logo-sprt_wordmark.webp" | asset_url | json }},"sprt_martial":{{ "tap-logo-sprt_martial.webp" | asset_url | json }},"sprt_escola":{{ "tap-logo-sprt_escola.webp" | asset_url | json }},"sprt_badge":{{ "tap-logo-sprt_badge.webp" | asset_url | json }},"sprt_helmet":{{ "tap-logo-sprt_helmet.webp" | asset_url | json }},"thierry_reis":{{ "tap-logo-thierry_reis.webp" | asset_url | json }},"thierry_tr":{{ "tap-logo-thierry_tr.webp" | asset_url | json }}}, "regras": {"basico":{"logos":{{ section.settings.basico_logos | default: 1 }},"adic":{{ section.settings.basico_adic | default: 1 }}},"intermediario":{"logos":{{ section.settings.intermediario_logos | default: 3 }},"adic":{{ section.settings.intermediario_adic | default: 2 }}},"completo":{"logos":{{ section.settings.completo_logos | default: 6 }},"adic":{{ section.settings.completo_adic | default: 6 }}}}, "upload": {"cloud": {{ section.settings.cloudinary_cloud | strip | json }}, "preset": {{ section.settings.cloudinary_preset | strip | json }}, "folder": {{ section.settings.cloudinary_pasta | strip | json }}}, "shop": {"atual": {{ product.handle | json }}, "rotas": {"add": {{ routes.cart_add_url | append: '.js' | json }}, "cart": {{ routes.cart_url | json }}}, "kimono": {% render 'tap-variantes', produto: produto_kimono, chave: '12' %}, "proprio": {% render 'tap-variantes', produto: produto_proprio, chave: '1' %}, "faixas": {% render 'tap-variantes', produto: produto_costas, chave: 'sku', prefixo: 'TAPF-' %}, "adicional": {% render 'tap-variantes', produto: produto_adicional, chave: 'sku', prefixo: 'TAPA-' %}, "prazo": {% render 'tap-variantes', produto: produto_prazo, chave: 'sku', prefixo: 'TAPP-' %}}}</script>
+<script type="application/json" data-tapmk-config>{"whatsapp": {{ section.settings.whatsapp | json }}, "kimonoNome": {{ section.settings.kimono_nome | json }}, "expressoGratisAcima": {{ section.settings.expresso_gratis | default: 0 }}, "bases": {"branco_front":{{ "tap-kimono-branco_front.webp" | asset_url | json }},"branco_back":{{ "tap-kimono-branco_back.webp" | asset_url | json }},"azul_front":{{ "tap-kimono-azul_front.webp" | asset_url | json }},"azul_back":{{ "tap-kimono-azul_back.webp" | asset_url | json }},"preto_front":{{ "tap-kimono-preto_front.webp" | asset_url | json }},"preto_back":{{ "tap-kimono-preto_back.webp" | asset_url | json }}}, "lib": {"sprt_wordmark":{{ "tap-logo-sprt_wordmark.webp" | asset_url | json }},"sprt_martial":{{ "tap-logo-sprt_martial.webp" | asset_url | json }},"sprt_escola":{{ "tap-logo-sprt_escola.webp" | asset_url | json }},"sprt_badge":{{ "tap-logo-sprt_badge.webp" | asset_url | json }},"sprt_helmet":{{ "tap-logo-sprt_helmet.webp" | asset_url | json }},"thierry_reis":{{ "tap-logo-thierry_reis.webp" | asset_url | json }},"thierry_tr":{{ "tap-logo-thierry_tr.webp" | asset_url | json }}}, "regras": {"basico":{"logos":{{ section.settings.basico_logos | default: 1 }},"adic":{{ section.settings.basico_adic | default: 1 }}},"intermediario":{"logos":{{ section.settings.intermediario_logos | default: 2 }},"adic":{{ section.settings.intermediario_adic | default: 2 }}},"completo":{"logos":{{ section.settings.completo_logos | default: 5 }},"adic":{{ section.settings.completo_adic | default: 5 }}}}, "upload": {"cloud": {{ section.settings.cloudinary_cloud | strip | json }}, "preset": {{ section.settings.cloudinary_preset | strip | json }}, "folder": {{ section.settings.cloudinary_pasta | strip | json }}}, "shop": {"atual": {{ product.handle | json }}, "rotas": {"add": {{ routes.cart_add_url | append: '.js' | json }}, "cart": {{ routes.cart_url | json }}}, "kimono": {% render 'tap-variantes', produto: produto_kimono, chave: '12' %}, "proprio": {% render 'tap-variantes', produto: produto_proprio, chave: '1' %}, "faixas": {% render 'tap-variantes', produto: produto_costas, chave: 'sku', prefixo: 'TAPF-' %}, "adicional": {% render 'tap-variantes', produto: produto_adicional, chave: 'sku', prefixo: 'TAPA-' %}, "prazo": {% render 'tap-variantes', produto: produto_prazo, chave: 'sku', prefixo: 'TAPP-' %}}}</script>
 <div class="app">
   <header class="top">
     <div class="brand"><img class="brand-logo" src="{{ 'tap-print.webp' | asset_url }}" alt="TAP"><h1>{% if section.settings.titulo != blank %}{{ section.settings.titulo | escape }}{% else %}{{ product.title | escape }}{% endif %}</h1></div>
@@ -283,7 +283,7 @@
     {
       "type": "product",
       "id": "produto_costas",
-      "label": "Personalização · faixas (oculto)",
+      "label": "Personalização · kits (oculto)",
       "info": "SKU: TAPF-basico|1, TAPF-basico|2+ … TAPF-completo|2+. O preço \"2+\" já tem o desconto de equipe."
     },
     {
@@ -321,8 +321,8 @@
     },
     {
       "type": "header",
-      "content": "O que cada faixa inclui",
-      "info": "O nome nas costas está incluso em todas. Com mais logos do que a última faixa, vira \"a orçar\" (WhatsApp)."
+      "content": "O que cada kit inclui",
+      "info": "O nome nas costas está incluso em todas. Com mais logos do que o último kit, vira \"a orçar\" (WhatsApp)."
     },
     {
       "type": "number",
@@ -340,7 +340,7 @@
       "type": "number",
       "id": "intermediario_logos",
       "label": "Intermediário: logos nas costas",
-      "default": 3
+      "default": 2
     },
     {
       "type": "number",
@@ -352,13 +352,13 @@
       "type": "number",
       "id": "completo_logos",
       "label": "Completo: logos nas costas",
-      "default": 6
+      "default": 5
     },
     {
       "type": "number",
       "id": "completo_adic",
       "label": "Completo: adicionais inclusos",
-      "default": 6
+      "default": 5
     }
   ],
   "presets": [

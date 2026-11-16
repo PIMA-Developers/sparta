@@ -19,14 +19,14 @@ const LIB = [{"key": "sprt_wordmark", "label": "SPRT", "mode": "mono", "team": "
 // Preços por kimono: [1 kimono, 2+ kimonos com a mesma arte]. Na loja, tudo vem das variantes dos produtos.
 const PRECOS = {
   faixas: {
-    basico:        {label:"Básico",        preco:[180,null], logos:1, adic:1},
-    intermediario: {label:"Intermediário", preco:[250,null], logos:3, adic:2},
-    completo:      {label:"Completo",      preco:[350,null], logos:6, adic:6}
+    basico:        {label:"Básico",        preco:[250,null], logos:1, adic:1},
+    intermediario: {label:"Intermediário", preco:[310,null], logos:2, adic:2},
+    completo:      {label:"Completo",      preco:[400,null], logos:5, adic:5, cores:true}   // cores: único kit com logo colorido
   },
-  adicional: {"1":[70,null], "2+":[45,null]},  // avulso, além do que a faixa inclui: 1 unidade / 2 ou mais (cada)
+  adicional: {"1":[60,null], "2+":[60,null]},  // avulso, além do que o kit inclui: R$ 60 cada, em qualquer quantidade
   desconto: 10,                                // % para 2+ kimonos com a mesma arte (faixa e adicionais; não vale no kimono nem no prazo)
-  kimono: {adulto:550, infantil:390},
-  prazo: {padrao:0, expresso:40, turbo:140},
+  kimono: {adulto:499, infantil:399},
+  prazo: {padrao:0, expresso:80, turbo:140},
   expressoGratisAcima: 850   // pedidos a partir deste valor (kimono + personalização) ganham o Expresso; 0 = desligado
 };
 const FAIXAS = ["basico","intermediario","completo"];
@@ -661,9 +661,11 @@ function nomeGratis(){
 }
 const plural=(n,um,varios)=>`${n} ${n===1?um:varios}`;
 // Escolhe a faixa de menor total para L logos nas costas e A adicionais (por kimono)
-function escolherFaixa(L,A,N){
+// Logo colorido (tratamento "Original" ou "Sem fundo") só no Kit Completo. Bandeiras e artes da biblioteca e textos não contam.
+function temLogoColorido(){ return state.items.some(it=>it.kind==="img" && !it.lib && it.mode!=="umacor"); }
+function escolherFaixa(L,A,N,cor){
   const k=N>1?1:0; let best=null;
-  for(const id of FAIXAS){ const f=PRECOS.faixas[id]; if(!f || f.preco[k]==null || L>f.logos) continue;
+  for(const id of FAIXAS){ const f=PRECOS.faixas[id]; if(!f || f.preco[k]==null || L>f.logos || (cor && !f.cores)) continue;
     const extra=Math.max(0,A-f.adic), tier=extra===1?"1":"2+", av=extra ? PRECOS.adicional[tier][k] : 0;
     if(extra && av==null) continue;
     const unit=f.preco[k]+av*extra; if(!best || unit<best.unit-0.001) best={id,f,extra,tier,av,unit}; }
@@ -676,19 +678,19 @@ function calcPreco(){
   if(state.items.length && !logos && !add){
     soNome=true; L.push({t:"Personalização só com o nome", s:"Esse pedido é combinado pelo WhatsApp", v:null, vt:"a combinar"});
   } else if(state.items.length){
-    const b=escolherFaixa(logos,add,N);
-    if(!b){ consulta=true; L.push({t:`Personalização (${plural(logos,"logo","logos")} nas costas)`, s:"7 ou mais logos nas costas: a Tap faz o orçamento pelo WhatsApp", v:null, vt:"a orçar"}); }
+    const cor=temLogoColorido(), b=escolherFaixa(logos,add,N,cor);
+    if(!b){ consulta=true; L.push({t:`Personalização (${plural(logos,"logo","logos")} nas costas)`, s:"6 ou mais logos nas costas: a Tap faz o orçamento pelo WhatsApp", v:null, vt:"a orçar"}); }
     else {
       const f=b.f, p=f.preco[k], pct=N>1 ? Math.round((1-f.preco[1]/f.preco[0])*100) : 0, incAdd=Math.min(add,f.adic);
       const inc=[]; if(gratis) inc.push("nome"); if(logos) inc.push(plural(logos,"logo","logos")+" nas costas"); if(incAdd) inc.push(plural(incAdd,"adicional incluso","adicionais inclusos"));
-      L.push({t:`Personalização · faixa ${f.label}`, s:[inc.join(" + "), N>1?`${N} × ${brl(p)}${pct>0?` (${pct}% de desconto)`:""}`:""].filter(Boolean).join(" · "), v:p*N});
+      L.push({t:`Personalização · Kit ${f.label}`, s:[inc.join(" + "), N>1?`${N} × ${brl(p)}${pct>0?` (${pct}% de desconto)`:""}`:""].filter(Boolean).join(" · "), v:p*N});
       total+=p*N; cobr.faixa={id:b.id, k:N>1?"2+":"1", qty:N};
       if(b.extra){ const units=b.extra*N, v=b.av*units; total+=v; cobr.adicional={tier:b.tier, k:N>1?"2+":"1", qty:units};
         L.push({t:`${plural(b.extra,"adicional avulso","adicionais avulsos")}${N>1?` × ${N} kimonos`:""}`, s: units>1? `${units} × ${brl(b.av)}` : "", v}); }
       // Por que essa faixa
       const pq=[]; if(gratis) pq.push("nome"); if(logos) pq.push(plural(logos,"logo nas costas","logos nas costas")); if(incAdd) pq.push(plural(incAdd,"adicional incluso","adicionais inclusos")); if(b.extra) pq.push(plural(b.extra,"avulso","avulsos"));
-      porque=`${f.label}: ${pq.join(" + ")}.`;
-      const minId=FAIXAS.find(id=>PRECOS.faixas[id] && PRECOS.faixas[id].preco[k]!=null && logos<=PRECOS.faixas[id].logos);
+      porque=`Kit ${f.label}: ${pq.join(" + ")}.`+(cor?" Logo colorido: só no Kit Completo (em 1 cor ele cabe num kit menor).":"");
+      const minId=FAIXAS.find(id=>PRECOS.faixas[id] && PRECOS.faixas[id].preco[k]!=null && logos<=PRECOS.faixas[id].logos && (!cor || PRECOS.faixas[id].cores));
       if(minId && minId!==b.id){ const m=PRECOS.faixas[minId], ex=Math.max(0,add-m.adic), alt=m.preco[k]+(ex? PRECOS.adicional[ex===1?"1":"2+"][k]*ex : 0);
         porque+=` Sai mais barato do que ${m.label} + ${plural(ex,"adicional avulso","adicionais avulsos")} (${brl(alt*N)}).`; }
       if(N>1 && pct>0) porque+=` ${N} kimonos com a mesma arte: ${pct}% de desconto na personalização.`;

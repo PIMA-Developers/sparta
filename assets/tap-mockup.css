@@ -163,6 +163,11 @@
 .tapmk .pages button{border:0;border-radius:12px;background:#fff;padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:4px;align-items:center;color:#333;font-size:12px;box-shadow:inset 0 0 0 1px var(--line)}
 .tapmk .pages button:hover{box-shadow:inset 0 0 0 2px var(--accent)}
 .tapmk .pages canvas{max-width:100%;height:auto}
+.tapmk .split-prev{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));margin:12px 0}
+.tapmk .split-prev div{background:#fff;border-radius:10px;box-shadow:inset 0 0 0 1px var(--line);padding:6px;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
+.tapmk .split-prev canvas{max-width:100%;max-height:100%}
+.tapmk .split-act{display:flex;gap:10px;flex-wrap:wrap}
+.tapmk .split-act .btn{flex:1}
 .tapmk .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:rgba(29,29,31,.92);color:#fff;padding:12px 20px;border-radius:999px;font-weight:500;font-size:15px;z-index:30;max-width:calc(100% - 32px);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);text-align:center}
 .tapmk .busy{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.7);color:#1d1d1f;font-weight:600}
 @media (max-width: 860px){.tapmk .app{padding-block:20px 48px}.tapmk .tm-grid{grid-template-columns:minmax(0,1fr);gap:16px}.tapmk .stage{top:0;z-index:5;background:rgba(245,245,247,.86);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);margin-left:calc(-1 * max(20px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(20px,env(safe-area-inset-right,0px)));padding:8px max(20px,env(safe-area-inset-right,0px)) 10px max(20px,env(safe-area-inset-left,0px));border-bottom:1px solid rgba(0,0,0,.08)}.tapmk .stage{top:var(--tapmk-top,0px)}.tapmk .bench{padding:8px;gap:8px;border-radius:20px;box-shadow:none}.tapmk .cv-wrap{width:min(100%,36vh);border-radius:14px}.tapmk .hint{display:none}.tapmk .m-hint{display:block!important}.tapmk .views button{padding:5px 14px;font-size:13px}.tapmk .top{padding-block:0 16px}.tapmk .step{padding:20px;border-radius:16px}}

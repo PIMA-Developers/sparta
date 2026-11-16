@@ -286,11 +286,82 @@ function addItem(it,slot){
 function addText(text){
   addItem({kind:"text", text:text||"SEU NOME", font:"montserrat", style:"simples", ink:COLORS[state.color].ink, autoInk:true});
 }
+/* Arquivo com várias artes (folha de logos): acha blocos de arte separados por espaço vazio.
+   Cada bloco vira uma arte própria; "É um logo só" mantém o arquivo inteiro e avisa a equipe no pedido. */
+function separaArtes(src,info){
+  const W=src.width, H=src.height, k=Math.min(1,320/Math.max(W,H)), w=Math.max(1,Math.round(W*k)), h=Math.max(1,Math.round(H*k));
+  const sm=mk(w,h), sx=sm.getContext("2d",{willReadFrequently:true}); sx.drawImage(src,0,0,w,h);
+  const d=sx.getImageData(0,0,w,h).data, ink=new Uint8Array(w*h), [R,G,B]=info.bg;
+  let tot=0;
+  for(let p=0;p<w*h;p++){ const i=p*4;
+    const on = info.hasAlpha ? d[i+3]>60 : (d[i+3]>60 && Math.abs(d[i]-R)+Math.abs(d[i+1]-G)+Math.abs(d[i+2]-B)>70);
+    if(on){ ink[p]=1; tot++; } }
+  if(tot<20) return null;
+  // aproxima partes do mesmo logo (letras, contorno): dilatação de ~2,5% do maior lado
+  const r=Math.max(2,Math.round(Math.max(w,h)*.025)), dil=new Uint8Array(w*h), tmp=new Uint8Array(w*h);
+  for(let y=0;y<h;y++){ let last=-1e9; for(let x=0;x<w;x++){ if(ink[y*w+x]) last=x; if(x-last<=r) tmp[y*w+x]=1; } last=1e9; for(let x=w-1;x>=0;x--){ if(ink[y*w+x]) last=x; if(last-x<=r) tmp[y*w+x]=1; } }
+  for(let x=0;x<w;x++){ let last=-1e9; for(let y=0;y<h;y++){ if(tmp[y*w+x]) last=y; if(y-last<=r) dil[y*w+x]=1; } last=1e9; for(let y=h-1;y>=0;y--){ if(tmp[y*w+x]) last=y; if(last-y<=r) dil[y*w+x]=1; } }
+  const lab=new Int32Array(w*h).fill(-1), comps=[];
+  for(let p0=0;p0<w*h;p0++){ if(!dil[p0] || lab[p0]>=0) continue;
+    const c={x0:w,y0:h,x1:0,y1:0,n:0,id:comps.length}, st=[p0]; lab[p0]=c.id;
+    while(st.length){ const p=st.pop(), x=p%w, y=(p/w)|0;
+      if(ink[p]){ c.n++; if(x<c.x0)c.x0=x; if(x>c.x1)c.x1=x; if(y<c.y0)c.y0=y; if(y>c.y1)c.y1=y; }
+      const nb=[x>0?p-1:-1, x<w-1?p+1:-1, y>0?p-w:-1, y<h-1?p+w:-1];
+      for(const q of nb) if(q>=0 && dil[q] && lab[q]<0){ lab[q]=c.id; st.push(q); } }
+    comps.push(c); }
+  const bons=comps.filter(c=>c.n>=tot*.015 && c.n>=6);
+  if(bons.length<2 || bons.length>30) return null;
+  bons.sort((a,b)=> (Math.abs(a.y0-b.y0)>h*.06 ? a.y0-b.y0 : a.x0-b.x0));   // ordem de leitura
+  const ix=1/k, pad=Math.round(4*ix);
+  return bons.map(c=>{
+    const X0=Math.max(0,Math.floor(c.x0*ix)-pad), Y0=Math.max(0,Math.floor(c.y0*ix)-pad), X1=Math.min(W,Math.ceil((c.x1+1)*ix)+pad), Y1=Math.min(H,Math.ceil((c.y1+1)*ix)+pad);
+    const o=mk(X1-X0,Y1-Y0), ox=o.getContext("2d",{willReadFrequently:true}); ox.drawImage(src,X0,Y0,o.width,o.height,0,0,o.width,o.height);
+    const id=ox.getImageData(0,0,o.width,o.height), od=id.data;
+    for(let y=0;y<o.height;y++) for(let x=0;x<o.width;x++){   // apaga o que é de outro bloco
+      const lx=Math.min(w-1,((X0+x)*k)|0), ly=Math.min(h-1,((Y0+y)*k)|0), L=lab[ly*w+lx];
+      if(L!==c.id && L>=0){ const i=(y*o.width+x)*4; if(info.hasAlpha) od[i+3]=0; else { od[i]=R; od[i+1]=G; od[i+2]=B; } } }
+    ox.putImageData(id,0,0); return o; });
+}
+// Artes separadas de um arquivo: grade organizada nas costas, abaixo do nome (o cliente arrasta para a frente o que quiser)
+function gradeNasCostas(its){
+  const n=its.length, X0=1604-155, Y0=592, AW=310, AH=250, cols=Math.ceil(Math.sqrt(n*AW/AH)), rows=Math.ceil(n/cols), cw=AW/cols, ch=AH/rows;
+  its.forEach((it,i)=>{ const bm=bitmap(it); if(!bm) return; const ar=bm.width/bm.height, r=(i/cols)|0, c=i%cols;
+    const naLinha=Math.min(cols,n-r*cols), off=(cols-naLinha)*cw/2;   // última linha centralizada
+    it.x=X0+off+(c+.5)*cw; it.y=Y0+(r+.5)*ch; it.rot=0; it.w=Math.min(cw*.86, ch*.86*ar); it.scale=it.w/(it.base||it.w); });
+  renderList(); dirty(); save();
+}
+function perguntaSeparar(partes){
+  return new Promise(res=>{
+    const sh=$("#splitSheet"), n=partes.length;
+    $("#splitTitle").textContent=`Encontramos ${n} artes neste arquivo`;
+    $("#splitMsg").textContent=`Para o preço e o mockup ficarem certos, cada arte vira um item que você posiciona no kimono (costas, peito, manga, calça). Se for um desenho só, mantenha junto.`;
+    $("#splitSim").textContent=`Separar em ${n} artes`;
+    const pv=$("#splitPrev"); pv.innerHTML="";
+    partes.forEach(c=>{ const t=fitCanvas(c,140), b=document.createElement("div"); b.append(t); pv.append(b); });
+    const fim=v=>{ sh.hidden=true; $("#splitSim").onclick=$("#splitNao").onclick=null; res(v); };
+    $("#splitSim").onclick=()=>fim(true); $("#splitNao").onclick=()=>fim(false);
+    sh.hidden=false;
+  });
+}
 async function addImageFromCanvas(c,meta){
-  const src=fitCanvas(c,1600), info=analyze(src);
+  const src0=fitCanvas(c,1600), info0=analyze(src0);
+  if(!meta.lib && !meta.inteiro){
+    const partes=separaArtes(src0,info0);
+    if(partes){
+      if(await perguntaSeparar(partes)){
+        for(let i=0;i<partes.length;i++)
+          await addImageFromCanvas(partes[i],{...meta, inteiro:true, slot:"costas_grande", name:`${meta.name} · arte ${i+1}`, w:partes[i].width, h:partes[i].height});
+        gradeNasCostas(state.items.slice(-partes.length));
+        toast(`${partes.length} artes adicionadas nas costas. Arraste para a frente as que vão no peito, manga ou calça.`); track("arquivo_separado",{n:partes.length});
+        return;
+      }
+      meta={...meta, inteiro:true, multi:partes.length}; track("arquivo_junto",{n:partes.length});
+    }
+  }
+  const src=src0, info=info0;
   const mode = meta.mode || (info.mono ? "umacor" : (info.hasAlpha ? "original" : "semfundo"));
   addItem({kind:"img", name:meta.name, mode, ink:COLORS[state.color].ink, autoInk:true, _src:src, _info:info,
-           lowres: !meta.vector && Math.max(meta.w,meta.h)<900, vector:!!meta.vector, lib:meta.lib||null, file:meta.file||null}, meta.slot);
+           lowres: !meta.vector && Math.max(meta.w,meta.h)<900, vector:!!meta.vector, lib:meta.lib||null, file:meta.file||null, multi:meta.multi||0}, meta.slot);
 }
 
 /* ================== LOGO TAP ================== */
@@ -640,7 +711,7 @@ function itemLine(it,nomePessoa,cor){
     const t = perPersonOn(it) ? (nomePessoa!=null ? `texto "${nomePessoa||"(sem nome)"}"` : "nome do dono de cada kimono") : `texto "${it.text}"`;
     return `${pos}: ${t} (${(FONTS.find(f=>f.id===it.font)||FONTS[0]).label}${it.style!=="simples"?", "+(it.style==="linha"?"com linha":"em tarja"):""})${ink}`;
   }
-  return `${pos}: logo ${it.lib? `"${it.name}" (banco da Tap)` : `"${it.name}"`}${ink}`;
+  return `${pos}: logo ${it.lib? `"${it.name}" (banco da Tap)` : `"${it.name}"`}${ink}${it.multi>1?` · arquivo com ${it.multi} artes, conferir o kit`:""}`;
 }
 function itemLineSummary(it){ return itemLine(it) + (it===nomeGratis() ? " · nome incluso" : ""); }
 function inkName(hex){ const k=INKS.find(k=>k.c===hex.toLowerCase()); return k? k.n.toLowerCase() : `cor ${hex}`; }
@@ -955,6 +1026,8 @@ function montarLinhas(grupo,links,cobr){
   comum["Contato"]=[d.nome.trim(),d.zap.trim()].filter(Boolean).join(" · ");
   if(d.equipe.trim()) comum["Equipe"]=d.equipe.trim();
   if(d.obs.trim()) comum["Observações"]=d.obs.trim();
+  const multi=state.items.filter(it=>it.multi>1);
+  if(multi.length) comum["Atenção Tap"]=multi.map(it=>`"${it.name}" tem ${it.multi} artes no mesmo arquivo (cliente manteve como 1 logo): conferir o kit`).join(" · ");
   comum["Pedido Tap"]=cod;
   const linhas=kimonos().map((k,i)=>{
     const props={};
